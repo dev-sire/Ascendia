@@ -8,7 +8,7 @@ import { redirect } from "next/navigation"
 
 type Props = {}
 
-const SignIn = async (props: Props) => {
+const SignInPage = async (props: Props) => {
     const user = await currentUser()
 
     if (user) {
@@ -55,4 +55,4 @@ const SignIn = async (props: Props) => {
     )
 }
 
-export default SignIn
+export default SignInPage

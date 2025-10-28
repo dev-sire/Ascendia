@@ -25,7 +25,7 @@ export const GoogleAuthButton = ({ method }: GoogleAuthButtonProps) => {
         >
             <Loader loading={false}>
                 <Google />
-                <span className="text-muted hover:text-black">Google</span>
+                <span className="text-white hover:text-black">Google</span>
             </Loader>
         </Button>
     )
