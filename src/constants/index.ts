@@ -12,7 +12,7 @@ import {
 } from "./placeholder"
 import { GROUP_LIST, GroupListProps } from "./slider"
 
-type GroupleConstantsProps = {
+type AscendiaConstantsProps = {
     landingPageMenu: MenuProps[]
     signUpForm: AuthFormProps[]
     signInForm: AuthFormProps[]
@@ -21,7 +21,7 @@ type GroupleConstantsProps = {
     groupPageMenu: GroupMenuProps[]
 }
 
-export const ASCENDIA_CONSTANTS: GroupleConstantsProps = {
+export const ASCENDIA_CONSTANTS: AscendiaConstantsProps = {
     landingPageMenu: LANDING_PAGE_MENU,
     signUpForm: SIGN_UP_FORM,
     signInForm: SIGN_IN_FORM,
