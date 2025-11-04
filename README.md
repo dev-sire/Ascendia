@@ -1,6 +1,6 @@
-### Ascendia: The next-generation LMS
+### Ascendia: Next-Gen LLM Platform
 
-The Project is currently under-development, I will be keeping tracks of the weekly updates via this tree structure...
+Under-Development, a **state-of-the-art LLM** with a focus on advanced capabilities, seamless integration, and a modern, extensible architecture.
 
 ```
 📦 Ascendia
@@ -10,6 +10,7 @@ The Project is currently under-development, I will be keeping tracks of the week
 ├─ .prettierrc
 ├─ .vscode
 │  └─ settings.json
+├─ LICENSE
 ├─ README.md
 ├─ bun.lock
 ├─ components.json
@@ -45,6 +46,13 @@ The Project is currently under-development, I will be keeping tracks of the week
 │  │  │  │     └─ index.tsx
 │  │  │  ├─ layout.tsx
 │  │  │  └─ page.tsx
+│  │  ├─ callback
+│  │  │  ├─ complete
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ loading.tsx
+│  │  │  ├─ page.tsx
+│  │  │  └─ sign-in
+│  │  │     └─ page.tsx
 │  │  ├─ favicon.ico
 │  │  ├─ globals.css
 │  │  └─ layout.tsx
