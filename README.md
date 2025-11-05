@@ -1,6 +1,6 @@
-### Ascendia: Next-Gen LLM Platform
+### Ascendia: Next-Gen Learning Platform
 
-Under-Development, a **state-of-the-art LLM** with a focus on advanced capabilities, seamless integration, and a modern, extensible architecture.
+Under-Development, a modular, open-source LMS platform featuring dynamic course creation and deep progress tracking.
 
 ```
 📦 Ascendia
