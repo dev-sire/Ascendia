@@ -10,7 +10,14 @@ type Props = {
 
 const PaymentForm = ({ userId, affiliate, stripeId }: Props) => {
 
-    const {} = usePayments(userId, affiliate)
+    const {
+        onCreateGroup,
+        register,
+        isPending,
+        errors,
+        isCategory,
+        creatingIntent
+    } = usePayments(userId, affiliate)
 
     return (
         <div>PaymentForm</div>
