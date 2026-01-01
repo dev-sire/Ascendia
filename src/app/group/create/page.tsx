@@ -1,7 +1,8 @@
 import { onAuthenticatedUser } from '@/actions/auth'
 import { onGetAffiliateInfo } from '@/actions/groups'
+import CreateGroup from '@/components/forms/create-group'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { User } from '@clerk/nextjs/server'
+import { User } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 const GroupCreatePage = async ({ searchParams }: {
@@ -34,11 +35,16 @@ const GroupCreatePage = async ({ searchParams }: {
                             <User />
                         </AvatarFallback>
                     </Avatar>
-                    {affiliate.user?.Group?.User?.firstName}{" "}
-                    {affiliate.user?.Group?.User?.lastName}
+                    {affiliate.user?.Group?.User?.firstname}{" "}
+                    {affiliate.user?.Group?.User?.lastname}
                 </div>
             )}
         </div>
+        <CreateGroup 
+            userId={user.id}
+            affiliate={affiliate.status === 200 ? true : false}
+            stripeId={affiliate.user?.Group?.User?.stripeId || ""}
+        />
     </>
   )
 }

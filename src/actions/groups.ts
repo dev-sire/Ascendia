@@ -1,8 +1,8 @@
-import { client } from "@/lib/prisma"
+import { client } from "@/lib/prisma";
 
 export const onGetAffiliateInfo = async (id: string) => {
     try {
-        const affiliateInfo = client.affiliate.findUnique({
+        const affiliateInfo = await client.affiliate.findUnique({
             where: {
                 id
             },
