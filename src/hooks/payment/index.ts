@@ -1,3 +1,4 @@
+'use client'
 import { onCreateNewGroup } from "@/actions/groups"
 import { onGetStripeClientSecret, onTransferCommission } from "@/actions/payment"
 import { createGroupSchema } from "@/components/forms/create-group/schema"
@@ -17,16 +18,14 @@ export const useStripeElements = () => {
 }
 
 export const usePayments = (
-    userId: string, 
-    affiliate: boolean, 
-    stripeId?: string
+    userId: string,
+    affiliate: boolean,
+    stripeId?: string,
 ) => {
-
-    const router = useRouter()
     const [isCategory, setIsCategory] = useState<string | undefined>(undefined)
-
     const stripe = useStripe()
     const elements = useElements()
+    const router = useRouter()
 
     const {
         reset,
@@ -43,56 +42,65 @@ export const usePayments = (
 
     useEffect(() => {
         const category = watch(({ category }) => {
-            if(category){
+            if (category) {
                 setIsCategory(category)
             }
         })
         return () => category.unsubscribe()
     }, [watch])
 
-    const { data: intent, isPending: creatingIntent } = useQuery({
+    const { data: Intent, isPending: creatingIntent } = useQuery({
         queryKey: ["payment-intent"],
         queryFn: () => onGetStripeClientSecret(),
     })
 
     const { mutateAsync: createGroup, isPending } = useMutation({
         mutationFn: async (data: z.infer<typeof createGroupSchema>) => {
-            if(!stripe || !elements || !intent){
-                return null
+            // if (!stripe || !elements || !Intent) {
+            //     return null
+            // }
+
+            console.log("Mutation started", { stripe: !!stripe, elements: !!elements, Intent: !!Intent });
+
+            if (!stripe || !elements || !Intent?.secret) {
+                toast("Error", { description: "Payment system not ready. Please wait a moment." });
+                return null;
             }
 
             const { error, paymentIntent } = await stripe.confirmCardPayment(
-                intent.secret!,
+                Intent.secret!,
                 {
                     payment_method: {
                         card: elements.getElement(
-                            CardElement
-                        ) as StripeCardElement
+                            CardElement,
+                        ) as StripeCardElement,
                     },
                 },
             )
 
-            if(error){
+            if (error) {
                 return toast("Error", {
-                    description: "Oops! something went wrong. try again later."
+                    description: "Oops! something went wrong, try again later",
                 })
             }
 
-            if(paymentIntent?.status === "succeeded"){
-                if(affiliate){
+            if (paymentIntent?.status === "succeeded") {
+                if (affiliate) {
                     await onTransferCommission(stripeId!)
                 }
                 const created = await onCreateNewGroup(userId, data)
-                if(created && created.status === 200){
+                if (created && created.status === 200) {
                     toast("Success", {
-                        description: created.message
+                        description: created.message,
                     })
-                    router.push(`/group/${created.data?.group[0].id}/channel/${created.data?.group[0].channel[0].id}`)
+                    router.push(
+                        `/group/${created.data?.group[0].id}/channel/${created.data?.group[0].channel[0].id}`,
+                    )
                 }
-                if(created && created.status !== 200){
+                if (created && created.status !== 200) {
                     reset()
                     return toast("Error", {
-                        description: created.message
+                        description: created.message,
                     })
                 }
             }
@@ -107,6 +115,6 @@ export const usePayments = (
         register,
         errors,
         isCategory,
-        creatingIntent
+        creatingIntent,
     }
 }

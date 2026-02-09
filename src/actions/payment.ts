@@ -1,6 +1,6 @@
 "use server"
 
-import Stripe from "stripe"
+import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     typescript: true,
@@ -8,15 +8,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 })
 
 export const onGetStripeClientSecret = async () => {
+    console.log("this ran")
     try {
         const paymentIntent = await stripe.paymentIntents.create({
             currency: "pkr",
-            amount: 9900,
+            amount: 990000,
             automatic_payment_methods: {
                 enabled: true,
             },
         })
-
+        console.log("Payment Intent", paymentIntent)
         if (paymentIntent) {
             return { secret: paymentIntent.client_secret }
         }
@@ -28,7 +29,7 @@ export const onGetStripeClientSecret = async () => {
 export const onTransferCommission = async (destination: string) => {
     try {
         const transfer = await stripe.transfers.create({
-            amount: 3960,
+            amount: 396000,
             currency: "pkr",
             destination: destination,
         })
