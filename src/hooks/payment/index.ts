@@ -56,15 +56,8 @@ export const usePayments = (
 
     const { mutateAsync: createGroup, isPending } = useMutation({
         mutationFn: async (data: z.infer<typeof createGroupSchema>) => {
-            // if (!stripe || !elements || !Intent) {
-            //     return null
-            // }
-
-            console.log("Mutation started", { stripe: !!stripe, elements: !!elements, Intent: !!Intent });
-
-            if (!stripe || !elements || !Intent?.secret) {
-                toast("Error", { description: "Payment system not ready. Please wait a moment." });
-                return null;
+            if (!stripe || !elements || !Intent) {
+                return null
             }
 
             const { error, paymentIntent } = await stripe.confirmCardPayment(
