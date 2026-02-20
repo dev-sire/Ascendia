@@ -1,6 +1,6 @@
 import { onAuthenticatedUser } from '@/actions/auth';
-import { onGetGroupChannels, onGetGroupInfo, onGetUserGroups } from '@/actions/groups';
-import { QueryClient } from '@tanstack/react-query';
+import { onGetAllGroupMembers, onGetGroupChannels, onGetGroupInfo, onGetGroupSubscriptions, onGetUserGroups } from '@/actions/groups';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
@@ -36,8 +36,24 @@ const GroupLayout = async ({ children, params }: Props) => {
         queryFn: () => onGetGroupChannels(params.groupid)
     })
 
+    // group subscriptions
+    await query.prefetchQuery({
+        queryKey: ["group-subscriptions"],
+        queryFn: () => onGetGroupSubscriptions(params.groupid),
+    })
+
+    // Members Chats
+    await query.prefetchQuery({
+        queryKey: ["members-chats"],
+        queryFn: () => onGetAllGroupMembers(params.groupid)
+    })
+
     return (
-        <div>GroupLayout</div>
+        <HydrationBoundary state={dehydrate(query)}>
+            <div className="flex h-screen md:pt-5">
+                
+            </div>
+        </HydrationBoundary>
     )
 }
 
