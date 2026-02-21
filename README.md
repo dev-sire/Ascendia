@@ -25,7 +25,10 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  └─ vercel.svg
 ├─ src
 │  ├─ actions
-│  │  └─ auth.ts
+│  │  ├─ auth.ts
+│  │  ├─ channels.ts
+│  │  ├─ groups.ts
+│  │  └─ payment.ts
 │  ├─ app
 │  │  ├─ (auth)
 │  │  │  ├─ layout.tsx
@@ -55,9 +58,23 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  │     └─ page.tsx
 │  │  ├─ favicon.ico
 │  │  ├─ globals.css
+│  │  ├─ group
+│  │  │  ├─ [groupid]
+│  │  │  │  ├─ channel
+│  │  │  │  │  └─ [channelid]
+│  │  │  │  │     └─ page.tsx
+│  │  │  │  └─ layout.tsx
+│  │  │  └─ create
+│  │  │     ├─ layout.tsx
+│  │  │     ├─ loading.tsx
+│  │  │     └─ page.tsx
 │  │  └─ layout.tsx
 │  ├─ components
 │  │  ├─ forms
+│  │  │  ├─ create-group
+│  │  │  │  ├─ index.tsx
+│  │  │  │  ├─ payment-form.tsx
+│  │  │  │  └─ schema.ts
 │  │  │  ├─ sign-in
 │  │  │  │  ├─ index.tsx
 │  │  │  │  └─ schema.ts
@@ -77,10 +94,17 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  │  │  └─ index.tsx
 │  │  │  ├─ gradient-text
 │  │  │  │  └─ index.tsx
+│  │  │  ├─ group-list-slider
+│  │  │  │  ├─ index.tsx
+│  │  │  │  └─ list-item.tsx
 │  │  │  ├─ loader
 │  │  │  │  └─ index.tsx
-│  │  │  └─ otp-input
-│  │  │     └─ index.tsx
+│  │  │  ├─ otp-input
+│  │  │  │  └─ index.tsx
+│  │  │  ├─ slider
+│  │  │  │  └─ index.tsx
+│  │  │  └─ stripe
+│  │  │     └─ elements.tsx
 │  │  ├─ theme
 │  │  │  └─ index.tsx
 │  │  └─ ui
@@ -143,7 +167,9 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  ├─ hooks
 │  │  ├─ authentication
 │  │  │  └─ index.ts
-│  │  └─ navigation
+│  │  ├─ navigation
+│  │  │  └─ index.ts
+│  │  └─ payment
 │  │     └─ index.ts
 │  ├─ icons
 │  │  ├─ about.tsx

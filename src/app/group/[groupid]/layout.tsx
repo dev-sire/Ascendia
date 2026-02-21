@@ -44,14 +44,14 @@ const GroupLayout = async ({ children, params }: Props) => {
 
     // Members Chats
     await query.prefetchQuery({
-        queryKey: ["members-chats"],
+        queryKey: ["group-members"],
         queryFn: () => onGetAllGroupMembers(params.groupid)
     })
 
     return (
         <HydrationBoundary state={dehydrate(query)}>
             <div className="flex h-screen md:pt-5">
-                
+                {/* <SideBar groupid={params.groupid} userid={user.id} /> */}
             </div>
         </HydrationBoundary>
     )
