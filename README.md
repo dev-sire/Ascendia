@@ -84,6 +84,8 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  ├─ global
 │  │  │  ├─ backdrop-gradient
 │  │  │  │  └─ index.tsx
+│  │  │  ├─ drop-down
+│  │  │  │  └─ index.tsx
 │  │  │  ├─ form-generator
 │  │  │  │  └─ index.tsx
 │  │  │  ├─ glass-card
@@ -101,6 +103,10 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  │  │  └─ index.tsx
 │  │  │  ├─ otp-input
 │  │  │  │  └─ index.tsx
+│  │  │  ├─ sidebar
+│  │  │  │  ├─ icon-dropdown.tsx
+│  │  │  │  ├─ index.tsx
+│  │  │  │  └─ menu.tsx
 │  │  │  ├─ slider
 │  │  │  │  └─ index.tsx
 │  │  │  └─ stripe
@@ -167,6 +173,8 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  ├─ hooks
 │  │  ├─ authentication
 │  │  │  └─ index.ts
+│  │  ├─ groups
+│  │  │  └─ index.ts
 │  │  ├─ navigation
 │  │  │  └─ index.ts
 │  │  └─ payment
@@ -230,6 +238,8 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  └─ provider.tsx
 │  └─ redux
 │     ├─ provider.tsx
+│     ├─ slices
+│     │  └─ online-member-slice.ts
 │     └─ store.ts
 ├─ tailwind.config.ts
 └─ tsconfig.json
