@@ -131,6 +131,14 @@ const SideBar = ({ groupid, userid, mobile }: Props) => {
                         />
                     )}
                 </div>
+                <SidebarMenu 
+                    channels={channels?.channels}
+                    optimisticChannel={variables}
+                    loading={isPending}
+                    groupid={groupid}
+                    groupUserId={groupInfo.group?.userId}
+                    userId={userid}
+                />
             </div>
         </div>
     )
