@@ -1,4 +1,7 @@
+import { SIDEBAR_SETTINGS_MENU } from '@/constants/menu';
 import { useChannelInfo } from '@/hooks/channels';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IChannels } from '.';
 
@@ -43,6 +46,36 @@ const SidebarMenu = ({
         onChannelDelete,
         deleteVariables
     } = useChannelInfo()
+
+    if(pathName.includes("settings")){
+        return (
+            <div className="flex flex-col">
+                {SIDEBAR_SETTINGS_MENU.map((item) => 
+                      item.integration ? (
+                        userId === groupUserId && (
+                            <Link
+                                className={cn(
+                                    "flex items-center gap-x-2 font-semibold rounded-xl text-themeTextGray hover:bg-themeGray p-2",
+                                    currentPage === "settings"
+                                        ? !item.path && "text-white"
+                                        :  currentPage === item.path && "text-white"
+                                )}
+                                href={`/group/${groupid}/settings/${item.path}`}
+                                key={item.id}
+                            >
+                                {item.icon}
+                                {item.label}
+                            </Link>
+                        )
+                      ) : (
+                        <Link>
+                            
+                        </Link>
+                      ) 
+                )}
+            </div>
+        )
+    }
 
     return (
         <div>SidebarMenu</div>

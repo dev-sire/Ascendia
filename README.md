@@ -173,6 +173,8 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  ├─ hooks
 │  │  ├─ authentication
 │  │  │  └─ index.ts
+│  │  ├─ channels
+│  │  │  └─ index.ts
 │  │  ├─ groups
 │  │  │  └─ index.ts
 │  │  ├─ navigation
