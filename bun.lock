@@ -40,7 +40,7 @@
         "@stripe/stripe-js": "^4.4.0",
         "@supabase/supabase-js": "^2.97.0",
         "@tanstack/react-query": "^5.51.24",
-        "@uploadcare/react-uploader": "^1.0.0",
+        "@uploadcare/react-uploader": "^1.13.0",
         "@uploadcare/upload-client": "^6.14.1",
         "axios": "^1.7.7",
         "class-variance-authority": "^0.7.0",
@@ -641,7 +641,7 @@
 
     "@uploadcare/cname-prefix": ["@uploadcare/cname-prefix@6.18.4", "", {}, "sha512-dEDkoMneA01UoJNpS7KcxxCkuP87fdWfK111Q/3nt5WO1gb6VpvZuUse9ac+A/h9iVEkaPxsO7cNsEtLxGKOpQ=="],
 
-    "@uploadcare/file-uploader": ["@uploadcare/file-uploader@1.26.0", "", { "dependencies": { "@lit/context": "^1.1.6", "@uploadcare/cname-prefix": "^6.18.2", "@uploadcare/image-shrink": "^6.18.2", "@uploadcare/quality-insights": "^6.18.2", "@uploadcare/upload-client": "^6.18.2", "keyux": "^0.7.1", "lit": "^3.3.1", "nanostores": "^1.1.0" } }, "sha512-iyTFUpnf0nA+6RWCWlR6W3rNT0eGXkxi3bWYl/tnY8kdNFZnkgl9SPBVRyCRt34KVsoD1KR/V5U1zWbslruZ6w=="],
+    "@uploadcare/file-uploader": ["@uploadcare/file-uploader@1.27.1", "", { "dependencies": { "@lit/context": "^1.1.6", "@uploadcare/cname-prefix": "^6.18.4", "@uploadcare/image-shrink": "^6.18.4", "@uploadcare/quality-insights": "^6.18.4", "@uploadcare/upload-client": "^6.18.4", "keyux": "^0.7.1", "lit": "^3.3.1", "nanostores": "^1.1.0" } }, "sha512-5LZFMICXPnontGBXlBMwqJpseQ/jcPPPQFrh1tqWhkAAcqGTx4pxdg9c6NJTeTf2CWJmPLriFQp3rJhGQDMdyQ=="],
 
     "@uploadcare/image-shrink": ["@uploadcare/image-shrink@6.18.4", "", {}, "sha512-Tr1NPlaIl+gKKcZnRJkycvyDPa82buGcVnQX5bMwj1TBKmmGmkZrpkXHykqIC9ZJxs2dgZPRHh2f66lkrGHQQA=="],
 
@@ -649,7 +649,7 @@
 
     "@uploadcare/react-adapter": ["@uploadcare/react-adapter@0.4.0", "", { "peerDependencies": { "@types/react": ">= 17.0.0" } }, "sha512-KMda9T2tLKA8Va/dd4itfjpyl3xSzot5iR4a0ZoBAauMmkfW2E2ckw5UWqqYYGsFOcYF/Qb32aJ8/vMWnJSuNw=="],
 
-    "@uploadcare/react-uploader": ["@uploadcare/react-uploader@1.12.0", "", { "dependencies": { "@uploadcare/file-uploader": "1.26.0", "@uploadcare/react-adapter": "^0.4.0" }, "optionalDependencies": { "next": "^16.0.0" }, "peerDependencies": { "@types/react": ">= 17.0.0" } }, "sha512-iCjwb4KH1yndq4BNCLUCV8EfwEHY662EoFqGflrLlqyzSqZlEfW49sSKWP3JzeU9nvZwGibFTXlaCo77MtRvag=="],
+    "@uploadcare/react-uploader": ["@uploadcare/react-uploader@1.13.0", "", { "dependencies": { "@uploadcare/file-uploader": "1.27.1", "@uploadcare/react-adapter": "^0.4.0" }, "optionalDependencies": { "next": "^16.0.0" }, "peerDependencies": { "@types/react": ">= 17.0.0" } }, "sha512-OfJdQqk8gtaNHubUz5KuL95NYdGO9gC6aW8stAiSdal9UpzFoWUund2DKA49B9yf3Wzebjr/w08t5RJopdcODg=="],
 
     "@uploadcare/upload-client": ["@uploadcare/upload-client@6.18.4", "", { "dependencies": { "form-data": "^4.0.0", "ws": "^8.2.3" } }, "sha512-I0XjhwYAPRGpK/E0PVuRdrDZEa1d8RsU8toA76Yi3wY7kyD20D25hn21/QRL1ZLmsEsVdC0D1hFFOn5kutHZ2A=="],
 
