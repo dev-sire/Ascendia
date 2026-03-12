@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IChannels } from '.';
+import { IconRenderer } from '../icon-renderer';
+import IconDropdown from './icon-dropdown';
 
 type Props = {
     channels: IChannels[];
@@ -109,7 +111,23 @@ const SidebarMenu = ({
                                     ref: channelRef,
                             })}
                         >
-                            continue
+                            <div className="flex gap-x-2 items-center">
+                                {channel.id === current && edit ? (
+                                    <IconDropdown 
+                                        ref={triggerRef}
+                                        page={currentPage}
+                                        onSetIcon={onSetIcon}
+                                        channelid={channel.id}
+                                        icon={channel.icon}
+                                        currentIcon={icon}
+                                    />
+                                ) : (
+                                    <IconRenderer 
+                                        icon={channel.icon}
+                                        mode={currentPage === channel.id ? "LIGHT" : "DARK"}
+                                    />
+                                )}
+                            </div>
                         </Link>
                     ),
                 )}
