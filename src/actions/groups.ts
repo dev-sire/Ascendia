@@ -243,8 +243,8 @@ export const onGetAllGroupMembers = async (groupid: string) => {
                 User: true,
             },
         })
-
-        if (members && members.length > 0) {
+        // temporary solution to handle the case where a group has no members yet, we return a 404 status and handle it on the client side
+        if (members) {
             return { status: 200, members }
         }
     } catch (error) {

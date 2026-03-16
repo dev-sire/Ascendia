@@ -1,5 +1,11 @@
 import { onAuthenticatedUser } from '@/actions/auth';
-import { onGetAllGroupMembers, onGetGroupChannels, onGetGroupInfo, onGetGroupSubscriptions, onGetUserGroups } from '@/actions/groups';
+import {
+    onGetAllGroupMembers,
+    onGetGroupChannels,
+    onGetGroupInfo,
+    onGetGroupSubscriptions,
+    onGetUserGroups
+} from '@/actions/groups';
 import SideBar from '@/components/global/sidebar';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
@@ -8,7 +14,7 @@ import React from 'react';
 type Props = {
     children: React.ReactNode;
     params: {
-        groupid: string;
+        groupId: string;
     }
 }
 
@@ -22,7 +28,7 @@ const GroupLayout = async ({ children, params }: Props) => {
     // group info
     await query.prefetchQuery({
         queryKey: ["group-info"],
-        queryFn: () => onGetGroupInfo(params.groupid),
+        queryFn: () => onGetGroupInfo(params.groupId),
     })
 
     // user groups
@@ -34,25 +40,25 @@ const GroupLayout = async ({ children, params }: Props) => {
     // channels
     await query.prefetchQuery({
         queryKey: ["group-channels"],
-        queryFn: () => onGetGroupChannels(params.groupid)
+        queryFn: () => onGetGroupChannels(params.groupId)
     })
 
     // group subscriptions
     await query.prefetchQuery({
         queryKey: ["group-subscriptions"],
-        queryFn: () => onGetGroupSubscriptions(params.groupid),
+        queryFn: () => onGetGroupSubscriptions(params.groupId),
     })
 
     // Members Chats
     await query.prefetchQuery({
         queryKey: ["group-members"],
-        queryFn: () => onGetAllGroupMembers(params.groupid)
+        queryFn: () => onGetAllGroupMembers(params.groupId)
     })
 
     return (
         <HydrationBoundary state={dehydrate(query)}>
             <div className="flex h-screen md:pt-5">
-                <SideBar groupid={params.groupid} userid={user.id} />
+                <SideBar groupid={params.groupId} userid={user.id} />
             </div>
         </HydrationBoundary>
     )

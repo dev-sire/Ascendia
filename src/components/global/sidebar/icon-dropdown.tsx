@@ -1,3 +1,5 @@
+import { ICON_LIST } from '@/constants/icons';
+import { cn } from '@/lib/utils';
 import React from 'react';
 import { DropDown } from '../drop-down';
 import { IconRenderer } from '../icon-renderer';
@@ -32,7 +34,27 @@ const IconDropDown = ({
             </span>
         }
     >
-        
+        <div id='icon-list' className="flex gap-x-2">
+            {ICON_LIST.map(
+                (icons) =>
+                    icons.icon !== icon && (
+                        <span
+                            key={icons.id}
+                            className={cn(
+                                currentIcon === icons.icon ? "bg-themeGray" : "",
+                                "p-2 rounded-lg"
+                            )}
+                            onClick={() => onSetIcon(icons.icon)}
+                        >
+                            <IconRenderer 
+                                icon={icons.icon}
+                                mode={page === channelid ? "LIGHT" : "DARK"}
+                            />
+                        </span>
+                    )
+                
+            )}
+        </div>
     </DropDown>
   )
 }
