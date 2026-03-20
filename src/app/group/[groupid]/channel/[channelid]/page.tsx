@@ -5,7 +5,7 @@ import { currentUser } from '@clerk/nextjs/server'
 import { QueryClient } from '@tanstack/react-query'
 
 type Props = {
-  params: { channelid: string; groupid: string }
+  params: Promise<{ channelid: string; groupid: string }>;
 }
 
 // WIP: Complete the Group Channel Page
@@ -15,16 +15,16 @@ const GroupChannelPage = async ({ params }: Props) => {
     const client = new QueryClient()
     const user = await currentUser()
     const authUser = await onAuthenticatedUser()
-
+    const { channelid, groupid } = await params
 
     await client.prefetchQuery({
         queryKey: ["channel-info"],
-        queryFn: () => onGetChannelInfo(params.channelid)
+        queryFn: () => onGetChannelInfo(channelid)
     })
 
     await client.prefetchQuery({
         queryKey: ["about-group-info"],
-        queryFn: () => onGetGroupInfo(params.groupid)
+        queryFn: () => onGetGroupInfo(groupid)
     })
 
   return (
