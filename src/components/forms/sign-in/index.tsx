@@ -15,7 +15,10 @@ const SignInForm = (props: Props) => {
     return (
         <form
             className="flex flex-col gap-3 mt-10"
-            onSubmit={onAuthenticateUser}
+            onSubmit={(e) => {
+                console.log("Form submitting..."); // Debug: See if this even fires
+                onAuthenticateUser(e);
+            }}
         >
             {ASCENDIA_CONSTANTS.signInForm.map((field) => (
                 <FormGenerator

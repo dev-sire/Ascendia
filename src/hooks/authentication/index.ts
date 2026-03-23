@@ -52,13 +52,8 @@ export const useAuthSignIn = () => {
     }
 
     const { mutate: InitiateLoginFlow, isPending } = useMutation({
-        mutationFn: ({
-            email,
-            password,
-        }: {
-            email: string
-            password: string
-        }) => onClerkAuth(email, password),
+        mutationFn: ({ email, password }: { email: string; password: string }) =>
+            onClerkAuth(email, password),
     })
 
     const onAuthenticateUser = handleSubmit(async (values) => {
@@ -72,8 +67,13 @@ export const useAuthSignIn = () => {
         errors,
     }
 }
+
 export const useAuthSignUp = () => {
-    const { setActive, isLoaded, signUp } = useSignUp()
+    // const { setActive, isLoaded, signUp } = useSignUp()
+    const signUpBundle = useSignUp();
+    const isLoaded = signUpBundle.isLoaded;
+    const signUp = signUpBundle.signUp;
+    const setActive = signUpBundle.setActive;
     const [creating, setCreating] = useState<boolean>(false)
     const [verifying, setVerifying] = useState<boolean>(false)
     const [code, setCode] = useState<string>("")
@@ -126,16 +126,13 @@ export const useAuthSignUp = () => {
 
         try {
             setCreating(true)
-            const completeSignUp = await signUp.attemptEmailAddressVerification(
-                {
-                    code,
-                },
-            )
+            const completeSignUp = await signUp.attemptEmailAddressVerification({
+                code,
+            })
 
             if (completeSignUp.status !== "complete") {
                 return toast("Error", {
-                    description:
-                        "Oops! something went wrong, status in complete",
+                    description: "Oops! something went wrong, status in complete",
                 })
             }
 
