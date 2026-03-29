@@ -6,7 +6,7 @@ type GlassSheetProps = {
     children: React.ReactNode;
     trigger: React.ReactNode;
     className?: string;
-    triggerClass: string;
+    triggerClass?: string;
 }
 
 const GlassSheet = ({ children, trigger, className, triggerClass }: GlassSheetProps) => {
