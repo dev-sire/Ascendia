@@ -64,6 +64,9 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  │  │  │  └─ [channelid]
 │  │  │  │  │     └─ page.tsx
 │  │  │  │  └─ layout.tsx
+│  │  │  ├─ _components
+│  │  │  │  └─ navbar
+│  │  │  │     └─ index.tsx
 │  │  │  └─ create
 │  │  │     ├─ layout.tsx
 │  │  │     ├─ loading.tsx
@@ -99,10 +102,15 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  │  ├─ group-list-slider
 │  │  │  │  ├─ index.tsx
 │  │  │  │  └─ list-item.tsx
+│  │  │  ├─ icon-renderer
+│  │  │  │  └─ index.tsx
 │  │  │  ├─ loader
 │  │  │  │  └─ index.tsx
 │  │  │  ├─ otp-input
 │  │  │  │  └─ index.tsx
+│  │  │  ├─ search
+│  │  │  │  ├─ index.tsx
+│  │  │  │  └─ no-results.tsx
 │  │  │  ├─ sidebar
 │  │  │  │  ├─ icon-dropdown.tsx
 │  │  │  │  ├─ index.tsx
@@ -241,7 +249,8 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  └─ redux
 │     ├─ provider.tsx
 │     ├─ slices
-│     │  └─ online-member-slice.ts
+│     │  ├─ online-member-slice.ts
+│     │  └─ search-slice.ts
 │     └─ store.ts
 ├─ tailwind.config.ts
 └─ tsconfig.json
