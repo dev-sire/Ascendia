@@ -44,7 +44,7 @@ export const UserAvatar = ({ image, groupid, userid }: UserWidgetProps) => {
         >
             <Button
                 variant="ghost"
-                className="flex gap-x-3 px-2  hover:text-black  justify-start w-full"
+                className="flex gap-x-3 px-2 hover:text-black justify-start w-full"
             >
                 <Link
                     href={`/group/${groupid}/settings`}
@@ -56,7 +56,7 @@ export const UserAvatar = ({ image, groupid, userid }: UserWidgetProps) => {
             <Button
                 onClick={onLogout}
                 variant="ghost"
-                className="flex gap-x-3 px-2  hover:text-black  justify-start w-full"
+                className="flex gap-x-3 px-2 hover:text-black justify-start w-full"
             >
                 <Logout />
                 Logout
