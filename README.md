@@ -63,7 +63,9 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  │  │  ├─ channel
 │  │  │  │  │  └─ [channelid]
 │  │  │  │  │     └─ page.tsx
-│  │  │  │  └─ layout.tsx
+│  │  │  │  ├─ layout.tsx
+│  │  │  │  └─ settings
+│  │  │  │     └─ page.tsx
 │  │  │  ├─ _components
 │  │  │  │  └─ navbar
 │  │  │  │     └─ index.tsx
@@ -117,8 +119,12 @@ Under-Development, a modular, open-source LMS platform featuring dynamic course 
 │  │  │  │  └─ menu.tsx
 │  │  │  ├─ slider
 │  │  │  │  └─ index.tsx
-│  │  │  └─ stripe
-│  │  │     └─ elements.tsx
+│  │  │  ├─ stripe
+│  │  │  │  └─ elements.tsx
+│  │  │  └─ user-widget
+│  │  │     ├─ index.tsx
+│  │  │     ├─ notification.tsx
+│  │  │     └─ user.tsx
 │  │  ├─ theme
 │  │  │  └─ index.tsx
 │  │  └─ ui
