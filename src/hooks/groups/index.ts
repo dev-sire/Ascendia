@@ -1,11 +1,16 @@
-import { onSearchGroups } from "@/actions/groups"
+import { onGetGroupInfo, onSearchGroups } from "@/actions/groups"
+import { GroupSettingsSchema } from "@/components/forms/group-settings/schema"
 import { supabaseClient } from "@/lib/utils"
 import { onOnline } from "@/redux/slices/online-member-slice"
 import { onClearSearch, onSearch } from "@/redux/slices/search-slice"
 import { AppDispatch } from "@/redux/store"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useQuery } from "@tanstack/react-query"
+import { JSONContent } from "novel"
 import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
+import { z } from "zod"
 
 export const useGroupChatOnline = (userid: string) => {
     const dispatch: AppDispatch = useDispatch()
@@ -95,4 +100,30 @@ export const useSearch = (search: "GROUPS" | "POSTS") => {
 
     return { query, onSearchQuery }
 
+}
+
+export const useGroupSettings = (groupid: string) => {
+    const { data } = useQuery({
+        queryKey: ["group-info"],
+        queryFn: () => onGetGroupInfo(groupid),
+    })
+
+    const jsonContent = data?.group?.description !== null ? JSON.parse(data?.group?.jsonDescription as string) : undefined
+    const [onJsonDescription, setJsonDescription] = useState<JSONContent | undefined>(jsonContent)
+    const [onDescription, setOnDescription] = useState<string | undefined>(data?.group?.description || undefined)
+    const {
+        register,
+        formState: { errors },
+        reset,
+        handleSubmit,
+        watch,
+        setValue,
+    } = useForm<z.infer<typeof GroupSettingsSchema>>({
+        resolver: zodResolver(GroupSettingsSchema),
+        mode: "onChange",
+    })
+    const [previewIcon, setPreviewIcon] = useState<string | undefined>(undefined)
+    const [previewThumbnail, setPreviewThumbnail] = useState<string | undefined>(undefined)
+
+    // implement use effect and rest of the logic tomorrow
 }
