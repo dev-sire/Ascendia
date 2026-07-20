@@ -1,71 +1,72 @@
-import { onAuthenticatedUser } from '@/actions/auth';
+import { onAuthenticatedUser } from "@/actions/auth"
 import {
     onGetAllGroupMembers,
     onGetGroupChannels,
     onGetGroupInfo,
     onGetGroupSubscriptions,
-    onGetUserGroups
-} from '@/actions/groups';
-import SideBar from '@/components/global/sidebar';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { redirect } from 'next/navigation';
-import React from 'react';
-import { Navbar } from '../_components/navbar';
+    onGetUserGroups,
+} from "@/actions/groups"
+import SideBar from "@/components/global/sidebar"
+import {
+    dehydrate,
+    HydrationBoundary,
+    QueryClient,
+} from "@tanstack/react-query"
+import { redirect } from "next/navigation"
+import React from "react"
+import { Navbar } from "../_components/navbar"
 
-type Props = { 
-    children: React.ReactNode; 
-    params: Promise<{ groupId: string }> 
+type GroupLayoutProps = {
+    children: React.ReactNode
+    params: {
+        groupId: string
+    }
 }
-
-const GroupLayout = async ({ children, params }: Props) => {
-
+//WIP : Complete the group layout
+const GroupLayout = async ({ children, params }: GroupLayoutProps) => {
     const query = new QueryClient()
+
     const user = await onAuthenticatedUser()
-    const { groupId } = await params;
-    if(!user.id) redirect('/login')
-    
-    // group info
+    if (!user) redirect("/sign-in")
+    console.log("GroupLayout", params.groupId)
+    //group Info
     await query.prefetchQuery({
         queryKey: ["group-info"],
-        queryFn: () => onGetGroupInfo(groupId),
+        queryFn: () => onGetGroupInfo(params.groupId),
     })
-
-    // user groups
+    //user groups
     await query.prefetchQuery({
         queryKey: ["user-groups"],
-        queryFn: () => onGetUserGroups(user.id as string)
+        queryFn: () => onGetUserGroups(user.id as string),
     })
 
-    // channels
+    //channels
     await query.prefetchQuery({
         queryKey: ["group-channels"],
-        queryFn: () => onGetGroupChannels(groupId)
+        queryFn: () => onGetGroupChannels(params.groupId),
     })
-
-    // group subscriptions
+    //group subscriptions
     await query.prefetchQuery({
         queryKey: ["group-subscriptions"],
-        queryFn: () => onGetGroupSubscriptions(groupId),
+        queryFn: () => onGetGroupSubscriptions(params.groupId),
     })
-
-    // Members Chats
+    //members-chat
     await query.prefetchQuery({
         queryKey: ["group-members"],
-        queryFn: () => onGetAllGroupMembers(groupId)
+        queryFn: () => onGetAllGroupMembers(params.groupId),
     })
-
     return (
         <HydrationBoundary state={dehydrate(query)}>
             <div className="flex h-screen md:pt-5">
-                <SideBar groupid={groupId} userid={user.id} />
-                <div className="md:ml-[300px] flex flex-col flex-1 bg-[#101011] md:rounded-tl-xl overflow-y-auto border-l-[1px] border-t-[1px] border-[#28282d]">
-                    <Navbar groupid={groupId} userid={user.id}  />
+                <SideBar groupId={params.groupId} userid={user.id!} />
+                <div className="md:ml-[300px] flex flex-col flex-1 bg-[#101011] md:rounded-tl-xl overflow-auto border-l-[1px] border-t-[1px] border-[#28282D]">
+                    <Navbar groupId={params.groupId} userid={user.id!} />
                     {children}
-                    {/* <MobileNav groupid={groupId} /> */}
+                    {/* <MobileNav groupId={params.groupId} /> */}
                 </div>
             </div>
         </HydrationBoundary>
     )
 }
 
-export default GroupLayout
+export default GroupLayout;

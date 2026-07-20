@@ -9,16 +9,16 @@ import { Menu } from "lucide-react"
 import Link from "next/link"
 
 type NavbarProps = {
-    groupid: string
+    groupId: string
     userid: string
 }
 
-export const Navbar = async ({ groupid, userid }: NavbarProps) => {
+export const Navbar = async ({ groupId, userid }: NavbarProps) => {
     const user = await currentUser()
     return (
         <div className="bg-[#1A1A1D] py-2 px-3 md:px-7 md:py-5 flex gap-5 justify-between md:justify-end items-center">
             <GlassSheet trigger={<Menu className="md:hidden cursor-pointer" />}>
-                <SideBar groupid={groupid} userid={userid} mobile />
+                <SideBar groupId={groupId} userid={userid} mobile />
             </GlassSheet>
             <Search
                 searchType="POSTS"
@@ -34,7 +34,7 @@ export const Navbar = async ({ groupid, userid }: NavbarProps) => {
                     Create Group
                 </Button>
             </Link>
-            <UserWidget userid={userid} image={user?.imageUrl!} groupid={groupid} />
+            <UserWidget userid={userid} image={user?.imageUrl!} groupid={groupId} />
         </div>
     )
 }

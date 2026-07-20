@@ -17,7 +17,7 @@ export const UserWidget = ({ image, groupid, userid }: UserWidgetProps) => {
             <Link href={`/group/${groupid}/messages`}>
                 <Message />
             </Link>
-            <UserAvatar userid={userid} image={image} groupid={groupid} />
+            <UserAvatar userid={userid} groupid={groupid} image={image} />
         </div>
     )
 }

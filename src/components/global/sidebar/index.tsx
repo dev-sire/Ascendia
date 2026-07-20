@@ -11,7 +11,7 @@ import { DropDown } from "../drop-down"
 import SidebarMenu from "./menu"
 
 type Props = {
-    groupid: string,
+    groupId: string,
     userid: string,
     mobile?: boolean,
 }
@@ -56,10 +56,10 @@ export interface IGroups {
     | undefined
 }
 
-const SideBar = ({ groupid, userid, mobile }: Props) => {
+const SideBar = ({ groupId, userid, mobile }: Props) => {
 
     const { groupInfo, groups, mutate, variables, isPending, channels } = 
-        useSideBar(groupid)
+        useSideBar(groupId)
 
     useGroupChatOnline(userid)
 
@@ -126,7 +126,7 @@ const SideBar = ({ groupid, userid, mobile }: Props) => {
                                         icon: "general",
                                         name: "unnamed",
                                         createdAt: new Date(),
-                                        groupId: groupid
+                                        groupId: groupId
                                     })
                             }}
                         />
@@ -136,7 +136,7 @@ const SideBar = ({ groupid, userid, mobile }: Props) => {
                     channels={channels?.channels!}
                     optimisticChannel={variables}
                     loading={isPending}
-                    groupid={groupid}
+                    groupid={groupId}
                     groupUserId={groupInfo.group?.userId!}
                     userId={userid}
                 />
