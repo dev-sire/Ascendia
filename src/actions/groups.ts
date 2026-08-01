@@ -110,22 +110,23 @@ export const onCreateNewGroup = async (
     }
 }
 
-export const onGetGroupInfo = async (groupid: string) => {
+export const onGetGroupInfo = async (groupId: string) => {
     try {
         const user = await onAuthenticatedUser()
         const group = await client.group.findUnique({
             where: {
-                id: groupid,
-            }
+                id: groupId,
+            },
         })
-    if(group){
-        return {
-            status: 200,
-            group,
-            groupOwner: user.id === group.userId ? true : false,
-        }
-    }
-    return { status: 404 }
+
+        if (group)
+            return {
+                status: 200,
+                group,
+                groupOwner: user.id === group.userId ? true : false,
+            }
+
+        return { status: 404 }
     } catch (error) {
         return { status: 400 }
     }

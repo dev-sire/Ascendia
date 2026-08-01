@@ -107,21 +107,12 @@ export const useSearch = (search: "GROUPS" | "POSTS") => {
 }
 
 export const useGroupSettings = (groupId: string) => {
-    const router = useRouter()
-
     const { data } = useQuery({
         queryKey: ["group-info"],
         queryFn: () => onGetGroupInfo(groupId),
     })
 
-    // useEffect(() => {
-
-    //     if (loading) return
-
-    //     if (data && data.status !== 200) {
-    //         router.push("/group/create")
-    //     }
-    // }, [data, loading, router])
+    console.log(data, "GROUP SETTINGS DATA")
 
     const jsonContent = data?.group?.jsonDescription
         ? JSON.parse(data?.group?.jsonDescription as string)
@@ -268,7 +259,9 @@ export const useGroupSettings = (groupId: string) => {
             })
         },
     })
+    const router = useRouter()
     const onUpdate = handleSubmit(async (values) => update(values))
+    if (data?.status !== 200) router.push(`/group/create`)
 
     return {
         data,

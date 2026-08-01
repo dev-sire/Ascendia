@@ -1,5 +1,5 @@
 import { JSONContent } from 'novel'
-import React from 'react'
+import React, { useState } from 'react'
 import { FieldErrors } from 'react-hook-form'
 
 type Props = {
@@ -18,7 +18,27 @@ type Props = {
     setHtmlContent?: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-const BlockTextEditor = (props: Props) => {
+const BlockTextEditor = ({
+  content,
+  setContent,
+  min,
+  max,
+  name,
+  errors,
+  textContent,
+  setTextContent,
+  onEdit,
+  inline,
+  disabled,
+  htmlContent,
+  setHtmlContent
+}: Props) => {
+
+  const [openNode, setOpenNode] = useState<Boolean>(false)
+  const [openLink, setOpenLink] = useState<Boolean>(false)
+  const [openColor, setOpenColor] = useState<Boolean>(false)
+  const [characters, setCharacters] = useState<number | undefined>(textContent?.length || undefined)
+
   return (
     <div>BlockTextEditor</div>
   )
