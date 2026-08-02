@@ -36,6 +36,10 @@ Ascendia/
 │   │   │   │   └── page.tsx
 │   │   │   └── sign-up/
 │   │   │       └── page.tsx
+│   │   ├── (discover)/
+│   │   │   └── explore/
+│   │   │       └── _components/
+│   │   │           └── group-cards.tsx
 │   │   ├── (landing)/
 │   │   │   ├── _components/
 │   │   │   │   ├── call-to-action/
@@ -112,6 +116,8 @@ Ascendia/
 │   │   │   ├── loader/
 │   │   │   │   └── index.tsx
 │   │   │   ├── otp-input/
+│   │   │   │   └── index.tsx
+│   │   │   ├── rich-text-editor/
 │   │   │   │   └── index.tsx
 │   │   │   ├── search/
 │   │   │   │   ├── index.tsx
@@ -264,4 +270,5 @@ Ascendia/
 │       └── store.ts
 ├── tailwind.config.ts
 └── tsconfig.json
+
 ```
