@@ -1,4 +1,4 @@
-import { onCreateNewChannel } from "@/actions/channels"
+import { onCreateNewChannel } from "@/actions/channel"
 import { onGetGroupChannels } from "@/actions/groups"
 import { IGroupInfo, IGroups } from "@/components/global/sidebar"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"

@@ -1,15 +1,15 @@
-import { onSignUpUser } from "@/actions/auth"
-import { SignUpSchema } from "@/components/forms/sign-up/schema"
 import { useSignIn, useSignUp } from "@clerk/nextjs"
-import { OAuthStrategy } from "@clerk/types"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { SignInSchema } from "../../components/forms/sign-in/schema"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { useMutation } from "@tanstack/react-query"
+import { useState } from "react"
+import { SignUpSchema } from "@/components/forms/sign-up/schema"
+import { onSignUpUser } from "@/actions/auth"
+import { OAuthStrategy } from "@clerk/types"
 
 export const useAuthSignIn = () => {
     const { isLoaded, setActive, signIn } = useSignIn()
@@ -52,8 +52,13 @@ export const useAuthSignIn = () => {
     }
 
     const { mutate: InitiateLoginFlow, isPending } = useMutation({
-        mutationFn: ({ email, password }: { email: string; password: string }) =>
-            onClerkAuth(email, password),
+        mutationFn: ({
+            email,
+            password,
+        }: {
+            email: string
+            password: string
+        }) => onClerkAuth(email, password),
     })
 
     const onAuthenticateUser = handleSubmit(async (values) => {
@@ -67,13 +72,8 @@ export const useAuthSignIn = () => {
         errors,
     }
 }
-
 export const useAuthSignUp = () => {
-    // const { setActive, isLoaded, signUp } = useSignUp()
-    const signUpBundle = useSignUp();
-    const isLoaded = signUpBundle.isLoaded;
-    const signUp = signUpBundle.signUp;
-    const setActive = signUpBundle.setActive;
+    const { setActive, isLoaded, signUp } = useSignUp()
     const [creating, setCreating] = useState<boolean>(false)
     const [verifying, setVerifying] = useState<boolean>(false)
     const [code, setCode] = useState<string>("")
@@ -126,13 +126,16 @@ export const useAuthSignUp = () => {
 
         try {
             setCreating(true)
-            const completeSignUp = await signUp.attemptEmailAddressVerification({
-                code,
-            })
+            const completeSignUp = await signUp.attemptEmailAddressVerification(
+                {
+                    code,
+                },
+            )
 
             if (completeSignUp.status !== "complete") {
                 return toast("Error", {
-                    description: "Oops! something went wrong, status in complete",
+                    description:
+                        "Oops! something went wrong, status in complete",
                 })
             }
 

@@ -3,9 +3,9 @@
 import { FormGenerator } from "@/components/global/form-generator"
 import { Loader } from "@/components/global/loader"
 import { Button } from "@/components/ui/button"
-import { ASCENDIA_CONSTANTS } from "@/constants"
-
+import { GROUPLE_CONSTANTS } from "@/constant"
 import { useAuthSignIn } from "@/hooks/authentication"
+import Link from "next/link"
 
 type Props = {}
 
@@ -15,12 +15,9 @@ const SignInForm = (props: Props) => {
     return (
         <form
             className="flex flex-col gap-3 mt-10"
-            onSubmit={(e) => {
-                console.log("Form submitting..."); // Debug: See if this even fires
-                onAuthenticateUser(e);
-            }}
+            onSubmit={onAuthenticateUser}
         >
-            {ASCENDIA_CONSTANTS.signInForm.map((field) => (
+            {GROUPLE_CONSTANTS.signInForm.map((field) => (
                 <FormGenerator
                     {...field}
                     key={field.id}

@@ -2,9 +2,10 @@
 import { FormGenerator } from "@/components/global/form-generator"
 import { Loader } from "@/components/global/loader"
 import { Button } from "@/components/ui/button"
-import { ASCENDIA_CONSTANTS } from "@/constants"
+import { GROUPLE_CONSTANTS } from "@/constant"
 import { useAuthSignUp } from "@/hooks/authentication"
 import dynamic from "next/dynamic"
+import Link from "next/link"
 
 type Props = {}
 
@@ -39,7 +40,7 @@ const SignUpForm = (props: Props) => {
                     <OtpInput otp={code} setOtp={setCode} />
                 </div>
             ) : (
-                ASCENDIA_CONSTANTS.signUpForm.map((field) => (
+                GROUPLE_CONSTANTS.signUpForm.map((field) => (
                     <FormGenerator
                         {...field}
                         key={field.id}

@@ -9,15 +9,15 @@ import { AppDispatch } from "@/redux/store"
 import { useClerk } from "@clerk/nextjs"
 import Link from "next/link"
 import { useDispatch } from "react-redux"
-import { DropDown } from "../drop-down"
+import DropDown from "../drop-down"
 
 type UserWidgetProps = {
     image: string
-    groupid?: string
+    groupId?: string
     userid?: string
 }
 
-export const UserAvatar = ({ image, groupid, userid }: UserWidgetProps) => {
+export const UserAvatar = ({ image, groupId, userid }: UserWidgetProps) => {
     const { signOut } = useClerk()
 
     const untrackPresence = async () => {
@@ -44,10 +44,10 @@ export const UserAvatar = ({ image, groupid, userid }: UserWidgetProps) => {
         >
             <Button
                 variant="ghost"
-                className="flex gap-x-3 px-2 hover:text-black justify-start w-full"
+                className="flex gap-x-3 px-2  hover:text-black  justify-start w-full"
             >
                 <Link
-                    href={`/group/${groupid}/settings`}
+                    href={`/group/${groupId}/settings`}
                     className="flex gap-2 "
                 >
                     <Settings /> Settings
@@ -56,7 +56,7 @@ export const UserAvatar = ({ image, groupid, userid }: UserWidgetProps) => {
             <Button
                 onClick={onLogout}
                 variant="ghost"
-                className="flex gap-x-3 px-2 hover:text-black justify-start w-full"
+                className="flex gap-x-3 px-2  hover:text-black  justify-start w-full"
             >
                 <Logout />
                 Logout

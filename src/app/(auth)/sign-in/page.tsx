@@ -1,14 +1,15 @@
 import { onSignInUser } from "@/actions/auth"
 import SignInForm from "@/components/forms/sign-in"
-import { GoogleAuthButton } from "@/components/global/global-oauth-button"
+import { GoogleAuthButton } from "@/components/global/google-0auth-button"
 import { Separator } from "@/components/ui/separator"
-import { currentUser } from "@clerk/nextjs/server"
+import { auth, currentUser } from "@clerk/nextjs/server"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import React from "react"
 
 type Props = {}
 
-const SignInPage = async (props: Props) => {
+const SignIn = async (props: Props) => {
     const user = await currentUser()
 
     if (user) {
@@ -55,4 +56,4 @@ const SignInPage = async (props: Props) => {
     )
 }
 
-export default SignInPage
+export default SignIn

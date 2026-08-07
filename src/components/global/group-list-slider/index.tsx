@@ -1,12 +1,13 @@
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { ASCENDIA_CONSTANTS } from '@/constants'
-import Link from 'next/link'
-import { UseFormRegister } from 'react-hook-form'
+"use client"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import Link from "next/link"
+import { UseFormRegister } from "react-hook-form"
 import "swiper/css/bundle"
 import { SwiperProps, SwiperSlide } from "swiper/react"
-import { Slider } from '../slider'
-import { GroupListItem } from './list-item'
+import { GroupListItem } from "./list-item"
+import { GROUPLE_CONSTANTS } from "@/constant"
+import { Slider } from "../slider"
 
 type Props = {
     overlay?: boolean
@@ -24,17 +25,17 @@ export const GroupListSlider = ({
     route,
     ...rest
 }: Props) => {
-  return (
-    <Slider
-        slidesPerView={"auto"}
-        spaceBetween={10}
-        loop
-        freeMode
-        label={label}
-        overlay={overlay}
-        {...rest}
-    >
-        {ASCENDIA_CONSTANTS.groupList.map((item, i) => (
+    return (
+        <Slider
+            slidesPerView={"auto"}
+            spaceBetween={10}
+            loop
+            freeMode
+            label={label}
+            overlay={overlay}
+            {...rest}
+        >
+            {GROUPLE_CONSTANTS.groupList.map((item, i) => (
                 <SwiperSlide key={item.id} className="content-width-slide ">
                     {!register ? (
                         route ? (
@@ -65,6 +66,6 @@ export const GroupListSlider = ({
                     )}
                 </SwiperSlide>
             ))}
-    </Slider>
-  )
+        </Slider>
+    )
 }

@@ -1,20 +1,37 @@
-'use client'
-import { onCreateNewGroup } from "@/actions/groups"
-import { onGetStripeClientSecret, onTransferCommission } from "@/actions/payment"
-import { createGroupSchema } from "@/components/forms/create-group/schema"
+"use client"
+import {
+    onCreateNewGroup,
+    onGetGroupChannels,
+    onGetGroupSubscriptions,
+    onJoinGroup,
+} from "@/actions/groups"
+import {
+    onActivateSubscription,
+    onCreateNewGroupSubscription,
+    onGetActiveSubscription,
+    onGetGroupSubscriptionPaymentIntent,
+    onGetStripeClientSecret,
+    onTransferCommission,
+} from "@/actions/payment"
+
+import { CreateGroupSchema } from "@/components/forms/create-group/schema"
+import { CreateGroupSubscriptionSchema } from "@/components/forms/subscription/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
-import { loadStripe, StripeCardElement } from "@stripe/stripe-js"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { StripeCardElement, loadStripe } from "@stripe/stripe-js"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import z from "zod"
+import { z } from "zod"
 
 export const useStripeElements = () => {
-    const stripePromise = async () => await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY as string)
-    return { stripePromise }
+    const StripePromise = async () =>
+        await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY as string)
+
+    return { StripePromise }
 }
 
 export const usePayments = (
@@ -33,8 +50,8 @@ export const usePayments = (
         formState: { errors },
         register,
         watch,
-    } = useForm<z.infer<typeof createGroupSchema>>({
-        resolver: zodResolver(createGroupSchema),
+    } = useForm<z.infer<typeof CreateGroupSchema>>({
+        resolver: zodResolver(CreateGroupSchema),
         defaultValues: {
             category: "",
         },
@@ -55,7 +72,7 @@ export const usePayments = (
     })
 
     const { mutateAsync: createGroup, isPending } = useMutation({
-        mutationFn: async (data: z.infer<typeof createGroupSchema>) => {
+        mutationFn: async (data: z.infer<typeof CreateGroupSchema>) => {
             if (!stripe || !elements || !Intent) {
                 return null
             }
@@ -110,4 +127,159 @@ export const usePayments = (
         isCategory,
         creatingIntent,
     }
+}
+
+export const useActiveGroupSubscription = (groupId: string) => {
+    const { data } = useQuery({
+        queryKey: ["active-subscription"],
+        queryFn: () => onGetActiveSubscription(groupId),
+    })
+
+    return { data }
+}
+
+export const useJoinFree = (groupId: string) => {
+    const router = useRouter()
+    const onJoinFreeGroup = async () => {
+        const member = await onJoinGroup(groupId)
+        if (member?.status === 200) {
+            const channels = await onGetGroupChannels(groupId)
+            router.push(
+                `/group/${groupId}/channel/${channels?.channels?.[0].id}`,
+            )
+        }
+    }
+
+    return { onJoinFreeGroup }
+}
+
+export const useJoinGroup = (groupId: string) => {
+    const stripe = useStripe()
+    const elements = useElements()
+
+    const router = useRouter()
+
+    const { data: Intent } = useQuery({
+        queryKey: ["group-payment-intent"],
+        queryFn: () => onGetGroupSubscriptionPaymentIntent(groupId),
+    })
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async () => {
+            if (!stripe || !elements || !Intent) {
+                return null
+            }
+            const { error, paymentIntent } = await stripe.confirmCardPayment(
+                Intent.secret!,
+                {
+                    payment_method: {
+                        card: elements.getElement(
+                            CardElement,
+                        ) as StripeCardElement,
+                    },
+                },
+            )
+
+            if (error) {
+                console.log(error)
+                return toast("Error", {
+                    description: "Oops! something went wrong, try again later",
+                })
+            }
+
+            if (paymentIntent?.status === "succeeded") {
+                const member = await onJoinGroup(groupId)
+                if (member?.status === 200) {
+                    const channels = await onGetGroupChannels(groupId)
+                    router.push(
+                        `/group/${groupId}/channel/${channels?.channels?.[0].id}`,
+                    )
+                }
+            }
+        },
+    })
+
+    const onPayToJoin = () => mutate()
+
+    return { onPayToJoin, isPending }
+}
+
+export const useGroupSubscription = (groupId: string) => {
+    const {
+        register,
+        formState: { errors },
+        reset,
+        handleSubmit,
+    } = useForm<z.infer<typeof CreateGroupSubscriptionSchema>>({
+        resolver: zodResolver(CreateGroupSubscriptionSchema),
+    })
+
+    const client = useQueryClient()
+
+    const { mutate, isPending, variables } = useMutation({
+        mutationFn: (data: { price: string }) =>
+            onCreateNewGroupSubscription(groupId, data.price),
+        onMutate: () => reset(),
+        onSuccess: (data) =>
+            toast(data?.status === 200 ? "Success" : "Error", {
+                description: data?.message,
+            }),
+        onSettled: async () => {
+            return await client.invalidateQueries({
+                queryKey: ["group-subscriptions"],
+            })
+        },
+    })
+
+    const onCreateNewSubscription = handleSubmit(async (values) =>
+        mutate({ ...values }),
+    )
+    return { register, errors, onCreateNewSubscription, isPending, variables }
+}
+
+export const useAllSubscriptions = (groupId: string) => {
+    const { data } = useQuery({
+        queryKey: ["group-subscriptions"],
+        queryFn: () => onGetGroupSubscriptions(groupId),
+    })
+
+    const client = useQueryClient()
+
+    const { mutate } = useMutation({
+        mutationFn: (data: { id: string }) => onActivateSubscription(data.id),
+        onSuccess: (data) =>
+            toast(data?.status === 200 ? "Success" : "Error", {
+                description: data?.message,
+            }),
+        onSettled: async () => {
+            return await client.invalidateQueries({
+                queryKey: ["group-subscriptions"],
+            })
+        },
+    })
+
+    return { data, mutate }
+}
+
+export const useStripeConnect = (groupId: string) => {
+    const [onStripeAccountPending, setOnStripeAccountPending] =
+        useState<boolean>(false)
+
+    const onStripeConnect = async () => {
+        try {
+            setOnStripeAccountPending(true)
+            const account = await axios.get(
+                `/api/stripe/connect?groupId=${groupId}`,
+            )
+            if (account) {
+                setOnStripeAccountPending(false)
+                if (account) {
+                    window.location.href = account.data.url
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    return { onStripeConnect, onStripeAccountPending }
 }

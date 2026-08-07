@@ -15,67 +15,59 @@ import {
 import { redirect } from "next/navigation"
 import React from "react"
 import { Navbar } from "../_components/navbar"
+import MobileNav from "./_components/mobile-nav"
 
 type GroupLayoutProps = {
     children: React.ReactNode
-    params: Promise<{
+    params: {
         groupId: string
-    }>
+    }
 }
-
+//WIP : Complete the group layout
 const GroupLayout = async ({ children, params }: GroupLayoutProps) => {
-    // 1. Await params to extract properties safely in Next.js 15
-    const { groupId } = await params
-
     const query = new QueryClient()
 
     const user = await onAuthenticatedUser()
     if (!user) redirect("/sign-in")
-    
-    console.log("GroupLayout", groupId)
 
-    // group Info
+    //group Info
     await query.prefetchQuery({
         queryKey: ["group-info"],
-        queryFn: () => onGetGroupInfo(groupId),
+        queryFn: () => onGetGroupInfo(params.groupId),
     })
-
-    // user groups
+    //user groups
     await query.prefetchQuery({
         queryKey: ["user-groups"],
         queryFn: () => onGetUserGroups(user.id as string),
     })
 
-    // channels
+    //channels
     await query.prefetchQuery({
         queryKey: ["group-channels"],
-        queryFn: () => onGetGroupChannels(groupId),
+        queryFn: () => onGetGroupChannels(params.groupId),
     })
-
-    // group subscriptions
+    //group subscriptions
     await query.prefetchQuery({
         queryKey: ["group-subscriptions"],
-        queryFn: () => onGetGroupSubscriptions(groupId),
+        queryFn: () => onGetGroupSubscriptions(params.groupId),
     })
-
-    // members-chat
+    //members-chat
     await query.prefetchQuery({
         queryKey: ["group-members"],
-        queryFn: () => onGetAllGroupMembers(groupId),
+        queryFn: () => onGetAllGroupMembers(params.groupId),
     })
-
     return (
         <HydrationBoundary state={dehydrate(query)}>
             <div className="flex h-screen md:pt-5">
-                <SideBar groupId={groupId} userid={user.id!} />
+                <SideBar groupId={params.groupId} userid={user.id!} />
                 <div className="md:ml-[300px] flex flex-col flex-1 bg-[#101011] md:rounded-tl-xl overflow-auto border-l-[1px] border-t-[1px] border-[#28282D]">
-                    <Navbar groupId={groupId} userid={user.id!} />
+                    <Navbar groupId={params.groupId} userid={user.id!} />
                     {children}
-                    {/* <MobileNav groupId={groupId} /> */}
+                    <MobileNav groupId={params.groupId} />
                 </div>
             </div>
         </HydrationBoundary>
     )
 }
 
-export default GroupLayout;
+export default GroupLayout

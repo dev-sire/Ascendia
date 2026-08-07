@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: false,
+    reactProductionProfiling: false,
     images: {
         remotePatterns: [
             {
-                protocol: 'https',
+                protocol: "https",
                 hostname: "ucarecdn.com",
             },
         ],

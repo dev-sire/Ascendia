@@ -1,23 +1,24 @@
-import { Message } from "@/icons";
-import Link from "next/link";
-import { Notification } from "./notification";
-import { UserAvatar } from "./user";
+import { Message } from "@/icons"
+import Link from "next/link"
+import { Notification } from "./notification"
+import { UserAvatar } from "./user"
 
-
-type UserWidgetProps = {
-    image: string;
-    groupid: string;
-    userid?: string;
+type Props = {
+    image: string
+    groupId?: string
+    userid?: string
 }
 
-export const UserWidget = ({ image, groupid, userid }: UserWidgetProps) => {
-    return(
+const UserWidget = ({ userid, image, groupId }: Props) => {
+    return (
         <div className="gap-5 items-center hidden md:flex">
             <Notification />
-            <Link href={`/group/${groupid}/messages`}>
+            <Link href={`/group/${groupId}/messages`}>
                 <Message />
             </Link>
-            <UserAvatar userid={userid} groupid={groupid} image={image} />
+            <UserAvatar userid={userid} image={image} groupId={groupId} />
         </div>
     )
 }
+
+export default UserWidget

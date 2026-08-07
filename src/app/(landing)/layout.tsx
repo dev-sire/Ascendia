@@ -1,17 +1,12 @@
-import React from "react";
-import LandingPageNavbar from "./_components/navbar";
-
-type Props = {}
+import LandingPageNavbar from "./_components/navbar"
 
 const LandingPageLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="flex flex-col container relative">
-        <LandingPageNavbar>
-            
-        </LandingPageNavbar>
-        {children}
-    </div>
-  )
+    return (
+        <div className="flex flex-col container relative">
+            <LandingPageNavbar />
+            {children}
+        </div>
+    )
 }
 
-export default LandingPageLayout;
+export default LandingPageLayout

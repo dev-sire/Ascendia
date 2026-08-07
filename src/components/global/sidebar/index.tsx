@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Group, Plus } from "lucide-react"
 import Link from "next/link"
 import { v4 } from "uuid"
-import { DropDown } from "../drop-down"
+import DropDown from "../drop-down"
 import SideBarMenu from "./menu"
 
 type Props = {
@@ -139,7 +139,7 @@ const SideBar = ({ groupId, userid, mobile }: Props) => {
                     channels={channels?.channels!}
                     optimisticChannel={variables}
                     loading={isPending}
-                    groupid={groupId}
+                    groupId={groupId}
                     groupUserId={groupInfo.group?.userId!}
                     userId={userid}
                 />

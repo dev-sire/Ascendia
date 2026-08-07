@@ -11,7 +11,7 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
     title: "Ascendia",
-    description: "Your Path to Knowledge Mastery",
+    description: "One of the best LMS Platform",
 }
 
 export default function RootLayout({

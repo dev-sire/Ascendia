@@ -1,10 +1,10 @@
 "use client"
 
-import { Bell } from "@/icons/bell"
+import { Bell } from "@/icons"
 import GlassSheet from "../glass-sheet"
 
 export const Notification = () => {
-    return(
+    return (
         <GlassSheet
             trigger={
                 <span className="cursor-pointer">
@@ -12,7 +12,7 @@ export const Notification = () => {
                 </span>
             }
         >
-            <div>yo</div>
+            <div>develop soon</div>
         </GlassSheet>
     )
 }
