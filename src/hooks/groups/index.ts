@@ -283,7 +283,12 @@ export const useGroupSettings = (groupId: string) => {
     })
     const router = useRouter()
     const onUpdate = handleSubmit(async (values) => update(values))
-    if (data?.status !== 200) router.push(`/group/create`)
+
+    useEffect(() => {
+        if (data && data.status !== 200) {
+            router.push(`/group/create`)
+        }
+    }, [data, router])
 
     return {
         data,

@@ -20,7 +20,7 @@ import MobileNav from "./_components/mobile-nav"
 type GroupLayoutProps = {
     children: React.ReactNode
     params: {
-        groupId: string
+        groupid: string
     }
 }
 //WIP : Complete the group layout
@@ -33,7 +33,7 @@ const GroupLayout = async ({ children, params }: GroupLayoutProps) => {
     //group Info
     await query.prefetchQuery({
         queryKey: ["group-info"],
-        queryFn: () => onGetGroupInfo(params.groupId),
+        queryFn: () => onGetGroupInfo(params.groupid),
     })
     //user groups
     await query.prefetchQuery({
@@ -44,26 +44,26 @@ const GroupLayout = async ({ children, params }: GroupLayoutProps) => {
     //channels
     await query.prefetchQuery({
         queryKey: ["group-channels"],
-        queryFn: () => onGetGroupChannels(params.groupId),
+        queryFn: () => onGetGroupChannels(params.groupid),
     })
     //group subscriptions
     await query.prefetchQuery({
         queryKey: ["group-subscriptions"],
-        queryFn: () => onGetGroupSubscriptions(params.groupId),
+        queryFn: () => onGetGroupSubscriptions(params.groupid),
     })
     //members-chat
     await query.prefetchQuery({
         queryKey: ["group-members"],
-        queryFn: () => onGetAllGroupMembers(params.groupId),
+        queryFn: () => onGetAllGroupMembers(params.groupid),
     })
     return (
         <HydrationBoundary state={dehydrate(query)}>
             <div className="flex h-screen md:pt-5">
-                <SideBar groupId={params.groupId} userid={user.id!} />
+                <SideBar groupId={params.groupid} userid={user.id!} />
                 <div className="md:ml-[300px] flex flex-col flex-1 bg-[#101011] md:rounded-tl-xl overflow-auto border-l-[1px] border-t-[1px] border-[#28282D]">
-                    <Navbar groupId={params.groupId} userid={user.id!} />
+                    <Navbar groupId={params.groupid} userid={user.id!} />
                     {children}
-                    <MobileNav groupId={params.groupId} />
+                    <MobileNav groupId={params.groupid} />
                 </div>
             </div>
         </HydrationBoundary>

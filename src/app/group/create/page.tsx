@@ -4,7 +4,6 @@ import CreateGroup from "@/components/forms/create-group"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User } from "lucide-react"
 import { redirect } from "next/navigation"
-import React from "react"
 
 const GroupCreatepage = async ({
     searchParams,
@@ -21,7 +20,7 @@ const GroupCreatepage = async ({
                     Payment Method
                 </h5>
                 <p className="text-themeTextGray leading-tight">
-                    Free for 14 days, then ₹999/month, cancle anytime.All
+                    Free for 14 days, then PKR 999/month, cancle anytime.All
                     feature. Unlimited everything.No hidden fees.
                 </p>
                 {affiliate.status === 200 && (

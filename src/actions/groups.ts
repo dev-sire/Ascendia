@@ -257,8 +257,10 @@ export const onGetAllGroupMembers = async (groupId: string) => {
         if (members && members.length > 0) {
             return { status: 200, members }
         }
+
+        return { status: 200, members: [] }
     } catch (error) {
-        return { status: 400, message: "Oops something went wrong" }
+        return { status: 400, message: "Oops something went wrong", members: [] }
     }
 }
 

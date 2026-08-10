@@ -2,10 +2,9 @@ import { onSignInUser } from "@/actions/auth"
 import SignInForm from "@/components/forms/sign-in"
 import { GoogleAuthButton } from "@/components/global/google-0auth-button"
 import { Separator } from "@/components/ui/separator"
-import { auth, currentUser } from "@clerk/nextjs/server"
+import { currentUser } from "@clerk/nextjs/server"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import React from "react"
 
 type Props = {}
 
