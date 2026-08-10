@@ -1,6 +1,6 @@
 "use client"
 
-import { UserComment } from "@/app/group/[groupId]/channel/[channelId]/[postId]/_components/comments/user-comment"
+import { UserComment } from "@/app/group/[groupid]/channel/[channelid]/[postId]/_components/comments/user-comment"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { usePostComment } from "@/hooks/channels"
