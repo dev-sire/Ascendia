@@ -10,11 +10,10 @@ Ascendia/
 ├── .prettierrc
 ├── .vscode/
 │   └── settings.json
-├── LICENSE
-├── README.md
 ├── bun.lock
 ├── commitlint.config.ts
 ├── components.json
+├── LICENSE
 ├── next.config.mjs
 ├── package-lock.json
 ├── package.json
@@ -29,14 +28,14 @@ Ascendia/
 │   ├── stripe.png
 │   ├── vercel.svg
 │   └── window.svg
+├── README.md
 ├── src/
 │   ├── actions/
 │   │   ├── auth.ts
-│   │   ├── channel.ts
 │   │   ├── channels.ts
-│   │   ├── course.ts
+│   │   ├── courses.ts
 │   │   ├── groups.ts
-│   │   └── payment.ts
+│   │   └── payments.ts
 │   ├── app/
 │   │   ├── (auth)/
 │   │   │   ├── layout.tsx
@@ -50,26 +49,23 @@ Ascendia/
 │   │   │   │       ├── group-dropdown.tsx
 │   │   │   │       └── index.tsx
 │   │   │   ├── about/
-│   │   │   │   ├── [groupId]/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── _components/
-│   │   │   │       ├── about/
-│   │   │   │       │   └── index.tsx
-│   │   │   │       ├── gallery/
-│   │   │   │       │   └── index.tsx
-│   │   │   │       └── join-button/
-│   │   │   │           └── index.tsx
+│   │   │   │   ├── _components/
+│   │   │   │   │   ├── about.tsx
+│   │   │   │   │   ├── gallery.tsx
+│   │   │   │   │   └── join-button.tsx
+│   │   │   │   └── [groupId]/
+│   │   │   │       └── page.tsx
 │   │   │   ├── explore/
-│   │   │   │   ├── [category]/
-│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── _components/
 │   │   │   │   │   ├── explore-content.tsx
 │   │   │   │   │   ├── explore-slider.tsx
 │   │   │   │   │   ├── group-card.tsx
-│   │   │   │   │   ├── group-cards.tsx
 │   │   │   │   │   ├── group-list.tsx
 │   │   │   │   │   ├── paginated-groups.tsx
 │   │   │   │   │   └── searched-groups.tsx
+│   │   │   │   ├── [category]/
+│   │   │   │   │   ├── loading.tsx
+│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── layout.tsx
 │   │   │   │   └── page.tsx
 │   │   │   ├── layout.tsx
@@ -79,13 +75,10 @@ Ascendia/
 │   │   │   │   ├── call-to-action/
 │   │   │   │   │   └── index.tsx
 │   │   │   │   ├── dashboard-snippet/
-│   │   │   │   │   ├── dashboard-snippet.tsx
 │   │   │   │   │   └── index.tsx
 │   │   │   │   ├── navbar/
 │   │   │   │   │   ├── index.tsx
 │   │   │   │   │   └── menu.tsx
-│   │   │   │   ├── pricing-section/
-│   │   │   │   │   └── index.tsx
 │   │   │   │   └── pricing/
 │   │   │   │       └── index.tsx
 │   │   │   ├── layout.tsx
@@ -100,34 +93,29 @@ Ascendia/
 │   │   │           └── route.ts
 │   │   ├── callback/
 │   │   │   ├── complete/
-│   │   │   │   ├── page.ts
+│   │   │   │   ├── loading,.tsx
 │   │   │   │   └── page.tsx
 │   │   │   ├── loading.tsx
 │   │   │   ├── page.tsx
 │   │   │   └── sign-in/
-│   │   │       ├── page.ts
+│   │   │       ├── loading,.tsx
 │   │   │       └── page.tsx
 │   │   ├── favicon.ico
 │   │   ├── globals.css
 │   │   ├── group/
+│   │   │   ├── _components/
+│   │   │   │   ├── leaderboard/
+│   │   │   │   │   └── index.tsx
+│   │   │   │   ├── mobile-nav/
+│   │   │   │   │   └── index.tsx
+│   │   │   │   └── navbar/
+│   │   │   │       └── index.tsx
 │   │   │   ├── [groupid]/
 │   │   │   │   ├── _components/
-│   │   │   │   │   ├── group-navbar/
-│   │   │   │   │   │   └── index.tsx
-│   │   │   │   │   ├── leader-board/
-│   │   │   │   │   │   └── index.tsx
-│   │   │   │   │   └── mobile-nav/
+│   │   │   │   │   └── group-navbar/
 │   │   │   │   │       └── index.tsx
 │   │   │   │   ├── channel/
 │   │   │   │   │   └── [channelid]/
-│   │   │   │   │       ├── [postId]/
-│   │   │   │   │       │   ├── _components/
-│   │   │   │   │       │   │   ├── comments/
-│   │   │   │   │       │   │   │   ├── index.tsx
-│   │   │   │   │       │   │   │   └── user-comment.tsx
-│   │   │   │   │       │   │   └── post-info/
-│   │   │   │   │       │   │       └── index.tsx
-│   │   │   │   │       │   └── page.tsx
 │   │   │   │   │       ├── _components/
 │   │   │   │   │       │   ├── create-post/
 │   │   │   │   │       │   │   └── index.tsx
@@ -138,8 +126,23 @@ Ascendia/
 │   │   │   │   │       │       ├── interactions.tsx
 │   │   │   │   │       │       ├── post-author.tsx
 │   │   │   │   │       │       └── post-card.tsx
+│   │   │   │   │       ├── [postId]/
+│   │   │   │   │       │   ├── _components/
+│   │   │   │   │       │   │   ├── comments/
+│   │   │   │   │       │   │   │   ├── index.tsx
+│   │   │   │   │       │   │   │   └── user-comment.tsx
+│   │   │   │   │       │   │   └── post-info/
+│   │   │   │   │       │   │       └── index.tsx
+│   │   │   │   │       │   └── page.tsx
 │   │   │   │   │       └── page.tsx
 │   │   │   │   ├── courses/
+│   │   │   │   │   ├── _components/
+│   │   │   │   │   │   ├── course-list/
+│   │   │   │   │   │   │   └── index.tsx
+│   │   │   │   │   │   ├── create-module/
+│   │   │   │   │   │   │   └── index.tsx
+│   │   │   │   │   │   └── module-list/
+│   │   │   │   │   │       └── index.tsx
 │   │   │   │   │   ├── [courseId]/
 │   │   │   │   │   │   ├── [sectionId]/
 │   │   │   │   │   │   │   ├── _components/
@@ -149,15 +152,20 @@ Ascendia/
 │   │   │   │   │   │   │   └── page.tsx
 │   │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   │   └── page.tsx
-│   │   │   │   │   ├── _components/
-│   │   │   │   │   │   ├── course-list/
-│   │   │   │   │   │   │   └── index.tsx
-│   │   │   │   │   │   ├── create-module/
-│   │   │   │   │   │   │   └── index.tsx
-│   │   │   │   │   │   └── module-list/
-│   │   │   │   │   │       └── index.tsx
 │   │   │   │   │   └── page.tsx
 │   │   │   │   ├── layout.tsx
+│   │   │   │   ├── messages/
+│   │   │   │   │   ├── _components/
+│   │   │   │   │   │   ├── chat/
+│   │   │   │   │   │   │   └── index.tsx
+│   │   │   │   │   │   ├── chat-bubble/
+│   │   │   │   │   │   │   └── index.tsx
+│   │   │   │   │   │   └── chat-menu/
+│   │   │   │   │   │       └── index.tsx
+│   │   │   │   │   ├── [chatid]/
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   ├── layout.tsx
+│   │   │   │   │   └── page.tsx
 │   │   │   │   └── settings/
 │   │   │   │       ├── affiliates/
 │   │   │   │       │   └── page.tsx
@@ -165,32 +173,19 @@ Ascendia/
 │   │   │   │       │   └── page.tsx
 │   │   │   │       ├── integrations/
 │   │   │   │       │   ├── _components/
-│   │   │   │       │   │   ├── connet/
+│   │   │   │       │   │   ├── connect/
 │   │   │   │       │   │   │   └── index.tsx
 │   │   │   │       │   │   └── integration-trigger/
 │   │   │   │       │   │       └── index.tsx
 │   │   │   │       │   └── page.tsx
-│   │   │   │       ├── messages/
-│   │   │   │       │   ├── _components/
-│   │   │   │       │   │   ├── chat-bubble/
-│   │   │   │       │   │   │   └── index.tsx
-│   │   │   │       │   │   ├── chat-menu/
-│   │   │   │       │   │   │   └── index.tsx
-│   │   │   │       │   │   └── chat/
-│   │   │   │       │   │       └── index.tsx
-│   │   │   │       │   ├── index.tsx
-│   │   │   │       │   └── layout.tsx
 │   │   │   │       ├── page.tsx
 │   │   │   │       └── subscriptions/
 │   │   │   │           ├── _components/
 │   │   │   │           │   ├── card/
 │   │   │   │           │   │   └── index.tsx
-│   │   │   │           │   └── subscription/
+│   │   │   │           │   └── subscriptions/
 │   │   │   │           │       └── index.tsx
 │   │   │   │           └── page.tsx
-│   │   │   ├── _components/
-│   │   │   │   └── navbar/
-│   │   │   │       └── index.tsx
 │   │   │   └── create/
 │   │   │       ├── layout.tsx
 │   │   │       ├── loading.tsx
@@ -227,6 +222,8 @@ Ascendia/
 │   │   │       ├── index.tsx
 │   │   │       └── schema.ts
 │   │   ├── global/
+│   │   │   ├── accordion/
+│   │   │   │   └── index.tsx
 │   │   │   ├── backdrop-gradient/
 │   │   │   │   └── index.tsx
 │   │   │   ├── copy-button/
@@ -244,11 +241,7 @@ Ascendia/
 │   │   │   │   └── index.tsx
 │   │   │   ├── glass-sheet/
 │   │   │   │   └── index.tsx
-│   │   │   ├── global-oauth-button/
-│   │   │   │   └── index.tsx
-│   │   │   ├── globle-accordion/
-│   │   │   │   └── index.tsx
-│   │   │   ├── google-0auth-button/
+│   │   │   ├── google-oauth-button/
 │   │   │   │   └── index.tsx
 │   │   │   ├── gradient-text/
 │   │   │   │   └── index.tsx
@@ -279,7 +272,7 @@ Ascendia/
 │   │   │   │   └── index.tsx
 │   │   │   ├── rich-text-editor/
 │   │   │   │   ├── color-selector.tsx
-│   │   │   │   ├── extensions.tsx
+│   │   │   │   ├── extensions.ts
 │   │   │   │   ├── image.ts
 │   │   │   │   ├── index.tsx
 │   │   │   │   ├── link-selector.tsx
@@ -289,7 +282,7 @@ Ascendia/
 │   │   │   │   └── video.ts
 │   │   │   ├── search/
 │   │   │   │   ├── index.tsx
-│   │   │   │   └── no-results.tsx
+│   │   │   │   └── no-result.tsx
 │   │   │   ├── sidebar/
 │   │   │   │   ├── icon-dropdown.tsx
 │   │   │   │   ├── index.tsx
@@ -301,7 +294,7 @@ Ascendia/
 │   │   │   ├── slider/
 │   │   │   │   └── index.tsx
 │   │   │   ├── stripe/
-│   │   │   │   └── elements.tsx
+│   │   │   │   └── element.tsx
 │   │   │   └── user-widget/
 │   │   │       ├── index.tsx
 │   │   │       ├── notification.tsx
@@ -357,19 +350,11 @@ Ascendia/
 │   │       ├── toggle.tsx
 │   │       ├── tooltip.tsx
 │   │       └── use-toast.ts
-│   ├── constant/
-│   │   ├── forms.ts
-│   │   ├── icons.ts
-│   │   ├── index.ts
-│   │   ├── menus.tsx
-│   │   ├── placeholder.tsx
-│   │   └── slider.tsx
 │   ├── constants/
 │   │   ├── forms.ts
 │   │   ├── icons.ts
 │   │   ├── index.ts
 │   │   ├── menu.tsx
-│   │   ├── menus.tsx
 │   │   ├── placeholder.tsx
 │   │   └── slider.tsx
 │   ├── hooks/
@@ -377,12 +362,12 @@ Ascendia/
 │   │   │   └── index.ts
 │   │   ├── channels/
 │   │   │   └── index.ts
-│   │   ├── course/
+│   │   ├── courses/
 │   │   │   └── index.ts
 │   │   ├── groups/
 │   │   │   └── index.ts
 │   │   ├── infinite-scroll/
-│   │   │   └── index.tsx
+│   │   │   └── index.ts
 │   │   ├── navigation/
 │   │   │   └── index.ts
 │   │   └── payment/
@@ -440,7 +425,6 @@ Ascendia/
 │   │   └── zap-duotone-black.tsx
 │   ├── lib/
 │   │   ├── prisma.ts
-│   │   ├── upload-care.ts
 │   │   ├── uploadcare.ts
 │   │   └── utils.ts
 │   ├── middleware.ts
@@ -449,7 +433,7 @@ Ascendia/
 │   └── redux/
 │       ├── provider.tsx
 │       ├── slices/
-│       │   ├── chat-slices.ts
+│       │   ├── chats-slices.tsx
 │       │   ├── infinite-scroll-slice.ts
 │       │   ├── online-member-slice.ts
 │       │   └── search-slice.ts
