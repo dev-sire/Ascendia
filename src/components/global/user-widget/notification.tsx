@@ -3,16 +3,20 @@
 import { Bell } from "@/icons"
 import GlassSheet from "../glass-sheet"
 
-export const Notification = () => {
-    return (
-        <GlassSheet
-            trigger={
-                <span className="cursor-pointer">
-                    <Bell />
-                </span>
-            }
-        >
-            <div>develop soon</div>
-        </GlassSheet>
-    )
+type Props = {}
+
+const Notification = (props: Props) => {
+  return (
+    <GlassSheet
+      trigger={
+        <span className="cursor-pointer">
+          <Bell />
+        </span>
+      }
+    >
+      <div>yo</div>
+    </GlassSheet>
+  )
 }
+
+export default Notification

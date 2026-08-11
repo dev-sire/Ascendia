@@ -6,17 +6,18 @@ type HtmlParserProps = {
 }
 
 export const HtmlParser = ({ html }: HtmlParserProps) => {
-    //use effect to avoid hydragtion error with ssr html data
+    // Avoid hydration mismatch error with SSR html data
     const [mounted, setMounted] = useState<boolean>(false)
 
     useEffect(() => {
         setMounted(true)
-        return () => setMounted(true)
     }, [])
 
+    if (!mounted) return null
+
     return (
-        <div className="[&_h1]:text-4xl [&_h2]:text-3xl [&_blockqoute]:italic [&_iframe]:aspect-video [&_h3]:text-2xl text-themeTextGray flex flex-col gap-y-3">
-            {mounted && parse(html)}
+        <div className="[&_h1]:text-4xl [&_h2]:text-3xl [&_blockquote]:italic [&_iframe]:aspect-video [&_h3]:text-2xl text-themeTextGray flex flex-col gap-y-3">
+            {typeof html === "string" && html ? parse(html) : null}
         </div>
     )
 }

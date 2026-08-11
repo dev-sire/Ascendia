@@ -28,7 +28,7 @@ export const PricingSection = (props: Props) => {
         </BackdropGradient>
         <Card className="p-7 mt-10 md:w-auto w-full bg-themeBlack border-themeGray">
             <div className="flex flex-col gap-2">
-                <CardTitle className="">999/m</CardTitle>
+                <CardTitle className="">PKR 999/m</CardTitle>
                 <CardDescription className="text-[#B4B0AE]">
                     Great if you're just getting started
                 </CardDescription>

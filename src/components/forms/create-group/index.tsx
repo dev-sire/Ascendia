@@ -1,23 +1,18 @@
-import { StripeElements } from "@/components/global/stripe/elements"
-import React from "react"
+import { StripeElements } from "@/components/global/stripe/element"
 import PaymentForm from "./payment-form"
 
 type Props = {
-    userId: string
-    affiliate: boolean
-    stripeId?: string
+  userId: string
+  affiliate: boolean
+  stripeId: string
 }
 
 const CreateGroup = ({ userId, affiliate, stripeId }: Props) => {
-    return (
-        <StripeElements>
-            <PaymentForm
-                userId={userId}
-                affiliate={affiliate}
-                stripeId={stripeId}
-            />
-        </StripeElements>
-    )
+  return (
+    <StripeElements>
+      <PaymentForm userId={userId} affiliate={affiliate} stripeId={stripeId} />
+    </StripeElements>
+  )
 }
 
 export default CreateGroup
