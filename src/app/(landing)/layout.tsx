@@ -7,9 +7,11 @@ type Props = {
 
 const landingPageLayout = ({ children }: Props) => {
   return (
-    <div className="flex flex-col container relative">
-      <LandingPageNavbar></LandingPageNavbar>
-      {children}
+    <div className="flex flex-col relative w-full">
+      <LandingPageNavbar />
+      <div className="w-full">
+        {children}
+      </div>
     </div>
   )
 }
