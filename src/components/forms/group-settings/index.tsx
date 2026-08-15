@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useGroupSettings } from "@/hooks/groups"
+import { ucare } from "@/lib/utils"
 
 type Props = {
   groupId: string
@@ -65,8 +66,7 @@ const GroupSettingsForm = ({ groupId }: Props) => {
             className="w-20 h-20 rounded-xl"
             src={
               previewIcon ||
-              (data?.group?.icon &&
-                `https://ucarecdn.com/${data?.group?.icon}/`) ||
+              (data?.group?.icon && ucare(data.group.icon)) ||
               "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
             }
             alt="icon"

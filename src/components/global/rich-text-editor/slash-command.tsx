@@ -1,4 +1,5 @@
 import { upload } from "@/lib/uploadcare"
+import { ucare } from "@/lib/utils"
 import {
   CheckSquare,
   Code,
@@ -151,7 +152,7 @@ export const suggestionItems = createSuggestionItems([
           const file = input.files[0]
           const uploaded = await upload.uploadFile(file)
           //This should return a src of the uploaded image
-          const imgsrc = `https://ucarecdn.com/${uploaded.uuid}/`
+          const imgsrc = ucare(uploaded.uuid)
           if (imgsrc) {
             editor.commands.insertContent([
               {

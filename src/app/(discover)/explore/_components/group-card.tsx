@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card"
-import { truncateString } from "@/lib/utils"
+import { truncateString, ucare } from "@/lib/utils"
 import Link from "next/link"
 
 type Props = {
@@ -28,7 +28,7 @@ const GroupCard = ({
     <Link href={`/about/${id}`}>
       <Card className="bg-themeBlack border-themeGray rounded-xl overflow-hidden">
         <img
-          src={preview || `https://ucarecdn.com/${thumbnail}/`}
+          src={preview || ucare(thumbnail)}
           alt="thumbnail"
           className="w-full opacity-70 h-56"
         />

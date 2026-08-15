@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useGroupChatOnline } from "@/hooks/groups"
 import { useSideBar } from "@/hooks/navigation"
 import { CarotSort } from "@/icons"
-import { cn } from "@/lib/utils"
+import { cn, ucare } from "@/lib/utils"
 import { Group, Plus } from "lucide-react"
 import Link from "next/link"
 import { v4 } from "uuid"
@@ -79,7 +79,7 @@ const SideBar = ({ groupid, userid, mobile }: Props) => {
             <div className="w-full flex items-center justify-between text-themeTextGray md:border-[1px] border-themeGray p-3 rounded-xl">
               <div className="flex gap-x-3 items-center">
                 <img
-                  src={`https://ucarecdn.com/${groupInfo.group?.icon as string}/`}
+                  src={ucare(groupInfo.group?.icon)}
                   alt="icon"
                   className="w-10 rounded-lg"
                 />

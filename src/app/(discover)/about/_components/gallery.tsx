@@ -2,7 +2,7 @@ import MediaGalleryForm from "@/components/forms/media-gallery"
 import { GlassModal } from "@/components/global/glass-modal"
 import { Card, CardContent } from "@/components/ui/card"
 import { BadgePlus } from "@/icons"
-import { validateURLString } from "@/lib/utils"
+import { ucare, validateURLString } from "@/lib/utils"
 
 type Props = {
   gallery: string[]
@@ -33,7 +33,7 @@ const MediaGallery = ({
                 })
               }
               key={key}
-              src={`https://ucarecdn.com/${gal}/`}
+              src={ucare(gal)}
               alt="gallery-img"
               className="aspect-video w-36 rounded-xl cursor-pointer opacity-70"
             />

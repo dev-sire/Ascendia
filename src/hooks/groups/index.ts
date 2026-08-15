@@ -11,7 +11,17 @@ import {
   onUpdateGroupGallery,
   onUpDateGroupSettings,
 } from "@/actions/groups"
+import { AddCustomDomainSchema } from "@/components/forms/domain/schema"
+import { GroupSettingsSchema } from "@/components/forms/group-settings/schema"
+import { SendNewMessageSchema } from "@/components/forms/huddles/schema"
+import { UpdateGallerySchema } from "@/components/forms/media-gallery/schema"
+import { upload } from "@/lib/uploadcare"
 import { supabaseClient, validateURLString } from "@/lib/utils"
+import { onChat } from "@/redux/slices/chats-slices"
+import {
+  onClearList,
+  onInfiniteScroll,
+} from "@/redux/slices/infinite-scroll-slice"
 import { onOnline } from "@/redux/slices/online-member-slice"
 import {
   GroupStateProps,
@@ -19,55 +29,11 @@ import {
   onSearch,
 } from "@/redux/slices/search-slice"
 import { AppDispatch } from "@/redux/store"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
-// import {
-//     onAddCustomDomain,
-//     onGetAllGroupMembers,
-//     onGetAllUserMessages,
-//     onGetDomainConfig,
-//     onGetExploreGroup,
-//     onGetGroupInfo,
-//     onSearchGroups,
-//     onSendMessage,
-//     onUpDateGroupSettings,
-//     onUpdateGroupGallery,
-// } from "@/actions/groups"
-// import { AddCustomDomainSchema } from "@/components/forms/domain/schema"
-// import { GroupSettingsSchema } from "@/components/forms/group-settings/schema"
-// import { SendNewMessageSchema } from "@/components/forms/huddles/schema"
-// import { UpdateGallerySchema } from "@/components/forms/media-gallery/schema"
-// import { upload } from "@/lib/uploadcare"
-// import { supabaseClient, validateURLString } from "@/lib/utils"
-// import { onChat } from "@/redux/slices/chats-slices"
-// import {
-//     onClearList,
-//     onInfiniteScroll,
-// } from "@/redux/slices/infinite-scroll-slice"
-// import { onOnline } from "@/redux/slices/online-member-slice"
-// import {
-//     GroupStateProps,
-//     onClearSearch,
-//     onSearch,
-// } from "@/redux/slices/search-slice"
-// import { AppDispatch } from "@/redux/store"
-// import { zodResolver } from "@hookform/resolvers/zod"
-// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-// import { usePathname, useRouter } from "next/navigation"
-import { JSONContent } from "novel"
-// import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { AddCustomDomainSchema } from "@/components/forms/domain/schema"
-import { GroupSettingsSchema } from "@/components/forms/group-settings/schema"
-import { SendNewMessageSchema } from "@/components/forms/huddles/schema"
-import { UpdateGallerySchema } from "@/components/forms/media-gallery/schema"
-import { upload } from "@/lib/uploadcare"
-import { onChat } from "@/redux/slices/chats-slices"
-import {
-  onClearList,
-  onInfiniteScroll,
-} from "@/redux/slices/infinite-scroll-slice"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { usePathname, useRouter } from "next/navigation"
+import { JSONContent } from "novel"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { toast } from "sonner"
@@ -380,11 +346,16 @@ export const useGroupInfo = () => {
 
   const router = useRouter()
 
-  if (!data) router.push("/explore")
+  if (!data) {
+    return { group: undefined }
+  }
 
   const { group, status } = data as { status: number; group: GroupStateProps }
 
-  if (status !== 200) router.push("/explore")
+  if (status !== 200) {
+    router.push("/explore")
+    return { group: undefined }
+  }
 
   return {
     group,

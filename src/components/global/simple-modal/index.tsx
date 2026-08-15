@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { ucare } from "@/lib/utils"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Image from "next/image"
 
@@ -35,7 +36,7 @@ export const SimpleModal = ({
             <div className="flex justify-center gap-3 ">
               <div className="w-12 h-12 relative">
                 <Image
-                  src={`https://ucarecdn.com/2c9bd4ab-1f00-41df-bad2-df668f65a232/`}
+                  src={ucare("2c9bd4ab-1f00-41df-bad2-df668f65a232")}
                   fill
                   alt="Corinna"
                 />
@@ -46,7 +47,7 @@ export const SimpleModal = ({
               </div>
               <div className="w-12 h-12 relative">
                 <Image
-                  src={`https://ucarecdn.com/${logo}/`}
+                  src={ucare(logo)}
                   fill
                   alt="Stripe"
                 />

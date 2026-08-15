@@ -38,3 +38,12 @@ export const validateURLString = (url: string) => {
     }
   }
 }
+
+export const ucare = (uuid: string | null | undefined, transform?: string) => {
+  if (!uuid) return ""
+  const base = process.env.NEXT_PUBLIC_UPLOADCARE_CDN ?? "https://ucarecdn.com"
+  const cdn = base.replace(/\/$/, "")
+  return transform
+    ? `${cdn}/${uuid}/${transform}`
+    : `${cdn}/${uuid}/`
+}

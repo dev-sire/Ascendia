@@ -5,6 +5,7 @@ import BlockTextEditor from "@/components/global/rich-text-editor"
 import { NoResult } from "@/components/global/search/no-result"
 import { Button } from "@/components/ui/button"
 import { useGroupAbout, useGroupInfo } from "@/hooks/groups"
+import { ucare } from "@/lib/utils"
 import MediaGallery from "./gallery"
 
 type Props = { userid: string; groupid: string }
@@ -25,10 +26,10 @@ const AboutGroup = ({ groupid, userid }: Props) => {
     isPending,
     setOnHtmlDescription,
   } = useGroupAbout(
-    group.description,
-    group.jsonDescription,
-    group.htmlDescription,
-    group.gallery[0],
+    group?.description ?? null,
+    group?.jsonDescription ?? null,
+    group?.htmlDescription ?? null,
+    group?.gallery?.[0] ?? "",
     groupid,
   )
 
@@ -51,7 +52,7 @@ const AboutGroup = ({ groupid, userid }: Props) => {
           <div className="img--overlay absolute h-2/6 bottom-0 w-full z-50" />
           {activeMedia?.type === "IMAGE" ? (
             <img
-              src={`https://ucarecdn.com/${activeMedia.url}/`}
+              src={ucare(activeMedia.url)}
               alt="group-img"
               className="w-full aspect-video z-20 rounded-t-xl"
             />
