@@ -79,9 +79,7 @@ const MediaGallery = ({
             </div>
           ),
         )}
-      {userid === groupUserid ? (
-        <></>
-      ) : (
+      {userid === groupUserid && (
         <GlassModal
           title="Add media to VSL"
           description="Paste a link to a youtube or a loom video."

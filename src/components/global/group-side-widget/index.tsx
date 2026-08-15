@@ -13,9 +13,9 @@ type Props = {
 }
 
 const GroupSideWidget = ({ groupid, light, userid, isMember }: Props) => {
-  const { group } = useGroupInfo()
+  const { group, loading } = useGroupInfo()
 
-  if (!group) {
+  if (loading || !group) {
     return (
       <Card
         className={cn(

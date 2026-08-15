@@ -340,26 +340,26 @@ export const useExploreSlider = (query: string, paginate: number) => {
 }
 
 export const useGroupInfo = () => {
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["about-group-info"],
   })
 
   const router = useRouter()
 
-  if (!data) {
-    return { group: undefined }
+  // Still fetching — return loading state, never redirect
+  if (isPending || data === undefined) {
+    return { group: undefined, loading: true }
   }
 
   const { group, status } = data as { status: number; group: GroupStateProps }
 
+  // Data came back but the group doesn't exist
   if (status !== 200) {
     router.push("/explore")
-    return { group: undefined }
+    return { group: undefined, loading: false }
   }
 
-  return {
-    group,
-  }
+  return { group, loading: false }
 }
 
 export const useGroupAbout = (

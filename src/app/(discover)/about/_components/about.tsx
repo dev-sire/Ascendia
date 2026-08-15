@@ -11,7 +11,7 @@ import MediaGallery from "./gallery"
 type Props = { userid: string; groupid: string }
 
 const AboutGroup = ({ groupid, userid }: Props) => {
-  const { group } = useGroupInfo()
+  const { group, loading } = useGroupInfo()
   const {
     setJsonDescription,
     setOnDescription,
@@ -32,6 +32,19 @@ const AboutGroup = ({ groupid, userid }: Props) => {
     group?.gallery?.[0] ?? "",
     groupid,
   )
+
+  if (loading)
+    return (
+      <div className="flex flex-col gap-y-10 animate-pulse">
+        <div className="h-16 w-2/3 bg-themeGray rounded-xl" />
+        <div className="w-full aspect-video bg-themeGray rounded-xl" />
+        <div className="flex gap-3">
+          <div className="w-36 aspect-video bg-themeGray rounded-xl" />
+          <div className="w-36 aspect-video bg-themeGray rounded-xl" />
+        </div>
+        <div className="h-40 w-full bg-themeGray rounded-xl" />
+      </div>
+    )
 
   if (!group)
     return (
