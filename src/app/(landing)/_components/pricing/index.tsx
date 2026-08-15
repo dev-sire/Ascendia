@@ -29,7 +29,7 @@ export const PricingSection = () => {
       {/* Header */}
       <div className="relative z-10 flex flex-col items-center text-center mb-12">
         <p
-          className="text-xs tracking-widest uppercase mb-4"
+          className="text-xs tracking-widest uppercase mb-4 pt-6"
           style={{ color: "#C9A84C", letterSpacing: "0.12em" }}
         >
           Pricing

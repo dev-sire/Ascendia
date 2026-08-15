@@ -62,7 +62,7 @@ const CallToAction = () => {
         style={{ color: "#B4B0AE" }}
       >
         Ascendia gives creators and educators a single platform to run groups,
-        channels, courses, and memberships — with Stripe payments and custom
+        channels, courses, and memberships, with Stripe payments and custom
         domains built in from day one.
       </p>
 

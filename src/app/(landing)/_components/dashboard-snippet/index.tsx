@@ -101,7 +101,7 @@ const MockMessages = () => (
     <text x="130" y="65" fontSize="9" fill={LIGHT} fontFamily="sans-serif">next module drop?</text>
     {/* sent */}
     <rect x="196" y="84" width="112" height="28" rx="10" fill={GOLD_DIM} />
-    <text x="204" y="101" fontSize="9" fill={GOLD} fontFamily="sans-serif">This Friday — stay</text>
+    <text x="204" y="101" fontSize="9" fill={GOLD} fontFamily="sans-serif">This Friday, stay</text>
     <rect x="222" y="116" width="86" height="18" rx="8" fill={GOLD_DIM} />
     <text x="230" y="128" fontSize="9" fill={GOLD} fontFamily="sans-serif">tuned! 🎉</text>
     {/* input */}
@@ -175,13 +175,13 @@ const FEATURES: Feature[] = [
     eyebrow: "Domain",
     title: "Your brand, your URL",
     description:
-      "Point any custom domain to your Ascendia group. SSL is handled automatically — no DevOps required.",
+      "Point any custom domain to your Ascendia group. SSL is handled automatically, no DevOps required.",
     mock: <MockDomain />,
   },
   {
     id: 2,
     eyebrow: "Payments",
-    title: "Stripe — wired in",
+    title: "Stripe, wired in",
     description:
       "Connect your Stripe account and start charging for memberships, courses, or one-off products in minutes.",
     mock: <MockStripe />,
@@ -191,7 +191,7 @@ const FEATURES: Feature[] = [
     eyebrow: "Community",
     title: "Groups & channels",
     description:
-      "Create unlimited channels inside your group. Organise discussions, resources, and announcements — all in one place.",
+      "Create unlimited channels inside your group. Organise discussions, resources, and announcements, all in one place.",
     mock: <MockGroups />,
   },
   {
@@ -199,7 +199,7 @@ const FEATURES: Feature[] = [
     eyebrow: "Messaging",
     title: "Direct & personal",
     description:
-      "Real-time private messages between members. No third-party app needed — it lives right inside Ascendia.",
+      "Real-time private messages between members. No third-party app needed, it lives right inside Ascendia.",
     mock: <MockMessages />,
   },
   {
@@ -297,7 +297,7 @@ const DashboardSnippet = () => {
           One platform. Every tool your community requires.
         </h2>
         <p className="mt-4 text-sm max-w-md" style={{ color: "#B4B0AE" }}>
-          No duct-taping six different apps together. Ascendia handles it all —
+          No duct-taping six different apps together. Ascendia handles it all,
           so you can focus on what you actually teach.
         </p>
       </div>

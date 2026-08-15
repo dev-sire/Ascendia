@@ -51,17 +51,6 @@ const LandingPageNavbar = () => {
             Sign in
           </Button>
         </Link>
-        <Link href="/sign-in" className="hidden sm:block">
-          <Button
-            className="rounded-xl text-sm font-semibold"
-            style={{
-              background: "linear-gradient(135deg, #C9A84C 0%, #9A7A2E 100%)",
-              color: "#09090B",
-            }}
-          >
-            Get started
-          </Button>
-        </Link>
         <GlassSheet
           triggerClass="lg:hidden"
           trigger={

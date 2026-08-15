@@ -146,15 +146,23 @@ export const useActiveGroupSubscription = (groupId: string) => {
 
 export const useJoinFree = (groupid: string) => {
   const router = useRouter()
+  const [isPending, setIsPending] = useState(false)
+
   const onJoinFreeGroup = async () => {
-    const member = await onJoinGroup(groupid)
-    if (member?.status === 200) {
-      const channels = await onGetGroupChannels(groupid)
-      router.push(`/group/${groupid}/channel/${channels?.channels?.[0].id}`)
+    if (isPending) return
+    setIsPending(true)
+    try {
+      const member = await onJoinGroup(groupid)
+      if (member?.status === 200) {
+        const channels = await onGetGroupChannels(groupid)
+        router.push(`/group/${groupid}/channel/${channels?.channels?.[0].id}`)
+      }
+    } finally {
+      setIsPending(false)
     }
   }
 
-  return { onJoinFreeGroup }
+  return { onJoinFreeGroup, isPending }
 }
 
 export const useJoinGroup = (groupid: string) => {

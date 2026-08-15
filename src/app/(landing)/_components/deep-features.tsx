@@ -1,7 +1,7 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
-
 const GOLD = "#C9A84C"
 const GOLD_DIM = "rgba(201,168,76,0.15)"
 const DARK = "#09090B"
@@ -123,9 +123,9 @@ const GroupIllustration = () => (
 
     {/* Posts */}
     {[
-      { name: "Sarah K.", time: "2h ago", msg: "Just finished the typography module — loved the kerning section!", likes: 12, avatar: GOLD },
+      { name: "Sarah K.", time: "2h ago", msg: "Just finished the typography module, loved the kerning section!", likes: 12, avatar: GOLD },
       { name: "Omar B.", time: "1h ago", msg: "Anyone using Ascendia for design system docs? Game changer.", likes: 8, avatar: "#716768" },
-      { name: "Priya M.", time: "34m ago", msg: "Shared new brand guidelines in #resources — check it out!", likes: 5, avatar: "#877874" },
+      { name: "Priya M.", time: "34m ago", msg: "Shared new brand guidelines in #resources, check it out!", likes: 5, avatar: "#877874" },
     ].map(({ name, time, msg, likes, avatar }, i) => (
       <g key={name}>
         <circle cx="232" cy={112 + i * 84} r="16" fill={avatar} opacity="0.7" />
@@ -166,7 +166,7 @@ const CourseIllustration = () => (
     <circle cx="20" cy="19" r="5" fill="#FF5F57" />
     <circle cx="36" cy="19" r="5" fill="#FEBC2E" />
     <circle cx="52" cy="19" r="5" fill="#28C840" />
-    <text x="80" y="22" fontSize="9" fill={LIGHT} opacity="0.4" fontFamily="sans-serif">Course Builder — UI Fundamentals</text>
+    <text x="80" y="22" fontSize="9" fill={LIGHT} opacity="0.4" fontFamily="sans-serif">Course Builder, UI Fundamentals</text>
 
     {/* Top toolbar */}
     <rect x="0" y="38" width="560" height="36" fill="rgba(0,0,0,0.35)" />
@@ -208,7 +208,7 @@ const CourseIllustration = () => (
 
     {/* Lesson title + underline */}
     <g>
-      <text x="196" y="112" fontSize="20" fill={CREAM} fontFamily="Georgia, serif" fontWeight="bold">2.1 — The Anatomy of Type</text>
+      <text x="196" y="112" fontSize="20" fill={CREAM} fontFamily="Georgia, serif" fontWeight="bold">2.1: The Anatomy of Type</text>
       <rect x="196" y="120" width="300" height="1.5" fill={GOLD} opacity="0.25" />
     </g>
 
@@ -354,14 +354,14 @@ const GroupsSection = () => (
         <p className="text-base leading-relaxed max-w-md" style={{ color: LIGHT }}>
           Build a space that reflects your brand. Invite members, create channels
           for every topic, moderate with ease, and watch your audience compound
-          over time — all without duct-taping Discord to a spreadsheet.
+          over time, all without duct-taping Discord to a spreadsheet.
         </p>
 
         <ul className="flex flex-col gap-3">
-          <Bullet>Unlimited channels per group — text, resource, and announcement types</Bullet>
+          <Bullet>Unlimited channels per group, text, resource, and announcement types</Bullet>
           <Bullet>Role-based access so the right people see the right content</Bullet>
           <Bullet>Pinned posts, rich embeds, and threaded replies built in</Bullet>
-          <Bullet>Members can DM each other directly — no third-party app required</Bullet>
+          <Bullet>Members can DM each other directly, no third-party app required</Bullet>
         </ul>
 
         <div className="flex gap-8 mt-2">
@@ -464,7 +464,7 @@ const CourseSection = () => (
         <p className="text-base leading-relaxed max-w-md" style={{ color: LIGHT }}>
           Most course platforms give you a text box. Ascendia gives you a
           block-based editor with slash commands, drag-and-drop modules, rich
-          media embeds, and code syntax highlighting — so your content looks
+          media embeds, and code syntax highlighting, so your content looks
           as good as what you're teaching.
         </p>
 
@@ -472,7 +472,7 @@ const CourseSection = () => (
           <Bullet>Slash-command palette: insert video, code, quote, table, or image instantly</Bullet>
           <Bullet>Drag modules into any order without losing student progress</Bullet>
           <Bullet>Syntax-highlighted code blocks with copy-to-clipboard built in</Bullet>
-          <Bullet>Gate any course behind a Stripe payment — one toggle, done</Bullet>
+          <Bullet>Gate any course behind a Stripe payment, one toggle, done</Bullet>
         </ul>
 
         <div className="flex gap-8 mt-2">
@@ -561,7 +561,7 @@ const FinalCTA = () => (
           onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 60px rgba(201,168,76,0.5)")}
           onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 40px rgba(201,168,76,0.3)")}
         >
-          Start for free — no credit card needed
+          Start for free! no credit card needed
         </button>
       </Link>
       <p className="mt-4 text-xs" style={{ color: "#716768" }}>
@@ -583,14 +583,13 @@ const Footer = () => (
         {/* Brand */}
         <div className="flex flex-col gap-4 max-w-xs">
           <div className="flex items-center gap-2.5">
-            <span
-              className="w-7 h-7 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #C9A84C 0%, #9A7A2E 100%)" }}
-            >
-              <svg width="13" height="13" viewBox="0 0 12 12" fill="none">
-                <path d="M6 1L11 10H1L6 1Z" fill="#09090B" />
-              </svg>
-            </span>
+            <Image
+              src="/logo.png"
+              alt="Ascendia Logo"
+              width={28}
+              height={28}
+              className="rounded-lg flex-shrink-0 object-contain"
+            />
             <span className="text-lg font-bold" style={{ fontFamily: "Georgia, serif", color: CREAM }}>
               Ascendia<span style={{ color: GOLD }}>.</span>
             </span>
@@ -657,3 +656,4 @@ const Footer = () => (
 
 // ─── Export ───────────────────────────────────────────────────────────────────
 export { CourseSection, FinalCTA, Footer, GoldRule, GroupsSection }
+

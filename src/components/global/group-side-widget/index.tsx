@@ -9,9 +9,10 @@ type Props = {
   light?: boolean
   groupid?: string
   userid?: string
+  isMember?: boolean
 }
 
-const GroupSideWidget = ({ groupid, light, userid }: Props) => {
+const GroupSideWidget = ({ groupid, light, userid, isMember }: Props) => {
   const { group } = useGroupInfo()
 
   return (
@@ -36,7 +37,9 @@ const GroupSideWidget = ({ groupid, light, userid }: Props) => {
       {groupid && (
         <JoinButton
           groupid={groupid}
+          userid={userid}
           owner={group.userId === userid ? true : false}
+          isMember={isMember ?? false}
         />
       )}
     </Card>

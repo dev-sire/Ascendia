@@ -808,3 +808,24 @@ export const onAddCustomDomain = async (groupid: string, domain: string) => {
     return { status: 400, message: "Oops something went wrong" }
   }
 }
+
+export const onCheckGroupMembership = async (
+  groupid: string,
+  userid: string,
+) => {
+  try {
+    if (!userid) return { isMember: false }
+
+    const membership = await client.members.findFirst({
+      where: {
+        groupId: groupid,
+        userId: userid,
+      },
+      select: { id: true },
+    })
+    console.log("membership", !!membership)
+    return { isMember: !!membership }
+  } catch (error) {
+    return { isMember: false }
+  }
+}

@@ -1,7 +1,5 @@
 import { onAuthenticatedUser } from "@/actions/auth"
-import { onGetGroupInfo } from "@/actions/groups"
-// import { onGetActiveSubscription } from "@/actions/payments"
-// import GroupSideWidget from "@/components/global/group-side-widget"
+import { onCheckGroupMembership, onGetGroupInfo } from "@/actions/groups"
 import { onGetActiveSubscription } from "@/actions/payments"
 import GroupSideWidget from "@/components/global/group-side-widget"
 import {
@@ -31,6 +29,10 @@ const Page = async ({ params }: Props) => {
   })
 
   const userid = await onAuthenticatedUser()
+  const { isMember } = await onCheckGroupMembership(
+    params.groupid,
+    userid.id ?? "",
+  )
 
   return (
     <HydrationBoundary state={dehydrate(query)}>
@@ -39,7 +41,11 @@ const Page = async ({ params }: Props) => {
           <AboutGroup userid={userid.id!} groupid={params.groupid} />
         </div>
         <div className="col-span-1 relative">
-          <GroupSideWidget userid={userid.id} groupid={params.groupid} />
+          <GroupSideWidget
+            userid={userid.id}
+            groupid={params.groupid}
+            isMember={isMember}
+          />
         </div>
       </div>
     </HydrationBoundary>
