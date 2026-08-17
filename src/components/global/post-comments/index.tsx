@@ -18,6 +18,9 @@ export const PostCommentForm = ({
   image,
   username,
 }: PostCommentFormProps) => {
+
+  console.log(postid, image, username)
+
   const { isPending, onCreateComment, register, variables } =
     usePostComment(postid)
 

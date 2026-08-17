@@ -1,6 +1,5 @@
 import { onAuthenticatedUser } from "@/actions/auth"
 import { onGetPostComments, onGetPostInfo } from "@/actions/groups"
-
 import GroupSideWidget from "@/components/global/group-side-widget"
 import { PostCommentForm } from "@/components/global/post-comments"
 import {
@@ -11,18 +10,20 @@ import {
 import { PostComments } from "./_components/comments"
 import { PostInfo } from "./_components/post-info"
 
-const PostPage = async ({ params }: { params: { postid: string } }) => {
+const PostPage = async ({ params }: { params: { postId: string } }) => {
   const client = new QueryClient()
 
   await client.prefetchQuery({
     queryKey: ["unique-post"],
-    queryFn: () => onGetPostInfo(params.postid),
+    queryFn: () => onGetPostInfo(params.postId),
   })
 
   await client.prefetchQuery({
     queryKey: ["post-comments"],
-    queryFn: () => onGetPostComments(params.postid),
+    queryFn: () => onGetPostComments(params.postId),
   })
+
+  console.log("PostId from page: ", params.postId)
 
   const user = await onAuthenticatedUser()
 
@@ -30,13 +31,13 @@ const PostPage = async ({ params }: { params: { postid: string } }) => {
     <HydrationBoundary state={dehydrate(client)}>
       <div className="grid grid-cols-4 px-5 py-5 gap-x-10">
         <div className="col-span-4 lg:col-span-3">
-          <PostInfo id={params.postid} />
+          <PostInfo id={params.postId} />
           <PostCommentForm
             username={user.username!}
             image={user.image!}
-            postid={params.postid}
+            postid={params.postId}
           />
-          <PostComments postid={params.postid} />
+          <PostComments postid={params.postId} />
         </div>
         <div className="col-span-1 hidden lg:inline relative">
           <GroupSideWidget light />

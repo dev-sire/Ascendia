@@ -114,7 +114,6 @@ export const onCreateNewGroup = async (
 
 export const onGetGroupInfo = async (groupid: string) => {
   try {
-    const user = await onAuthenticatedUser()
     const group = await client.group.findUnique({
       where: {
         id: groupid,
@@ -125,7 +124,6 @@ export const onGetGroupInfo = async (groupid: string) => {
       return {
         status: 200,
         group,
-        groupOwner: user.id === group.userId ? true : false,
       }
 
     return { status: 404 }
@@ -699,11 +697,15 @@ export const onGetPostComments = async (postid: string) => {
       },
     })
 
-    if (comments && comments.length > 0) {
-      return { status: 200, comments }
+    // Always return a value — React Query throws if queryFn returns undefined.
+    // Also serialize via JSON round-trip to strip Prisma class instances before
+    // crossing the RSC boundary (fixes "Only plain objects" error).
+    return {
+      status: 200,
+      comments: JSON.parse(JSON.stringify(comments ?? [])),
     }
   } catch (error) {
-    return { status: 400 }
+    return { status: 400, comments: [] }
   }
 }
 
@@ -723,12 +725,15 @@ export const onGetCommentReplies = async (commentid: string) => {
     })
 
     if (replies && replies.reply.length > 0) {
-      return { status: 200, replies: replies.reply }
+      return {
+        status: 200,
+        replies: JSON.parse(JSON.stringify(replies.reply)),
+      }
     }
 
-    return { status: 404, message: "No replies found" }
+    return { status: 404, message: "No replies found", replies: [] }
   } catch (error) {
-    return { status: 400, message: "Oops something went wrong" }
+    return { status: 400, message: "Oops something went wrong", replies: [] }
   }
 }
 
@@ -823,7 +828,7 @@ export const onCheckGroupMembership = async (
       },
       select: { id: true },
     })
-    console.log("membership", !!membership)
+
     return { isMember: !!membership }
   } catch (error) {
     return { isMember: false }

@@ -14,7 +14,7 @@ export const PostComments = ({ postid }: PostCommentsProps) => {
   return (
     <div className="mt-5">
       {data?.comments && data?.status === 200 ? (
-        data.comments.map((comment) => (
+        data.comments.map((comment: any) => (
           <UserComment
             id={comment.id}
             key={comment.id}

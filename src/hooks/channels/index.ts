@@ -15,13 +15,6 @@ import {
 import { CreateCommentSchema } from "@/components/global/post-comments/schema"
 import { CreateChannelPost } from "@/components/global/post-content/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-// import {
-//     onGetCommentReplies,
-//     onGetPostComments,
-//     onGetPostInfo,
-// } from "@/actions/groups"
-// import { CreateCommentSchema } from "@/components/global/post-comments/schema"
-// import { CreateChannelPost } from "@/components/global/post-content/schema"
 import {
   useMutation,
   useMutationState,
@@ -29,7 +22,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query"
 import { JSONContent } from "novel"
-// import { JSONContent } from "novel"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -290,26 +282,42 @@ export const usePostComment = (postid: string) => {
   const client = useQueryClient()
 
   const { mutate, variables, isPending } = useMutation({
-    mutationFn: (data: { content: string; commentid: string }) =>
-      onCreateNewComment(postid, data.content, data.commentid),
+    mutationFn: async (data: { content: string; commentid: string }) => {
+      // Guard against undefined postid
+      if (!postid) {
+        throw new Error("postid is undefined at mutation execution time.")
+      }
+      return await onCreateNewComment(postid, data.content, data.commentid)
+    },
     onMutate: () => reset(),
-    onSuccess: (data) =>
+    onSuccess: (data) => {
+      console.log("Server response:", data) // Inspect status and message returned from Server Action
       toast(data?.status === 200 ? "Success" : "Error", {
         description: data?.message,
-      }),
+      })
+    },
+    onError: (error) => {
+      // Logs thrown errors or network crashes directly to browser console
+      console.error("Mutation failed with error:", error)
+      toast.error("An error occurred while posting comment", {
+        description: error.message,
+      })
+    },
     onSettled: async () => {
+      if (!postid) return
       return await client.invalidateQueries({
         queryKey: ["post-comments"],
       })
     },
   })
 
-  const onCreateComment = handleSubmit(async (values) =>
+  const onCreateComment = handleSubmit(async (values) => {
+    console.log("Submitting comment values:", values, "for postid:", postid)
     mutate({
       content: values.comment,
       commentid: v4(),
-    }),
-  )
+    })
+  })
 
   return { register, errors, onCreateComment, variables, isPending }
 }
@@ -318,6 +326,7 @@ export const useComments = (postid: string) => {
   const { data } = useQuery({
     queryKey: ["post-comments"],
     queryFn: () => onGetPostComments(postid),
+    enabled: Boolean(postid),
   })
 
   return { data }

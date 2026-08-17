@@ -81,7 +81,7 @@ export const UserComment = ({
               {data?.replies &&
                 data.replies?.length > 0 &&
                 data.replies.map(
-                  (rep) =>
+                  (rep: any) =>
                     rep.commentId === id && (
                       <UserComment
                         key={rep.id}
