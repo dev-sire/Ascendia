@@ -340,8 +340,16 @@ export const useExploreSlider = (query: string, paginate: number) => {
 }
 
 export const useGroupInfo = () => {
+  const pathname = usePathname()
+  // Extract groupid from URL: /group/[groupid]/...
+  const groupid = pathname.split("/")[2]
+
   const { data, isPending } = useQuery({
     queryKey: ["about-group-info"],
+    queryFn: () => onGetGroupInfo(groupid),
+    enabled: Boolean(groupid),
+    // Don't auto-refetch on window focus — widget doesn't need live updates
+    staleTime: 1000 * 60 * 5,
   })
 
   const router = useRouter()

@@ -1,5 +1,6 @@
 import { onAuthenticatedUser } from "@/actions/auth"
-import { onGetPostComments, onGetPostInfo } from "@/actions/groups"
+import { onGetGroupInfo, onGetPostComments, onGetPostInfo } from "@/actions/groups"
+
 import GroupSideWidget from "@/components/global/group-side-widget"
 import { PostCommentForm } from "@/components/global/post-comments"
 import {
@@ -10,7 +11,7 @@ import {
 import { PostComments } from "./_components/comments"
 import { PostInfo } from "./_components/post-info"
 
-const PostPage = async ({ params }: { params: { postId: string } }) => {
+const PostPage = async ({ params }: { params: { postId: string; groupid: string; channelid: string } }) => {
   const client = new QueryClient()
 
   await client.prefetchQuery({
@@ -19,11 +20,14 @@ const PostPage = async ({ params }: { params: { postId: string } }) => {
   })
 
   await client.prefetchQuery({
-    queryKey: ["post-comments"],
+    queryKey: ["post-comments", params.postId],
     queryFn: () => onGetPostComments(params.postId),
   })
 
-  console.log("PostId from page: ", params.postId)
+  await client.prefetchQuery({
+    queryKey: ["about-group-info"],
+    queryFn: () => onGetGroupInfo(params.groupid),
+  })
 
   const user = await onAuthenticatedUser()
 

@@ -282,49 +282,36 @@ export const usePostComment = (postid: string) => {
   const client = useQueryClient()
 
   const { mutate, variables, isPending } = useMutation({
-    mutationFn: async (data: { content: string; commentid: string }) => {
-      // Guard against undefined postid
-      if (!postid) {
-        throw new Error("postid is undefined at mutation execution time.")
-      }
-      return await onCreateNewComment(postid, data.content, data.commentid)
-    },
+    mutationFn: (data: { content: string; commentid: string }) =>
+      onCreateNewComment(postid, data.content, data.commentid),
     onMutate: () => reset(),
-    onSuccess: (data) => {
-      console.log("Server response:", data) // Inspect status and message returned from Server Action
+    onSuccess: (data) =>
       toast(data?.status === 200 ? "Success" : "Error", {
         description: data?.message,
-      })
-    },
-    onError: (error) => {
-      // Logs thrown errors or network crashes directly to browser console
-      console.error("Mutation failed with error:", error)
-      toast.error("An error occurred while posting comment", {
-        description: error.message,
-      })
-    },
+      }),
     onSettled: async () => {
-      if (!postid) return
+      await client.invalidateQueries({
+        queryKey: ["post-comments", postid],
+      })
       return await client.invalidateQueries({
-        queryKey: ["post-comments"],
+        queryKey: ["unique-post"],
       })
     },
   })
 
-  const onCreateComment = handleSubmit(async (values) => {
-    console.log("Submitting comment values:", values, "for postid:", postid)
+  const onCreateComment = handleSubmit(async (values) =>
     mutate({
       content: values.comment,
       commentid: v4(),
-    })
-  })
+    }),
+  )
 
   return { register, errors, onCreateComment, variables, isPending }
 }
 
 export const useComments = (postid: string) => {
   const { data } = useQuery({
-    queryKey: ["post-comments"],
+    queryKey: ["post-comments", postid],
     queryFn: () => onGetPostComments(postid),
     enabled: Boolean(postid),
   })
@@ -351,10 +338,11 @@ export const useReply = () => {
 }
 
 export const useGetReplies = (commentid: string) => {
+  const isValidId = Boolean(commentid) && commentid !== "undefined" && commentid.length === 36
   const { isFetching, data } = useQuery({
     queryKey: ["comment-replies", commentid],
     queryFn: () => onGetCommentReplies(commentid),
-    enabled: Boolean(commentid),
+    enabled: isValidId,
   })
 
   return { isFetching, data }

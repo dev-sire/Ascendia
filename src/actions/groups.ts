@@ -133,6 +133,7 @@ export const onGetGroupInfo = async (groupid: string) => {
     return { status: 400 }
   }
 }
+
 export const onGetUserGroups = async (id: string) => {
   try {
     const groups = await client.user.findUnique({
@@ -670,9 +671,9 @@ export const onGetPostInfo = async (postid: string) => {
       },
     })
 
-    if (post) return { status: 200, post }
+    if (post) return { status: 200, post: JSON.parse(JSON.stringify(post)) }
 
-    return { status: 404, message: "No post found" }
+    return { status: 404, message: "No post found", post: null }
   } catch (error) {
     return { status: 400, message: "Oops! something went wrong" }
   }
@@ -712,27 +713,20 @@ export const onGetPostComments = async (postid: string) => {
 
 export const onGetCommentReplies = async (commentid: string) => {
   try {
-    const replies = await client.comment.findUnique({
+    const replies = await client.comment.findMany({
       where: {
-        id: commentid,
+        commentId: commentid,
+        replied: true,
       },
-      select: {
-        reply: {
-          include: {
-            user: true,
-          },
-        },
+      include: {
+        user: true,
       },
     })
 
-    if (replies && replies.reply.length > 0) {
-      return {
-        status: 200,
-        replies: JSON.parse(JSON.stringify(replies.reply)),
-      }
+    return {
+      status: 200,
+      replies: JSON.parse(JSON.stringify(replies ?? [])),
     }
-
-    return { status: 404, message: "No replies found", replies: [] }
   } catch (error) {
     return { status: 400, message: "Oops something went wrong", replies: [] }
   }

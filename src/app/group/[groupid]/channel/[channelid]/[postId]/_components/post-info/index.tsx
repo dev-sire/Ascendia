@@ -14,7 +14,7 @@ type PostInfoProps = {
 export const PostInfo = ({ id }: PostInfoProps) => {
   const { data } = useGetPost(id)
 
-  if (data?.status !== 200 || !data)
+  if (!data || data.status !== 200)
     return (
       <div>
         <NoResult />
