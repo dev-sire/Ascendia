@@ -16,6 +16,11 @@ type Props = {
 }
 
 const Page = async ({ params }: Props) => {
+
+  console.log("ACTUAL PARAMS:", params)
+  console.log("groupid?", params.groupid)
+  console.log("groupId?", (params as any).groupId)
+
   const query = new QueryClient()
 
   await query.prefetchQuery({
