@@ -361,6 +361,8 @@ export const useGroupInfo = () => {
 
   const { group, status } = data as { status: number; group: GroupStateProps }
 
+  console.log(data)
+
   // Data came back but the group doesn't exist
   if (status !== 200) {
     router.push("/explore")
