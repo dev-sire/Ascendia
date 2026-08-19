@@ -364,10 +364,10 @@ export const useGroupInfo = () => {
   console.log(data)
 
   // Data came back but the group doesn't exist
-  if (status !== 200) {
-    router.push("/explore")
-    return { group: undefined, loading: false }
-  }
+  // if (status !== 200) {
+  //   router.push("/explore")
+  //   return { group: undefined, loading: false }
+  // }
 
   return { group, loading: false }
 }
