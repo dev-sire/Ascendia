@@ -10,13 +10,18 @@ import {
 import { User } from "lucide-react"
 import { ChatWindow } from "../_components/chat"
 
-const MemberChatPage = async ({ params }: { params: { chatid: string } }) => {
+const MemberChatPage = async ({
+  params,
+}: {
+  params: Promise<{ chatid: string }>
+}) => {
+  const { chatid } = await params
   const query = new QueryClient()
-  const member = await onGetUserFromMembership(params.chatid)
+  const member = await onGetUserFromMembership(chatid)
 
   await query.prefetchQuery({
     queryKey: ["user-messages"],
-    queryFn: () => onGetAllUserMessages(params.chatid),
+    queryFn: () => onGetAllUserMessages(chatid),
   })
 
   const user = await onAuthenticatedUser()

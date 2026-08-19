@@ -3,6 +3,7 @@
 import { useChannelPage } from "@/hooks/channels"
 
 import InfiniteScrollObserver from "@/components/global/infinite-scroll"
+import { Skeleton } from "@/components/ui/skeleton"
 import { PaginatedPosts } from "../paginates-posts"
 import { PostCard } from "./post-card"
 
@@ -12,9 +13,8 @@ type PostFeedProps = {
 }
 
 export const PostFeed = ({ channelid, userid }: PostFeedProps) => {
-  const { data } = useChannelPage(channelid)
-  const { posts } = data as {
-    posts: ({
+  const { data, isPending } = useChannelPage(channelid)
+  const posts = ((data as any)?.channel?.posts ?? (data as any)?.posts) as ({
       likes: {
         id: string
         userId: string
@@ -40,8 +40,37 @@ export const PostFeed = ({ channelid, userid }: PostFeedProps) => {
       content: string
       authorId: string
       channelId: string
-    })[]
-  }
+    })[] | undefined
+  if (isPending)
+    return (
+      <div className="flex flex-col gap-y-5">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div
+            key={i}
+            className="border border-[#28282D] bg-[#1A1A1D] rounded-2xl overflow-hidden p-4 flex flex-col gap-y-4"
+          >
+            <div className="flex items-center gap-x-3">
+              <Skeleton className="w-9 h-9 rounded-full bg-[#28282D]" />
+              <div className="flex flex-col gap-y-1.5">
+                <Skeleton className="h-3 w-28 bg-[#28282D]" />
+                <Skeleton className="h-2.5 w-20 bg-[#28282D]" />
+              </div>
+            </div>
+            <Skeleton className="h-6 w-3/4 bg-[#28282D]" />
+            <div className="flex flex-col gap-y-2">
+              <Skeleton className="h-3.5 w-full bg-[#28282D]" />
+              <Skeleton className="h-3.5 w-full bg-[#28282D]" />
+              <Skeleton className="h-3.5 w-2/3 bg-[#28282D]" />
+            </div>
+            <div className="flex items-center gap-x-5 pt-2 border-t border-[#28282D]">
+              <Skeleton className="h-4 w-14 bg-[#28282D]" />
+              <Skeleton className="h-4 w-14 bg-[#28282D]" />
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+
   return posts && posts.length > 0 ? (
     <>
       {posts.map((post) => (

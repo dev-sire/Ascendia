@@ -124,7 +124,7 @@ export const useChannelInfo = () => {
 }
 
 export const useChannelPage = (channelid: string) => {
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["channel-info"],
     queryFn: () => onGetChannelInfo(channelid),
   })
@@ -139,7 +139,7 @@ export const useChannelPage = (channelid: string) => {
     },
   })
 
-  return { data, mutation }
+  return { data, mutation, isPending }
 }
 
 export const useCreateChannelPost = (channelid: string) => {
@@ -261,12 +261,12 @@ export const useLikeChannelPost = (postid: string) => {
 }
 
 export const useGetPost = (postid: string) => {
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["unique-post"],
     queryFn: () => onGetPostInfo(postid),
   })
 
-  return { data }
+  return { data, isPending }
 }
 
 export const usePostComment = (postid: string) => {
@@ -310,13 +310,13 @@ export const usePostComment = (postid: string) => {
 }
 
 export const useComments = (postid: string) => {
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["post-comments", postid],
     queryFn: () => onGetPostComments(postid),
     enabled: Boolean(postid),
   })
 
-  return { data }
+  return { data, isPending }
 }
 
 export const useReply = () => {
@@ -343,6 +343,7 @@ export const useGetReplies = (commentid: string) => {
     queryKey: ["comment-replies", commentid],
     queryFn: () => onGetCommentReplies(commentid),
     enabled: isValidId,
+    staleTime: 1000 * 60 * 5,
   })
 
   return { isFetching, data }
