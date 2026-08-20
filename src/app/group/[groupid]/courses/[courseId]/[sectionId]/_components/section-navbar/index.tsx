@@ -12,6 +12,8 @@ const SectionNavBar = ({ sectionid }: Props) => {
 
   if (data?.status !== 200) return <></>
 
+  const completed = data.completedByUser ?? false
+
   return (
     <div className="flex justify-between p-5 overflow-y-auto items-center">
       <div>
@@ -24,14 +26,11 @@ const SectionNavBar = ({ sectionid }: Props) => {
         <Button
           className="bg-themeDarkGray flex gap-x-3 items-center border-themeGray text-themeTextWhite"
           variant="outline"
-          onClick={() => mutate()}
+          onClick={() => !completed && mutate()}
+          disabled={isPending || completed}
         >
           <Check size={16} />
-          {isPending
-            ? "Completed"
-            : !data.section?.complete
-              ? "Mark as complete"
-              : "Completed"}
+          {completed ? "Completed" : isPending ? "Saving…" : "Mark as complete"}
         </Button>
       </div>
     </div>

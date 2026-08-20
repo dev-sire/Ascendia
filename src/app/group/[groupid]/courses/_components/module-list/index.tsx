@@ -4,9 +4,15 @@ import { IconRenderer } from "@/components/global/icon-renderer"
 import { AccordionContent } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { useCourseModule } from "@/hooks/courses"
 import { EmptyCircle, PurpleCheck } from "@/icons"
-import { Plus } from "lucide-react"
+import { Pencil, Plus } from "lucide-react"
 import Link from "next/link"
 import { v4 } from "uuid"
 
@@ -39,32 +45,58 @@ const CourseModuleList = ({ courseId, groupid }: Props) => {
     updateVariables,
   } = useCourseModule(courseId, groupid)
 
+  const isOwner = !!groupOwner?.groupOwner
+
   return (
     <div className="flex flex-col">
       {data?.status === 200 &&
         data.modules?.map((module) => (
           <GlobalAccordion
-            edit={edit}
+            edit={isOwner ? edit : false}
             ref={triggerRef}
             editable={
-              <Input
-                ref={inputRef}
-                className="bg-themeBlack border-themeGray"
-              />
+              isOwner ? (
+                <Input
+                  ref={inputRef}
+                  className="bg-themeBlack border-themeGray"
+                />
+              ) : undefined
             }
-            onEdit={() => onEditModule(module.id)}
+            onEdit={isOwner ? () => onEditModule(module.id) : undefined}
             id={module.id}
             key={module.id}
-            title={isPending ? variables?.content! : module.title}
+            title={
+              <span className="flex items-center gap-2">
+                {isPending ? variables?.content! : module.title}
+                {isOwner && (
+                  <TooltipProvider delayDuration={300}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Pencil
+                          size={11}
+                          className="text-themeTextGray opacity-50 hover:opacity-100 cursor-pointer flex-shrink-0"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent
+                        side="right"
+                        className="bg-themeDarkGray border-themeGray text-xs"
+                      >
+                        Double-click to rename
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+              </span>
+            }
           >
             <AccordionContent className="flex flex-col gap-y-2 px-3">
               {module.section.length ? (
                 module.section.map((section) => (
                   <Link
                     ref={contentRef}
-                    onDoubleClick={onEditSection}
+                    onDoubleClick={isOwner ? onEditSection : undefined}
                     onClick={() => setActiveSection(section.id)}
-                    className="flex gap-x-3 items-center capitalize"
+                    className="flex gap-x-3 items-center capitalize group"
                     key={section.id}
                     href={`/group/${groupid}/courses/${courseId}/${section.id}`}
                   >
@@ -85,14 +117,34 @@ const CourseModuleList = ({ courseId, groupid }: Props) => {
                     ) : sectionUpdatePending && activeSection === section.id ? (
                       updateVariables?.content
                     ) : (
-                      section.name
+                      <span className="flex items-center gap-1.5 flex-1">
+                        {section.name}
+                        {isOwner && (
+                          <TooltipProvider delayDuration={300}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Pencil
+                                  size={10}
+                                  className="text-themeTextGray opacity-0 group-hover:opacity-40 hover:!opacity-100 cursor-pointer flex-shrink-0"
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent
+                                side="right"
+                                className="bg-themeDarkGray border-themeGray text-xs"
+                              >
+                                Double-click to rename
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        )}
+                      </span>
                     )}
                   </Link>
                 ))
               ) : (
                 <></>
               )}
-              {groupOwner?.groupOwner && (
+              {isOwner && (
                 <>
                   {pendingSection && sectionVariables && (
                     <Link

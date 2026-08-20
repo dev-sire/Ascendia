@@ -7,7 +7,7 @@ import { RefObject } from "react"
 
 type GlobalAccordionProps = {
   id: string
-  title: string
+  title: React.ReactNode
   ref?: RefObject<HTMLButtonElement>
   onEdit?(): void
   edit?: boolean

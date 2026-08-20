@@ -1,16 +1,13 @@
 import {
   AffiliateDuoToneBlack,
-  Business,
   Chat,
   Courses,
   CreditCard,
-  Document,
   Explore,
   GlobeDuoToneBlack,
   Home,
   IDuotoneBlack,
-  PersonalDevelopment,
-  ZapDouToneBlack,
+  ZapDouToneBlack
 } from "@/icons"
 
 export type MenuProps = {
@@ -56,39 +53,22 @@ export const GROUP_PAGE_MENU: MenuProps[] = [
     id: 0,
     label: "Group",
     icon: <Home />,
-    path: "/",
+    path: "",
     section: true,
   },
   {
     id: 1,
     label: "Courses",
     icon: <Courses />,
-    path: "#pricing",
+    path: "/courses",
     section: true,
   },
   {
     id: 2,
-    label: "Events",
-    icon: <Business />,
-    path: "/explore",
-  },
-  {
-    id: 3,
-    label: "Members",
-    icon: <PersonalDevelopment />,
-    path: "/explore",
-  },
-  {
-    id: 4,
-    label: "About",
-    icon: <Document />,
-    path: "/explore",
-  },
-  {
-    id: 5,
-    label: "Huddle",
+    label: "Messages",
     icon: <Chat />,
-    path: "/explore",
+    path: "/messages",
+    section: true,
   },
 ]
 
@@ -144,6 +124,6 @@ export const INTEGRATION_LIST_ITEMS: IntegrationsListItemProps[] = [
     logo: "914be637-39bf-47e6-bb81-37b553163945",
     title: "Connect Stripe Account",
     modalDescription:
-      "The world’s most successful platforms and marketplaces including Shopify and DoorDash, use Stripe Connect.",
+      "The world's most successful platforms and marketplaces including Shopify and DoorDash, use Stripe Connect.",
   },
 ]

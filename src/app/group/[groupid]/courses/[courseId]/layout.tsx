@@ -8,36 +8,30 @@ import { CreateCourseModule } from "../_components/create-module"
 import CourseModuleList from "../_components/module-list"
 
 type CourseLayoutProps = {
-  params: {
-    courseid: string
-    groupid: string
-  }
+  params: Promise<{ courseid: string; groupid: string }>
   children: React.ReactNode
 }
 
 const CourseLayout = async ({ params, children }: CourseLayoutProps) => {
+  const { courseid, groupid } = await params
   const client = new QueryClient()
 
   await client.prefetchQuery({
     queryKey: ["course-modules"],
-    queryFn: () => onGetCourseModules(params.courseid),
+    queryFn: () => onGetCourseModules(courseid),
   })
 
   return (
     <HydrationBoundary state={dehydrate(client)}>
       <div className="grid grid-cols-1 h-full lg:grid-cols-4 overflow-hidden">
         <div className="bg-themeBlack p-5 overflow-y-auto">
-          <CreateCourseModule
-            courseId={params.courseid}
-            groupid={params.groupid}
-          />
-          <CourseModuleList
-            groupid={params.groupid}
-            courseId={params.courseid}
-          />
+          <CreateCourseModule courseId={courseid} groupid={groupid} />
+          <CourseModuleList groupid={groupid} courseId={courseid} />
         </div>
         <div className="lg:col-span-3 max-h-full h-full pb-10 overflow-y-auto bg-[#101011]/90">
-          {children}
+          <div className="px-10 py-8">
+            {children}
+          </div>
         </div>
       </div>
     </HydrationBoundary>

@@ -1,6 +1,7 @@
 "use server"
 
 import { client } from "@/lib/prisma"
+import { onAuthenticatedUser } from "./auth"
 
 export const onGetGroupCourses = async (groupid: string) => {
   try {
@@ -71,6 +72,7 @@ export const onCreateGroupCourse = async (
 }
 export const onGetCourseModules = async (courseId: string) => {
   try {
+    const user = await onAuthenticatedUser()
     const modules = await client.module.findMany({
       where: {
         courseId,
@@ -88,7 +90,15 @@ export const onGetCourseModules = async (courseId: string) => {
     })
 
     if (modules && modules.length > 0) {
-      return { status: 200, modules }
+      // Map completedBy array → per-user boolean so the sidebar icon is correct
+      const modulesWithCompletion = modules.map((mod) => ({
+        ...mod,
+        section: mod.section.map((sec) => ({
+          ...sec,
+          complete: user.id ? sec.completedBy.includes(user.id) : false,
+        })),
+      }))
+      return { status: 200, modules: modulesWithCompletion }
     }
 
     return {
@@ -188,12 +198,18 @@ export const onUpdateSection = async (
       return { status: 200, message: "Section successfully updated" }
     }
     if (type === "COMPLETE") {
+      const user = await onAuthenticatedUser()
+      if (!user.id) return { status: 401, message: "Unauthorized" }
+
+      // Only add if not already in the array
       await client.section.update({
         where: {
           id: sectionId,
         },
         data: {
-          complete: true,
+          completedBy: {
+            push: user.id,
+          },
         },
       })
 
@@ -236,6 +252,7 @@ export const onCreateModuleSection = async (
 
 export const onGetSectionInfo = async (sectionid: string) => {
   try {
+    const user = await onAuthenticatedUser()
     const section = await client.section.findUnique({
       where: {
         id: sectionid,
@@ -243,7 +260,13 @@ export const onGetSectionInfo = async (sectionid: string) => {
     })
 
     if (section) {
-      return { status: 200, section }
+      return {
+        status: 200,
+        section,
+        completedByUser: user.id
+          ? section.completedBy.includes(user.id)
+          : false,
+      }
     }
 
     return { status: 404, message: "Course section not found" }

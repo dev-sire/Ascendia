@@ -26,6 +26,9 @@ export const Interactions = ({
   page,
 }: InteractionsProps) => {
   const { mutate, isPending } = useLikeChannelPost(id)
+
+  console.log("likedUser, userid", likedUser, userid)
+
   return (
     <div
       className={cn(

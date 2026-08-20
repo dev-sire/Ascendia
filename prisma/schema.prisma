@@ -148,7 +148,7 @@ model Section {
   id          String   @id @db.Uuid
   name        String   @default("New Section")
   icon        String   @default("doc")
-  complete    Boolean  @default(false)
+  completedBy String[] @default([])
   createdAt   DateTime @default(now())
   Module      Module?  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   moduleId    String?  @db.Uuid
