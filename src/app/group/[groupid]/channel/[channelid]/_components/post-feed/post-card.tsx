@@ -1,7 +1,6 @@
 import { HtmlParser } from "@/components/global/html-parser"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Interactions } from "./interactions"
 import { PostAuthor } from "./post-author"
@@ -36,6 +35,7 @@ export const PostCard = ({
   optimisitc,
 }: PostCardProps) => {
   const pathname = usePathname()
+
   return (
     <Card className="border-themeGray bg-[#1A1A1D] first-letter:rounded-2xl overflow-hidden">
       <CardContent className="p-3 flex flex-col gap-y-6 items-start">
@@ -44,12 +44,10 @@ export const PostCard = ({
           username={username}
           channel={channelname}
         />
-        <Link href={`${pathname}/${postid}`} className="w-full">
-          <div className="flex flex-col gap-y-3">
-            <h2 className="text-2xl">{title}</h2>
-            <HtmlParser html={html} />
-          </div>
-        </Link>
+        <div className="flex flex-col gap-y-3 w-full">
+          <h2 className="text-2xl">{title}</h2>
+          <HtmlParser html={html} />
+        </div>
       </CardContent>
       <Separator orientation="horizontal" className="bg-themeGray mt-3" />
       <Interactions
@@ -60,6 +58,7 @@ export const PostCard = ({
         likedUser={likedUser}
         likeid={likeid}
         optimisitc={optimisitc}
+        postLink={`${pathname}/${postid}`}
       />
     </Card>
   )

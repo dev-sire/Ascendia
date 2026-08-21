@@ -229,3 +229,119 @@ html {
   height: 0;
   pointer-events: none;
 }
+
+/* ── Bullet & ordered lists ───────────────────────────────────────────── */
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin: 0.25rem 0;
+  padding-left: 0.25rem;
+}
+
+.prose li p {
+  margin: 0;
+}
+
+/* ── Tiptap task list ─────────────────────────────────────────────────── */
+.prose ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.5rem 0;
+}
+
+.prose ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-left: 0;
+  margin: 0.3rem 0;
+}
+
+.prose ul[data-type="taskList"] li > label {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  user-select: none;
+}
+
+.prose ul[data-type="taskList"] li > label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: #C9A84C;
+  flex-shrink: 0;
+}
+
+.prose ul[data-type="taskList"] li > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.prose ul[data-type="taskList"] li[data-checked="true"] > div {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ── HtmlParser rendered output (read-only view) ───────────────────────── */
+.html-content ul,
+.html-content ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.html-content ul {
+  list-style-type: disc;
+}
+
+.html-content ol {
+  list-style-type: decimal;
+}
+
+.html-content li {
+  margin: 0.25rem 0;
+  padding-left: 0.25rem;
+}
+
+.html-content ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.html-content ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-left: 0;
+}
+
+.html-content ul[data-type="taskList"] li > label {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.html-content ul[data-type="taskList"] li > label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #C9A84C;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.html-content ul[data-type="taskList"] li > div {
+  flex: 1;
+}

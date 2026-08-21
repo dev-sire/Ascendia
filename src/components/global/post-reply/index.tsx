@@ -46,7 +46,7 @@ export const PostReply = ({
           placeholder="Add a comment..."
         />
         <Button variant="ghost" className="p-0 hover:bg-transparent">
-          <Send className="text-themeGray" />
+          <Send className="text-[#A28b23] ml-2" />
         </Button>
       </form>
     </div>

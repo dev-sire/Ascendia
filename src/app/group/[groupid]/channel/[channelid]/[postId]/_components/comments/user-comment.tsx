@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { useGetReplies } from "@/hooks/channels"
 
-import { Chat, Heart } from "@/icons"
+import { Chat } from "@/icons"
 import { cn } from "@/lib/utils"
 import { User } from "lucide-react"
 
@@ -59,10 +59,6 @@ export const UserComment = ({
         <h3 className="font-semibold text-sm">{username}</h3>
         <p className="font-light text-sm">{content}</p>
         <div className="flex gap-x-5 items-center">
-          <span className="flex items-center text-themeTextGray text-xs gap-x-1">
-            <Heart />
-            Like
-          </span>
           {!noReply && (
             <span
               {...(!optimistic && {
@@ -101,7 +97,7 @@ export const UserComment = ({
               onClick={onActiveComment}
               className="hover:bg-themeGray text-sm cursor-pointer p-2 rounded-lg"
             >
-              Load more replies
+              View {replyCount} {replyCount > 1 ? "replies" : "reply"}
             </span>
           </>
         ) : (

@@ -36,7 +36,7 @@ export const PostCommentForm = ({
           placeholder="Add a comment..."
         />
         <Button variant="ghost" className="p-0 hover:bg-transparent">
-          <Send className="text-themeGray" />
+          <Send className="text-[#A28B23] ml-2" />
         </Button>
       </form>
       {isPending && variables && (
