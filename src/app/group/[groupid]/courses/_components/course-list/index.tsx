@@ -10,9 +10,10 @@ type Props = {
 }
 
 const CourseList = ({ groupid }: Props) => {
-  const { data } = useCourses(groupid)
+  const { data, isOwner } = useCourses(groupid)
 
   if (data?.status !== 200 || !data.courses?.length) {
+    if (isOwner) return null
     return (
       <div className="col-span-full flex flex-col items-center justify-center py-24 px-6 text-center">
         <div className="relative mb-6">
@@ -27,7 +28,7 @@ const CourseList = ({ groupid }: Props) => {
           No courses yet
         </h2>
         <p className="text-themeTextGray text-sm max-w-xs leading-relaxed">
-          The instructor hasn&apos;t dropped any courses yet. Check back soon,
+          The instructor hasn&apos;t dropped any courses yet. Check back soon —
           something good is coming.
         </p>
       </div>

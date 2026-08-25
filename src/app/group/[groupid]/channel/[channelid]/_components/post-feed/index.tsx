@@ -4,6 +4,7 @@ import { useChannelPage } from "@/hooks/channels"
 
 import InfiniteScrollObserver from "@/components/global/infinite-scroll"
 import { Skeleton } from "@/components/ui/skeleton"
+import { EmptyChannel } from "../empty-channel"
 import { PaginatedPosts } from "../paginates-posts"
 import { PostCard } from "./post-card"
 
@@ -99,6 +100,6 @@ export const PostFeed = ({ channelid, userid }: PostFeedProps) => {
       </InfiniteScrollObserver>
     </>
   ) : (
-    <></>
+    <EmptyChannel userid={userid} />
   )
 }

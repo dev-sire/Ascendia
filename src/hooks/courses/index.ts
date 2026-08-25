@@ -131,7 +131,14 @@ export const useCourses = (groupid: string) => {
     queryFn: () => onGetGroupCourses(groupid),
   })
 
-  return { data }
+  const { data: groupInfo } = useQuery({
+    queryKey: ["group-info"],
+    queryFn: () => onGetGroupInfo(groupid),
+  })
+
+  const isOwner = !!(groupInfo as any)?.groupOwner
+
+  return { data, isOwner }
 }
 
 export const useCreateModule = (courseId: string, groupid: string) => {
