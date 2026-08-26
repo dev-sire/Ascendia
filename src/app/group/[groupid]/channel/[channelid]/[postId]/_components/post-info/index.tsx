@@ -35,14 +35,14 @@ export const PostInfo = ({ id }: PostInfoProps) => {
       <Interactions
         id={id}
         page
-        userid={data.post?.likes[0]?.userId ?? undefined}
+        userid={data.currentUserId}
         likedUser={
-          data.post && data.post?.likes.length > 0
+          data.post && data.post.likes.length > 0
             ? data.post.likes[0].userId
             : undefined
         }
         likeid={
-          data.post && data.post?.likes.length > 0
+          data.post && data.post.likes.length > 0
             ? data.post.likes[0].id
             : undefined
         }

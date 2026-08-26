@@ -671,9 +671,9 @@ export const onGetPostInfo = async (postid: string) => {
       },
     })
 
-    if (post) return { status: 200, post: JSON.parse(JSON.stringify(post)) }
+    if (post) return { status: 200, post, currentUserId: user.id }
 
-    return { status: 404, message: "No post found", post: null }
+    return { status: 404, message: "No post found" }
   } catch (error) {
     return { status: 400, message: "Oops! something went wrong" }
   }
@@ -699,36 +699,36 @@ export const onGetPostComments = async (postid: string) => {
       },
     })
 
-    // Always return a value — React Query throws if queryFn returns undefined.
-    // Also serialize via JSON round-trip to strip Prisma class instances before
-    // crossing the RSC boundary (fixes "Only plain objects" error).
-    return {
-      status: 200,
-      comments: JSON.parse(JSON.stringify(comments ?? [])),
+    if (comments && comments.length > 0) {
+      return { status: 200, comments }
     }
   } catch (error) {
-    return { status: 400, comments: [] }
+    return { status: 400 }
   }
 }
 
 export const onGetCommentReplies = async (commentid: string) => {
   try {
-    const replies = await client.comment.findMany({
+    const replies = await client.comment.findUnique({
       where: {
-        commentId: commentid,
-        replied: true,
+        id: commentid,
       },
-      include: {
-        user: true,
+      select: {
+        reply: {
+          include: {
+            user: true,
+          },
+        },
       },
     })
 
-    return {
-      status: 200,
-      replies: JSON.parse(JSON.stringify(replies ?? [])),
+    if (replies && replies.reply.length > 0) {
+      return { status: 200, replies: replies.reply }
     }
+
+    return { status: 404, message: "No replies found" }
   } catch (error) {
-    return { status: 400, message: "Oops something went wrong", replies: [] }
+    return { status: 400, message: "Oops something went wrong" }
   }
 }
 

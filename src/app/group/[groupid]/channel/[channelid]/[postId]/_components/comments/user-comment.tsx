@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { useGetReplies } from "@/hooks/channels"
 
-import { Chat } from "@/icons"
+import { Chat, Heart } from "@/icons"
 import { cn } from "@/lib/utils"
 import { User } from "lucide-react"
 
@@ -59,6 +59,10 @@ export const UserComment = ({
         <h3 className="font-semibold text-sm">{username}</h3>
         <p className="font-light text-sm">{content}</p>
         <div className="flex gap-x-5 items-center">
+          <span className="flex items-center text-themeTextGray text-xs gap-x-1">
+            <Heart />
+            Like
+          </span>
           {!noReply && (
             <span
               {...(!optimistic && {
@@ -77,7 +81,7 @@ export const UserComment = ({
               {data?.replies &&
                 data.replies?.length > 0 &&
                 data.replies.map(
-                  (rep: any) =>
+                  (rep) =>
                     rep.commentId === id && (
                       <UserComment
                         key={rep.id}
@@ -93,12 +97,14 @@ export const UserComment = ({
                     ),
                 )}
             </Loader>
-            <span
-              onClick={onActiveComment}
-              className="hover:bg-themeGray text-sm cursor-pointer p-2 rounded-lg"
-            >
-              View {replyCount} {replyCount > 1 ? "replies" : "reply"}
-            </span>
+            {activeComment !== id && (
+              <span
+                onClick={onActiveComment}
+                className="hover:bg-themeGray text-themeTextGray text-xs cursor-pointer p-2 rounded-lg"
+              >
+                View {replyCount} {replyCount === 1 ? "reply" : "replies"}
+              </span>
+            )}
           </>
         ) : (
           <></>
