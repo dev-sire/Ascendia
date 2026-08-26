@@ -10,25 +10,30 @@ Ascendia/
 ├── .prettierrc
 ├── .vscode/
 │   └── settings.json
+├── LICENSE
+├── README.md
 ├── bun.lock
 ├── commitlint.config.ts
 ├── components.json
-├── LICENSE
 ├── next.config.mjs
 ├── package-lock.json
 ├── package.json
 ├── postcss.config.mjs
 ├── prisma/
+│   ├── migrations/
+│   │   ├── 20260820205711_section_completedby/
+│   │   │   └── migration.sql
+│   │   └── migration_lock.toml
 │   └── schema.prisma
 ├── public/
 │   ├── dashboard-snippet.png
 │   ├── file-text.svg
 │   ├── globe.svg
+│   ├── logo.png
 │   ├── next.svg
 │   ├── stripe.png
 │   ├── vercel.svg
 │   └── window.svg
-├── README.md
 ├── src/
 │   ├── actions/
 │   │   ├── auth.ts
@@ -49,13 +54,16 @@ Ascendia/
 │   │   │   │       ├── group-dropdown.tsx
 │   │   │   │       └── index.tsx
 │   │   │   ├── about/
-│   │   │   │   ├── _components/
-│   │   │   │   │   ├── about.tsx
-│   │   │   │   │   ├── gallery.tsx
-│   │   │   │   │   └── join-button.tsx
-│   │   │   │   └── [groupId]/
-│   │   │   │       └── page.tsx
+│   │   │   │   ├── [groupId]/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── _components/
+│   │   │   │       ├── about.tsx
+│   │   │   │       ├── gallery.tsx
+│   │   │   │       └── join-button.tsx
 │   │   │   ├── explore/
+│   │   │   │   ├── [category]/
+│   │   │   │   │   ├── loading.tsx
+│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── _components/
 │   │   │   │   │   ├── explore-content.tsx
 │   │   │   │   │   ├── explore-slider.tsx
@@ -63,9 +71,6 @@ Ascendia/
 │   │   │   │   │   ├── group-list.tsx
 │   │   │   │   │   ├── paginated-groups.tsx
 │   │   │   │   │   └── searched-groups.tsx
-│   │   │   │   ├── [category]/
-│   │   │   │   │   ├── loading.tsx
-│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── layout.tsx
 │   │   │   │   └── page.tsx
 │   │   │   ├── layout.tsx
@@ -76,6 +81,7 @@ Ascendia/
 │   │   │   │   │   └── index.tsx
 │   │   │   │   ├── dashboard-snippet/
 │   │   │   │   │   └── index.tsx
+│   │   │   │   ├── deep-features.tsx
 │   │   │   │   ├── navbar/
 │   │   │   │   │   ├── index.tsx
 │   │   │   │   │   └── menu.tsx
@@ -103,21 +109,25 @@ Ascendia/
 │   │   ├── favicon.ico
 │   │   ├── globals.css
 │   │   ├── group/
-│   │   │   ├── _components/
-│   │   │   │   ├── leaderboard/
-│   │   │   │   │   └── index.tsx
-│   │   │   │   ├── mobile-nav/
-│   │   │   │   │   └── index.tsx
-│   │   │   │   └── navbar/
-│   │   │   │       └── index.tsx
 │   │   │   ├── [groupid]/
 │   │   │   │   ├── _components/
 │   │   │   │   │   └── group-navbar/
 │   │   │   │   │       └── index.tsx
 │   │   │   │   ├── channel/
 │   │   │   │   │   └── [channelid]/
+│   │   │   │   │       ├── [postId]/
+│   │   │   │   │       │   ├── _components/
+│   │   │   │   │       │   │   ├── comments/
+│   │   │   │   │       │   │   │   ├── index.tsx
+│   │   │   │   │       │   │   │   └── user-comment.tsx
+│   │   │   │   │       │   │   └── post-info/
+│   │   │   │   │       │   │       └── index.tsx
+│   │   │   │   │       │   ├── loading.tsx
+│   │   │   │   │       │   └── page.tsx
 │   │   │   │   │       ├── _components/
 │   │   │   │   │       │   ├── create-post/
+│   │   │   │   │       │   │   └── index.tsx
+│   │   │   │   │       │   ├── empty-channel/
 │   │   │   │   │       │   │   └── index.tsx
 │   │   │   │   │       │   ├── paginates-posts/
 │   │   │   │   │       │   │   └── index.tsx
@@ -126,23 +136,9 @@ Ascendia/
 │   │   │   │   │       │       ├── interactions.tsx
 │   │   │   │   │       │       ├── post-author.tsx
 │   │   │   │   │       │       └── post-card.tsx
-│   │   │   │   │       ├── [postId]/
-│   │   │   │   │       │   ├── _components/
-│   │   │   │   │       │   │   ├── comments/
-│   │   │   │   │       │   │   │   ├── index.tsx
-│   │   │   │   │       │   │   │   └── user-comment.tsx
-│   │   │   │   │       │   │   └── post-info/
-│   │   │   │   │       │   │       └── index.tsx
-│   │   │   │   │       │   └── page.tsx
+│   │   │   │   │       ├── loading.tsx
 │   │   │   │   │       └── page.tsx
 │   │   │   │   ├── courses/
-│   │   │   │   │   ├── _components/
-│   │   │   │   │   │   ├── course-list/
-│   │   │   │   │   │   │   └── index.tsx
-│   │   │   │   │   │   ├── create-module/
-│   │   │   │   │   │   │   └── index.tsx
-│   │   │   │   │   │   └── module-list/
-│   │   │   │   │   │       └── index.tsx
 │   │   │   │   │   ├── [courseId]/
 │   │   │   │   │   │   ├── [sectionId]/
 │   │   │   │   │   │   │   ├── _components/
@@ -152,18 +148,26 @@ Ascendia/
 │   │   │   │   │   │   │   └── page.tsx
 │   │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   ├── _components/
+│   │   │   │   │   │   ├── course-list/
+│   │   │   │   │   │   │   └── index.tsx
+│   │   │   │   │   │   ├── create-module/
+│   │   │   │   │   │   │   └── index.tsx
+│   │   │   │   │   │   └── module-list/
+│   │   │   │   │   │       └── index.tsx
 │   │   │   │   │   └── page.tsx
 │   │   │   │   ├── layout.tsx
+│   │   │   │   ├── loading.tsx
 │   │   │   │   ├── messages/
-│   │   │   │   │   ├── _components/
-│   │   │   │   │   │   ├── chat/
-│   │   │   │   │   │   │   └── index.tsx
-│   │   │   │   │   │   ├── chat-bubble/
-│   │   │   │   │   │   │   └── index.tsx
-│   │   │   │   │   │   └── chat-menu/
-│   │   │   │   │   │       └── index.tsx
 │   │   │   │   │   ├── [chatid]/
 │   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   ├── _components/
+│   │   │   │   │   │   ├── chat-bubble/
+│   │   │   │   │   │   │   └── index.tsx
+│   │   │   │   │   │   ├── chat-menu/
+│   │   │   │   │   │   │   └── index.tsx
+│   │   │   │   │   │   └── chat/
+│   │   │   │   │   │       └── index.tsx
 │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   └── page.tsx
 │   │   │   │   └── settings/
@@ -186,6 +190,13 @@ Ascendia/
 │   │   │   │           │   └── subscriptions/
 │   │   │   │           │       └── index.tsx
 │   │   │   │           └── page.tsx
+│   │   │   ├── _components/
+│   │   │   │   ├── leaderboard/
+│   │   │   │   │   └── index.tsx
+│   │   │   │   ├── mobile-nav/
+│   │   │   │   │   └── index.tsx
+│   │   │   │   └── navbar/
+│   │   │   │       └── index.tsx
 │   │   │   └── create/
 │   │   │       ├── layout.tsx
 │   │   │       ├── loading.tsx
@@ -441,5 +452,4 @@ Ascendia/
 ├── tailwind.config.ts
 ├── tsconfig.json
 └── yarn.lock
-
 ```
