@@ -18,55 +18,49 @@ import { Navbar } from "../_components/navbar"
 
 type Props = {
   children: React.ReactNode
-  params: {
-    groupid: string
-  }
+  params: Promise<{ groupid: string }>
 }
 
 const GroupLayout = async ({ children, params }: Props) => {
+  const { groupid } = await params
   const query = new QueryClient()
   const user = await onAuthenticatedUser()
 
   if (!user.id) redirect("/sign-in")
 
-  //group info
-  await query.prefetchQuery({
-    queryKey: ["group-info"],
-    queryFn: () => onGetGroupInfo(params.groupid),
-  })
-
-  //user groups
-  await query.prefetchQuery({
-    queryKey: ["user-groups"],
-    queryFn: () => onGetUserGroups(user.id as string),
-  })
-
-  //channels
-  await query.prefetchQuery({
-    queryKey: ["group-channels"],
-    queryFn: () => onGetGroupChannels(params.groupid),
-  })
-
-  //group subscriptions
-  await query.prefetchQuery({
-    queryKey: ["group-subscriptions"],
-    queryFn: () => onGetGroupSubscriptions(params.groupid),
-  })
-
-  //member-chats
-  await query.prefetchQuery({
-    queryKey: ["member-chats"],
-    queryFn: () => onGetAllGroupMembers(params.groupid),
-  })
+  // All keys are scoped with their ID so navigating between groups never
+  // serves one group's data under another group's layout.
+  await Promise.all([
+    query.prefetchQuery({
+      queryKey: ["group-info", groupid],
+      queryFn: () => onGetGroupInfo(groupid),
+    }),
+    query.prefetchQuery({
+      queryKey: ["user-groups"],
+      queryFn: () => onGetUserGroups(user.id as string),
+    }),
+    query.prefetchQuery({
+      queryKey: ["group-channels", groupid],
+      queryFn: () => onGetGroupChannels(groupid),
+    }),
+    query.prefetchQuery({
+      queryKey: ["group-subscriptions", groupid],
+      queryFn: () => onGetGroupSubscriptions(groupid),
+    }),
+    query.prefetchQuery({
+      queryKey: ["member-chats", groupid],
+      queryFn: () => onGetAllGroupMembers(groupid),
+    }),
+  ])
 
   return (
     <HydrationBoundary state={dehydrate(query)}>
       <div className="flex h-screen md:pt-5">
-        <SideBar groupid={params.groupid} userid={user.id} />
+        <SideBar groupid={groupid} userid={user.id} />
         <div className="md:ml-[300px] flex flex-col flex-1 bg-[#101011] md:rounded-tl-xl overflow-y-auto border-l-[1px] boreder-t-[1px] border-[#28282D]">
-          <Navbar groupid={params.groupid} userid={user.id} />
+          <Navbar groupid={groupid} userid={user.id} />
           {children}
-          <MobileNav groupid={params.groupid} />
+          <MobileNav groupid={groupid} />
         </div>
       </div>
     </HydrationBoundary>

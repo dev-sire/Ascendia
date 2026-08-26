@@ -17,23 +17,23 @@ export const useNavigation = () => {
 }
 
 export const useSideBar = (groupid: string) => {
+  // Keys must match the prefetch keys in group layout exactly,
+  // including the groupid, so hydrated data is served correctly
+  // and never bleeds between groups.
   const { data: groups } = useQuery({
     queryKey: ["user-groups"],
   }) as { data: IGroups }
 
   const { data: groupInfo } = useQuery({
-    queryKey: ["group-info"],
+    queryKey: ["group-info", groupid],
   }) as { data: IGroupInfo }
 
   const { data: channels } = useQuery({
-    queryKey: ["group-channels"],
+    queryKey: ["group-channels", groupid],
     queryFn: () => onGetGroupChannels(groupid),
   })
 
   const client = useQueryClient()
-
-  //we use usemutation to optimistically add a channel
-  //once the mutation is settled or complete we invalidate the group-channel query and trigger a refetch //this makes the optimistic ui seamless
 
   const { isPending, mutate, isError, variables } = useMutation({
     mutationFn: (data: {
@@ -50,7 +50,7 @@ export const useSideBar = (groupid: string) => {
       }),
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ["group-channels"],
+        queryKey: ["group-channels", groupid],
       })
     },
   })

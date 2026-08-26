@@ -1,7 +1,8 @@
 "use client"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useSectionNavBar } from "@/hooks/courses"
-import { Check } from "lucide-react"
+import { Check, Loader2 } from "lucide-react"
 
 type Props = {
   sectionid: string
@@ -10,7 +11,21 @@ type Props = {
 const SectionNavBar = ({ sectionid }: Props) => {
   const { data, mutate, isPending } = useSectionNavBar(sectionid)
 
-  if (data?.status !== 200) return <></>
+  // Show a skeleton navbar while the section is loading so the layout
+  // doesn't shift and the user has a loading hint.
+  if (!data) {
+    return (
+      <div className="flex justify-between p-5 items-center">
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-4 w-24 bg-themeGray/30" />
+          <Skeleton className="h-8 w-48 bg-themeGray/30" />
+        </div>
+        <Skeleton className="h-9 w-36 bg-themeGray/30" />
+      </div>
+    )
+  }
+
+  if (data.status !== 200) return <></>
 
   const completed = data.completedByUser ?? false
 
@@ -29,7 +44,11 @@ const SectionNavBar = ({ sectionid }: Props) => {
           onClick={() => !completed && mutate()}
           disabled={isPending || completed}
         >
-          <Check size={16} />
+          {isPending ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : (
+            <Check size={16} />
+          )}
           {completed ? "Completed" : isPending ? "Saving…" : "Mark as complete"}
         </Button>
       </div>

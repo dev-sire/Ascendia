@@ -57,8 +57,11 @@ export const useChannelInfo = () => {
       })
     },
     onSettled: async () => {
+      // Invalidate all group-channels entries (prefix match) because
+      // useChannelInfo doesn't receive a groupid.
       return await client.invalidateQueries({
         queryKey: ["group-channels"],
+        exact: false,
       })
     },
   })
@@ -72,6 +75,7 @@ export const useChannelInfo = () => {
     onSettled: async () => {
       return await client.invalidateQueries({
         queryKey: ["group-channels"],
+        exact: false,
       })
     },
   })
@@ -125,7 +129,7 @@ export const useChannelInfo = () => {
 
 export const useChannelPage = (channelid: string) => {
   const { data, isPending } = useQuery({
-    queryKey: ["channel-info"],
+    queryKey: ["channel-info", channelid],
     queryFn: () => onGetChannelInfo(channelid),
   })
 
@@ -207,7 +211,7 @@ export const useCreateChannelPost = (channelid: string) => {
     },
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ["channel-info"],
+        queryKey: ["channel-info", channelid],
       })
     },
   })
@@ -249,10 +253,12 @@ export const useLikeChannelPost = (postid: string) => {
     },
     onSettled: async () => {
       await client.invalidateQueries({
-        queryKey: ["unique-post"],
+        queryKey: ["unique-post", postid],
       })
+      // channel-info: invalidate all channels since we don't have channelid here
       return await client.invalidateQueries({
         queryKey: ["channel-info"],
+        exact: false,
       })
     },
   })
@@ -262,7 +268,7 @@ export const useLikeChannelPost = (postid: string) => {
 
 export const useGetPost = (postid: string) => {
   const { data, isPending } = useQuery({
-    queryKey: ["unique-post"],
+    queryKey: ["unique-post", postid],
     queryFn: () => onGetPostInfo(postid),
   })
 
@@ -294,7 +300,7 @@ export const usePostComment = (postid: string) => {
         queryKey: ["post-comments", postid],
       })
       return await client.invalidateQueries({
-        queryKey: ["unique-post"],
+        queryKey: ["unique-post", postid],
       })
     },
   })

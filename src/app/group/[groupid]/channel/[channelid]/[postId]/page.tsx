@@ -11,23 +11,30 @@ import {
 import { PostComments } from "./_components/comments"
 import { PostInfo } from "./_components/post-info"
 
-const PostPage = async ({ params }: { params: { postId: string; groupid: string; channelid: string } }) => {
+const PostPage = async ({
+  params,
+}: {
+  params: Promise<{ postId: string; groupid: string; channelid: string }>
+}) => {
+  const { postId, groupid } = await params
   const client = new QueryClient()
 
-  await client.prefetchQuery({
-    queryKey: ["unique-post"],
-    queryFn: () => onGetPostInfo(params.postId),
-  })
-
-  await client.prefetchQuery({
-    queryKey: ["post-comments", params.postId],
-    queryFn: () => onGetPostComments(params.postId),
-  })
-
-  await client.prefetchQuery({
-    queryKey: ["about-group-info"],
-    queryFn: () => onGetGroupInfo(params.groupid),
-  })
+  // Keys include their ID so navigating between posts never
+  // serves a previous post's content.
+  await Promise.all([
+    client.prefetchQuery({
+      queryKey: ["unique-post", postId],
+      queryFn: () => onGetPostInfo(postId),
+    }),
+    client.prefetchQuery({
+      queryKey: ["post-comments", postId],
+      queryFn: () => onGetPostComments(postId),
+    }),
+    client.prefetchQuery({
+      queryKey: ["about-group-info"],
+      queryFn: () => onGetGroupInfo(groupid),
+    }),
+  ])
 
   const user = await onAuthenticatedUser()
 
@@ -35,13 +42,13 @@ const PostPage = async ({ params }: { params: { postId: string; groupid: string;
     <HydrationBoundary state={dehydrate(client)}>
       <div className="grid grid-cols-4 px-5 py-5 gap-x-10">
         <div className="col-span-4 lg:col-span-3">
-          <PostInfo id={params.postId} />
+          <PostInfo id={postId} />
           <PostCommentForm
             username={user.username!}
             image={user.image!}
-            postid={params.postId}
+            postid={postId}
           />
-          <PostComments postid={params.postId} />
+          <PostComments postid={postId} />
         </div>
         <div className="col-span-1 hidden lg:inline relative">
           <GroupSideWidget light />

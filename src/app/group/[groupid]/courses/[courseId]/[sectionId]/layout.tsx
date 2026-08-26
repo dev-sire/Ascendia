@@ -18,8 +18,10 @@ const CourseContentPageLayout = async ({
   const { sectionid } = await params
   const client = new QueryClient()
 
+  // Key must include sectionid to match useSectionNavBar — without it
+  // hydrated data from section A is served when navigating to section B.
   await client.prefetchQuery({
-    queryKey: ["section-info"],
+    queryKey: ["section-info", sectionid],
     queryFn: () => onGetSectionInfo(sectionid),
   })
 

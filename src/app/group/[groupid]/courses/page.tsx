@@ -1,4 +1,5 @@
 import { onGetGroupCourses } from "@/actions/courses"
+import { onGetGroupInfo } from "@/actions/groups"
 import CourseCreate from "@/components/global/create-course"
 import {
   HydrationBoundary,
@@ -15,10 +16,18 @@ const CoursesPage = async ({
   const { groupid } = await params
   const client = new QueryClient()
 
-  await client.prefetchQuery({
-    queryKey: ["group-courses"],
-    queryFn: () => onGetGroupCourses(groupid),
-  })
+  // Keys must include groupid so navigating between groups
+  // doesn't serve stale data from a previous group.
+  await Promise.all([
+    client.prefetchQuery({
+      queryKey: ["group-courses", groupid],
+      queryFn: () => onGetGroupCourses(groupid),
+    }),
+    client.prefetchQuery({
+      queryKey: ["group-info", groupid],
+      queryFn: () => onGetGroupInfo(groupid),
+    }),
+  ])
 
   return (
     <HydrationBoundary state={dehydrate(client)}>

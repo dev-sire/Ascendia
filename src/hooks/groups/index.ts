@@ -132,7 +132,7 @@ export const useSearch = (search: "GROUPS" | "POSTS") => {
 
 export const useGroupSettings = (groupid: string) => {
   const { data } = useQuery({
-    queryKey: ["group-info"],
+    queryKey: ["group-info", groupid],
     queryFn: () => onGetGroupInfo(groupid),
   })
 
@@ -590,7 +590,7 @@ export const useMediaGallery = (groupid: string) => {
 
 export const useGroupChat = (groupid: string) => {
   const { data } = useQuery({
-    queryKey: ["member-chats"],
+    queryKey: ["member-chats", groupid],
     queryFn: () => onGetAllGroupMembers(groupid),
   })
 

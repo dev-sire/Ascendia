@@ -50,7 +50,7 @@ export const useCreateCourse = (groupid: string) => {
   const client = useQueryClient()
 
   const { data } = useQuery({
-    queryKey: ["group-info"],
+    queryKey: ["group-info", groupid],
     queryFn: () => onGetGroupInfo(groupid),
   })
 
@@ -65,11 +65,7 @@ export const useCreateCourse = (groupid: string) => {
       privacy: string
       published: boolean
     }) => {
-      console.log(data, "course")
-
       const uploaded = await upload.uploadFile(data.image[0])
-
-      console.log(uploaded, "uploaded")
       const course = await onCreateGroupCourse(
         groupid,
         data.name,
@@ -79,7 +75,6 @@ export const useCreateCourse = (groupid: string) => {
         data.privacy,
         data.published,
       )
-
       return course
     },
     onMutate: () => {
@@ -92,11 +87,10 @@ export const useCreateCourse = (groupid: string) => {
     },
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ["group-courses"],
+        queryKey: ["group-courses", groupid],
       })
     },
     onError: (error) => {
-      console.log(error)
       return toast("Error", {
         description: error.message,
       })
@@ -127,12 +121,12 @@ export const useCreateCourse = (groupid: string) => {
 
 export const useCourses = (groupid: string) => {
   const { data } = useQuery({
-    queryKey: ["group-courses"],
+    queryKey: ["group-courses", groupid],
     queryFn: () => onGetGroupCourses(groupid),
   })
 
   const { data: groupInfo } = useQuery({
-    queryKey: ["group-info"],
+    queryKey: ["group-info", groupid],
     queryFn: () => onGetGroupInfo(groupid),
   })
 
@@ -145,12 +139,12 @@ export const useCreateModule = (courseId: string, groupid: string) => {
   const client = useQueryClient()
 
   const { data } = useQuery({
-    queryKey: ["group-info"],
+    queryKey: ["group-info", groupid],
     queryFn: () => onGetGroupInfo(groupid),
   })
 
   const { mutate, variables, isPending } = useMutation({
-    mutationKey: ["create-module"],
+    mutationKey: ["create-module", courseId],
     mutationFn: (data: { courseId: string; title: string; moduleId: string }) =>
       onCreateCourseModule(data.courseId, data.title, data.moduleId),
     onSuccess: (data) => {
@@ -160,10 +154,11 @@ export const useCreateModule = (courseId: string, groupid: string) => {
     },
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ["course-modules"],
+        queryKey: ["course-modules", courseId],
       })
     },
   })
+
   const onCreateModule = () =>
     mutate({
       courseId,
@@ -187,12 +182,12 @@ export const useCourseModule = (courseId: string, groupid: string) => {
   const [moduleId, setModuleId] = useState<string | undefined>(undefined)
 
   const { data } = useQuery({
-    queryKey: ["course-modules"],
+    queryKey: ["course-modules", courseId],
     queryFn: () => onGetCourseModules(courseId),
   })
 
   const { data: groupOwner } = useQuery({
-    queryKey: ["group-info"],
+    queryKey: ["group-info", groupid],
     queryFn: () => onGetGroupInfo(groupid),
   })
 
@@ -211,7 +206,7 @@ export const useCourseModule = (courseId: string, groupid: string) => {
     },
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ["course-modules"],
+        queryKey: ["course-modules", courseId],
       })
     },
   })
@@ -231,7 +226,7 @@ export const useCourseModule = (courseId: string, groupid: string) => {
     },
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ["course-modules"],
+        queryKey: ["course-modules", courseId],
       })
     },
   })
@@ -250,7 +245,7 @@ export const useCourseModule = (courseId: string, groupid: string) => {
     },
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ["course-modules"],
+        queryKey: ["course-modules", courseId],
       })
     },
   })
@@ -338,7 +333,7 @@ export const useCourseModule = (courseId: string, groupid: string) => {
 
 export const useSectionNavBar = (sectionid: string) => {
   const { data } = useQuery({
-    queryKey: ["section-info"],
+    queryKey: ["section-info", sectionid],
     queryFn: () => onGetSectionInfo(sectionid),
   })
 
@@ -352,9 +347,11 @@ export const useSectionNavBar = (sectionid: string) => {
       })
     },
     onSettled: async () => {
-      return await client.invalidateQueries({
-        queryKey: ["course-modules"],
-      })
+      // Invalidate both so the sidebar completion icon updates too
+      return await Promise.all([
+        client.invalidateQueries({ queryKey: ["section-info", sectionid] }),
+        client.invalidateQueries({ queryKey: ["course-modules"] }),
+      ])
     },
   })
 
@@ -363,7 +360,7 @@ export const useSectionNavBar = (sectionid: string) => {
 
 export const useCourseSectionInfo = (sectionId: string) => {
   const { data } = useQuery({
-    queryKey: ["section-info"],
+    queryKey: ["section-info", sectionId],
     queryFn: () => onGetSectionInfo(sectionId),
   })
   return { data }
@@ -448,7 +445,7 @@ export const useCourseContent = (
     },
     onSettled: async () => {
       return await client.invalidateQueries({
-        queryKey: ["section-info"],
+        queryKey: ["section-info", sectionId],
       })
     },
   })

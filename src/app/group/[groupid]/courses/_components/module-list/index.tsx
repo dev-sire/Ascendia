@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/tooltip"
 import { useCourseModule } from "@/hooks/courses"
 import { EmptyCircle, PurpleCheck } from "@/icons"
-import { Pencil, Plus } from "lucide-react"
+import { Loader2, Pencil, Plus } from "lucide-react"
 import Link from "next/link"
 import { v4 } from "uuid"
 
@@ -175,8 +175,14 @@ const CourseModuleList = ({ courseId, groupid }: Props) => {
                     }
                     variant="outline"
                     className="bg-transparent border-themeGray text-themeTextGray mt-2"
+                    // Prevent double-clicks from firing duplicate mutations
+                    disabled={pendingSection}
                   >
-                    <Plus />
+                    {pendingSection ? (
+                      <Loader2 size={16} className="animate-spin" />
+                    ) : (
+                      <Plus />
+                    )}
                   </Button>
                 </>
               )}

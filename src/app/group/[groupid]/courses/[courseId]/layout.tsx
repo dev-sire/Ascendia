@@ -1,4 +1,5 @@
 import { onGetCourseModules } from "@/actions/courses"
+import { onGetGroupInfo } from "@/actions/groups"
 import {
   dehydrate,
   HydrationBoundary,
@@ -16,10 +17,18 @@ const CourseLayout = async ({ params, children }: CourseLayoutProps) => {
   const { courseid, groupid } = await params
   const client = new QueryClient()
 
-  await client.prefetchQuery({
-    queryKey: ["course-modules"],
-    queryFn: () => onGetCourseModules(courseid),
-  })
+  // Keys must match the hooks exactly — include IDs so cache never bleeds
+  // between different courses or groups.
+  await Promise.all([
+    client.prefetchQuery({
+      queryKey: ["course-modules", courseid],
+      queryFn: () => onGetCourseModules(courseid),
+    }),
+    client.prefetchQuery({
+      queryKey: ["group-info", groupid],
+      queryFn: () => onGetGroupInfo(groupid),
+    }),
+  ])
 
   return (
     <HydrationBoundary state={dehydrate(client)}>

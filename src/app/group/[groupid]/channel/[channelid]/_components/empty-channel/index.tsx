@@ -58,7 +58,7 @@ const OwnerOnboarding = ({ groupName }: { groupName: string }) => (
         {groupName} is live. Now make it yours.
       </h2>
       <p className="text-themeTextGray text-sm leading-relaxed">
-        Your channel is empty — here&apos;s how to bring it to life.
+        Your channel is empty, here&apos;s how to bring it to life.
       </p>
     </div>
 
