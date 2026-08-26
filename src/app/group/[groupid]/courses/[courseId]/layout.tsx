@@ -30,6 +30,8 @@ const CourseLayout = async ({ params, children }: CourseLayoutProps) => {
     }),
   ])
 
+  console.log(courseid, groupid, "courseid, groupid")
+
   return (
     <HydrationBoundary state={dehydrate(client)}>
       <div className="grid grid-cols-1 h-full lg:grid-cols-4 overflow-hidden">
