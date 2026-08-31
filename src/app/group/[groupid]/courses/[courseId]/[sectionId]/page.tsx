@@ -5,16 +5,16 @@ import { CourseContentForm } from "@/components/forms/course-content"
 const CourseModuleSection = async ({
   params,
 }: {
-  params: Promise<{ sectionid: string; groupid: string }>
+  params: Promise<{ sectionId: string; groupid: string }>
 }) => {
-  const { sectionid, groupid } = await params
+  const { sectionId, groupid } = await params
   const user = await onAuthenticatedUser()
   const group = await onGetGroupInfo(groupid)
 
   return (
     <CourseContentForm
       groupid={group.group?.userId!}
-      sectionid={sectionid}
+      sectionid={sectionId}
       userid={user.id!}
     />
   )

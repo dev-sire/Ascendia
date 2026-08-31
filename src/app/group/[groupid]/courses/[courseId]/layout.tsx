@@ -17,8 +17,6 @@ const CourseLayout = async ({ params, children }: CourseLayoutProps) => {
   const { courseId, groupid } = await params
   const client = new QueryClient()
 
-  // Keys must match the hooks exactly — include IDs so cache never bleeds
-  // between different courses or groups.
   await Promise.all([
     client.prefetchQuery({
       queryKey: ["course-modules", courseId],
@@ -29,8 +27,6 @@ const CourseLayout = async ({ params, children }: CourseLayoutProps) => {
       queryFn: () => onGetGroupInfo(groupid),
     }),
   ])
-
-  console.log(courseId, groupid, "courseId, groupid")
 
   return (
     <HydrationBoundary state={dehydrate(client)}>
