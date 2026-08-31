@@ -19,7 +19,7 @@ export const GroupChatMenu = ({ groupid }: GroupChatMenuProps) => {
   return (
     <div className="flex flex-col">
       {data?.status === 200 &&
-        data.members?.map((member) => (
+        data.members?.map((member: any) => (
           <Link
             href={`${pathname}/${member.id}`}
             key={member.id}
