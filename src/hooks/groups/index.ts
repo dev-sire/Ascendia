@@ -17,7 +17,6 @@ import { SendNewMessageSchema } from "@/components/forms/huddles/schema"
 import { UpdateGallerySchema } from "@/components/forms/media-gallery/schema"
 import { upload } from "@/lib/uploadcare"
 import { supabaseClient, validateURLString } from "@/lib/utils"
-import { onChat } from "@/redux/slices/chats-slices"
 import {
   onClearList,
   onInfiniteScroll,
@@ -29,6 +28,7 @@ import {
   onSearch,
 } from "@/redux/slices/search-slice"
 import { AppDispatch } from "@/redux/store"
+import { useUser as useClerkUser } from "@clerk/nextjs"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { usePathname, useRouter } from "next/navigation"
@@ -592,6 +592,8 @@ export const useGroupChat = (groupid: string) => {
   const { data } = useQuery({
     queryKey: ["member-chats", groupid],
     queryFn: () => onGetAllGroupMembers(groupid),
+    enabled: Boolean(groupid) && groupid.length === 36,
+    staleTime: 1000 * 60 * 2,
   })
 
   const pathname = usePathname()
@@ -600,62 +602,88 @@ export const useGroupChat = (groupid: string) => {
 }
 
 export const useChatWindow = (recieverid: string) => {
-  const { data, isFetched } = useQuery({
-    queryKey: ["user-messages"],
-    queryFn: () => onGetAllUserMessages(recieverid),
-  })
-
+  const { user } = useClerkUser()
+  const queryClient = useQueryClient()
   const messageWindowRef = useRef<HTMLDivElement | null>(null)
 
-  const onScrollToBottom = () => {
-    messageWindowRef.current?.scroll({
-      top: messageWindowRef.current.scrollHeight,
-      left: 0,
-      behavior: "smooth",
-    })
-  }
+  const { data } = useQuery({
+    queryKey: ["user-messages", recieverid],
+    queryFn: () => onGetAllUserMessages(recieverid),
+    enabled: Boolean(recieverid) && recieverid.length === 36,
+    staleTime: 1000 * 30,
+  })
 
+  console.log(data)
+
+  const messages = data?.messages ?? []
+
+  // Supabase Realtime — listen for messages where current user is the RECEIVER
+  // This fires on the recipient's browser when someone sends them a message.
   useEffect(() => {
-    supabaseClient
-      .channel("table-db-changes")
+    if (!recieverid || !user?.id) return
+
+    const channelName = `messages-to-${user.id}-from-${recieverid}`
+
+    const channel = supabaseClient
+      .channel(channelName)
       .on(
         "postgres_changes",
         {
-          event: "*",
+          event: "INSERT",
           schema: "public",
           table: "Message",
+          // Filter: messages sent TO the current user (they are the receiver)
+          filter: `recieverId=eq.${user.id}`,
         },
-        async (payload) => {
-          dispatch(
-            onChat({
-              chat: [
-                ...(payload.new as {
-                  id: string
-                  message: string
-                  createdAt: Date
-                  senderid: string | null
-                  recieverId: string | null
-                }[]),
-              ],
-            }),
+        (payload) => {
+          const newMsg = payload.new as {
+            id: string
+            message: string
+            createdAt: string
+            senderid: string | null
+            recieverId: string | null
+          }
+
+          // Only add if it's from the person we're currently chatting with
+          if (newMsg.senderid !== recieverid) return
+
+          queryClient.setQueryData(
+            ["user-messages", recieverid],
+            (old: any) => {
+              const existing = old?.messages ?? []
+              // Deduplicate by ID
+              if (existing.find((m: any) => m.id === newMsg.id)) return old
+              return {
+                ...old,
+                messages: [
+                  ...existing,
+                  { ...newMsg, createdAt: new Date(newMsg.createdAt) },
+                ],
+              }
+            },
           )
         },
       )
       .subscribe()
-  }, [])
 
+    return () => {
+      supabaseClient.removeChannel(channel)
+    }
+  }, [recieverid, user?.id, queryClient])
+
+  // Scroll to bottom whenever messages grow
   useEffect(() => {
-    onScrollToBottom()
-  }, [messageWindowRef])
+    if (messageWindowRef.current) {
+      messageWindowRef.current.scrollTop =
+        messageWindowRef.current.scrollHeight
+    }
+  }, [messages.length])
 
-  const dispatch: AppDispatch = useDispatch()
-
-  if (isFetched && data?.messages) dispatch(onChat({ chat: data.messages }))
-
-  return { messageWindowRef }
+  return { messageWindowRef, messages }
 }
 
-export const useSendMessage = (recieverId: string) => {
+export const useSendMessage = (recieverId: string, userid: string) => {
+  const queryClient = useQueryClient()
   const { register, reset, handleSubmit } = useForm<
     z.infer<typeof SendNewMessageSchema>
   >({
@@ -666,9 +694,40 @@ export const useSendMessage = (recieverId: string) => {
     mutationKey: ["send-new-message"],
     mutationFn: (data: { messageid: string; message: string }) =>
       onSendMessage(recieverId, data.messageid, data.message),
-    onMutate: () => reset(),
-    onSuccess: () => {
-      return
+    onMutate: (variables) => {
+      reset()
+      // Optimistic insert directly into React Query cache
+      const optimisticMsg = {
+        id: variables.messageid,
+        message: variables.message,
+        // Use ISO string — consistent between server render and client
+        createdAt: new Date().toISOString(),
+        senderid: userid,
+        recieverId,
+      }
+      queryClient.setQueryData(
+        ["user-messages", recieverId],
+        (old: any) => {
+          const existing = old?.messages ?? []
+          return {
+            ...old,
+            status: 200,
+            messages: [...existing, optimisticMsg],
+          }
+        },
+      )
+    },
+    onError: (_err, variables) => {
+      // Roll back optimistic message if send failed
+      queryClient.setQueryData(
+        ["user-messages", recieverId],
+        (old: any) => ({
+          ...old,
+          messages: (old?.messages ?? []).filter(
+            (m: any) => m.id !== variables.messageid,
+          ),
+        }),
+      )
     },
   })
 

@@ -1,7 +1,7 @@
 //this is our redux store
 "use client"
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
-import { TypedUseSelectorHook, useSelector } from "react-redux"
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
 import chatReducer from "./slices/chats-slices"
 import infiniteScrollReducer from "./slices/infinite-scroll-slice"
 import onlineTrackingReducer from "./slices/online-member-slice"
@@ -29,3 +29,4 @@ export type AppDispatch = typeof store.dispatch
 
 //this useAppSelector has type definitions added
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+export const useAppDispatch = () => useDispatch<AppDispatch>()

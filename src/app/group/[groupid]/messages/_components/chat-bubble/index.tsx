@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 
 type ChatBubbeProps = {
   senderid: string | null
-  createdAt: Date
+  createdAt: Date | string
   message: string
   userid: string
 }
@@ -13,6 +13,12 @@ export const ChatBubble = ({
   message,
   userid,
 }: ChatBubbeProps) => {
+  const date = createdAt instanceof Date ? createdAt : new Date(createdAt)
+  const hours = date.getHours()
+  const minutes = date.getMinutes().toString().padStart(2, "0")
+  const period = hours >= 12 ? "pm" : "am"
+  const displayHour = hours % 12 || 12
+
   return (
     <div
       className={cn(
@@ -24,12 +30,7 @@ export const ChatBubble = ({
     >
       <p>{message}</p>
       <p className={cn("text-xs text-themeTextGray")}>
-        {createdAt && (
-          <>
-            {createdAt.getHours()} {createdAt.getMinutes()}{" "}
-            {createdAt.getHours() > 12 ? "pm" : "am"}
-          </>
-        )}
+        {displayHour}:{minutes} {period}
       </p>
     </div>
   )

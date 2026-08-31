@@ -43,7 +43,7 @@ const MemberChatPage = async ({
           </div>
         </div>
         <ChatWindow userid={user.id!} recieverid={member?.member?.User?.id!} />
-        <HuddlesForm recieverid={member?.member?.User?.id!} />
+        <HuddlesForm recieverid={member?.member?.User?.id!} userid={user.id!} />
       </div>
     </HydrationBoundary>
   )

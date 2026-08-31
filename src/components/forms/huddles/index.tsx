@@ -7,10 +7,11 @@ import { Mic, Send } from "lucide-react"
 
 type HuddlesFormProps = {
   recieverid: string
+  userid: string
 }
 
-export const HuddlesForm = ({ recieverid }: HuddlesFormProps) => {
-  const { register, onSendNewMessage } = useSendMessage(recieverid)
+export const HuddlesForm = ({ recieverid, userid }: HuddlesFormProps) => {
+  const { register, onSendNewMessage } = useSendMessage(recieverid, userid)
   return (
     <div>
       <form

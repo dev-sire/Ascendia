@@ -251,13 +251,12 @@ export const onGetAllGroupMembers = async (groupid: string) => {
       },
     })
 
-    if (members && members.length > 0) {
-      return { status: 200, members }
+    return {
+      status: 200,
+      members: JSON.parse(JSON.stringify(members ?? [])),
     }
-
-    return { status: 400, message: "Oops something went wrong" }
   } catch (error) {
-    return { status: 400, message: "Oops something went wrong" }
+    return { status: 400, message: "Oops something went wrong", members: [] }
   }
 }
 
@@ -583,22 +582,22 @@ export const onGetAllUserMessages = async (recieverId: string) => {
     const sender = await onAuthenticatedUser()
     const messages = await client.message.findMany({
       where: {
-        senderid: {
-          in: [sender.id!, recieverId],
-        },
-        recieverId: {
-          in: [sender.id!, recieverId],
-        },
+        AND: [
+          { senderid: { in: [sender.id!, recieverId] } },
+          { recieverId: { in: [sender.id!, recieverId] } },
+        ],
       },
+      orderBy: { createdAt: "asc" },
     })
 
-    if (messages && messages.length > 0) {
-      return { status: 200, messages }
-    }
+    console.log(messages)
 
-    return { status: 404 }
+    return {
+      status: 200,
+      messages: JSON.parse(JSON.stringify(messages ?? [])),
+    }
   } catch (error) {
-    return { status: 400, message: "Oops something went wrong" }
+    return { status: 400, message: "Oops something went wrong", messages: [] }
   }
 }
 
