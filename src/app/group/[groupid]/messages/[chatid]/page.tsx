@@ -7,7 +7,6 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query"
-import { User } from "lucide-react"
 import { ChatWindow } from "../_components/chat"
 
 const MemberChatPage = async ({
@@ -25,25 +24,40 @@ const MemberChatPage = async ({
   })
 
   const user = await onAuthenticatedUser()
+  const fullName = `${member?.member?.User?.firstname} ${member?.member?.User?.lastname}`
+  const initial = member?.member?.User?.firstname?.[0]?.toUpperCase() ?? "?"
 
   return (
     <HydrationBoundary state={dehydrate(query)}>
-      <div className="h-full flex flex-col p-5">
-        <div className="bg-themeBlack rounded-2xl p-5">
-          <div className="flex gap-x-2">
-            <Avatar className="w-20 h-20">
-              <AvatarImage src={member?.member?.User?.image!} alt="User" />
-              <AvatarFallback>
-                <User />
+      <div className="h-full flex flex-col">
+        {/* ── Header ── */}
+        <div className="flex items-center gap-x-3 px-5 py-4 border-b border-themeGray/40 bg-themeBlack/60 backdrop-blur-sm flex-shrink-0">
+          <div className="relative">
+            <Avatar className="w-10 h-10 ring-2 ring-themeGray/30">
+              <AvatarImage src={member?.member?.User?.image!} alt={fullName} />
+              <AvatarFallback className="bg-themeGray text-themeTextWhite text-sm font-medium">
+                {initial}
               </AvatarFallback>
             </Avatar>
-            <h3 className="font-semibold text-2xl capitalize">
-              {member?.member?.User?.firstname} {member?.member?.User?.lastname}
+            {/* Static online indicator — you can wire this to Redux later */}
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-themeBlack" />
+          </div>
+
+          <div className="flex flex-col justify-center leading-tight">
+            <h3 className="text-sm font-semibold text-themeTextWhite capitalize">
+              {fullName}
             </h3>
+            <p className="text-xs text-emerald-400 font-medium">Online</p>
           </div>
         </div>
+
+        {/* ── Messages ── */}
         <ChatWindow userid={user.id!} recieverid={member?.member?.User?.id!} />
-        <HuddlesForm recieverid={member?.member?.User?.id!} userid={user.id!} />
+
+        {/* ── Input ── */}
+        <div className="flex-shrink-0 px-4 pb-4">
+          <HuddlesForm recieverid={member?.member?.User?.id!} userid={user.id!} />
+        </div>
       </div>
     </HydrationBoundary>
   )

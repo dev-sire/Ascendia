@@ -596,9 +596,7 @@ export const useGroupChat = (groupid: string) => {
     staleTime: 1000 * 60 * 2,
   })
 
-  const pathname = usePathname()
-
-  return { data, pathname }
+  return { data }
 }
 
 export const useChatWindow = (recieverid: string) => {
@@ -613,7 +611,7 @@ export const useChatWindow = (recieverid: string) => {
     staleTime: 1000 * 30,
   })
 
-  console.log(data)
+  console.log(data, "data in chat window")
 
   const messages = data?.messages ?? []
 

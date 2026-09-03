@@ -13,13 +13,14 @@ export const ChatWindow = ({ recieverid, userid }: ChatWindowProps) => {
 
   return (
     <div
-      className="flex-1 flex py-5 flex-col gap-y-3 h-0 overflow-auto"
+      className="flex-1 flex flex-col gap-y-2 px-4 py-4 h-0 overflow-y-auto"
       ref={messageWindowRef}
     >
       {messages.length === 0 && (
-        <p className="text-center text-themeTextGray text-sm mt-10">
-          No messages yet. Say hello!
-        </p>
+        <div className="flex-1 flex flex-col items-center justify-center gap-y-2 text-center">
+          <p className="text-themeTextGray text-sm">No messages yet.</p>
+          <p className="text-themeTextGray/60 text-xs">Say hello 👋</p>
+        </div>
       )}
       {messages.map((c: any) => (
         <ChatBubble key={c.id} {...c} userid={userid} />
