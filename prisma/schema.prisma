@@ -166,12 +166,19 @@ model Affiliate {
 }
 
 model Message {
-  id         String   @id @db.Uuid
-  message    String
-  createdAt  DateTime @default(now())
-  sender     User?    @relation(fields: [senderid], references: [id], onDelete: Cascade)
-  senderid   String?  @db.Uuid
-  recieverId String?  @db.Uuid
+  id         String     @id @db.Uuid
+  message    String?
+  mediaUrl   String?
+  mediaType  MediaType?
+  createdAt  DateTime   @default(now())
+  sender     User?      @relation(fields: [senderid], references: [id], onDelete: Cascade)
+  senderid   String?    @db.Uuid
+  recieverId String?    @db.Uuid
+}
+
+enum MediaType {
+  IMAGE
+  AUDIO
 }
 
 enum GROUP_PRIVACY {

@@ -636,7 +636,9 @@ export const useChatWindow = (recieverid: string) => {
         (payload) => {
           const newMsg = payload.new as {
             id: string
-            message: string
+            message: string | null
+            mediaUrl: string | null
+            mediaType: "IMAGE" | "AUDIO" | null
             createdAt: string
             senderid: string | null
             recieverId: string | null
@@ -655,7 +657,12 @@ export const useChatWindow = (recieverid: string) => {
                 ...old,
                 messages: [
                   ...existing,
-                  { ...newMsg, createdAt: new Date(newMsg.createdAt) },
+                  {
+                    ...newMsg,
+                    createdAt: new Date(newMsg.createdAt),
+                    mediaUrl: newMsg.mediaUrl ?? null,
+                    mediaType: newMsg.mediaType ?? null,
+                  },
                 ],
               }
             },
@@ -680,6 +687,15 @@ export const useChatWindow = (recieverid: string) => {
   return { messageWindowRef, messages }
 }
 
+type OutgoingMessage = {
+  messageid: string
+  message?: string
+  mediaUrl?: string
+  mediaType?: "IMAGE" | "AUDIO"
+  // blob URL for optimistic render only — never sent to server
+  localBlobUrl?: string
+}
+
 export const useSendMessage = (recieverId: string, userid: string) => {
   const queryClient = useQueryClient()
   const { register, reset, handleSubmit } = useForm<
@@ -688,52 +704,177 @@ export const useSendMessage = (recieverId: string, userid: string) => {
     resolver: zodResolver(SendNewMessageSchema),
   })
 
-  const { mutate } = useMutation({
+  // ── Image state ──
+  const [pendingImage, setPendingImage] = useState<File | null>(null)
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+  const imageInputRef = useRef<HTMLInputElement | null>(null)
+
+  // ── Audio recording state ──
+  const [isRecording, setIsRecording] = useState(false)
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
+  const [audioBlobUrl, setAudioBlobUrl] = useState<string | null>(null)
+  const [recordingSeconds, setRecordingSeconds] = useState(0)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const clearImage = () => {
+    setPendingImage(null)
+    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl)
+    setImagePreviewUrl(null)
+    if (imageInputRef.current) imageInputRef.current.value = ""
+  }
+
+  const clearAudio = () => {
+    setAudioBlob(null)
+    if (audioBlobUrl) URL.revokeObjectURL(audioBlobUrl)
+    setAudioBlobUrl(null)
+    setRecordingSeconds(0)
+  }
+
+  const onPickImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    clearAudio()
+    setPendingImage(file)
+    setImagePreviewUrl(URL.createObjectURL(file))
+  }
+
+  const onStartRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const recorder = new MediaRecorder(stream)
+      audioChunksRef.current = []
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data)
+      }
+      recorder.onstop = () => {
+        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" })
+        const url = URL.createObjectURL(blob)
+        setAudioBlob(blob)
+        setAudioBlobUrl(url)
+        stream.getTracks().forEach((t) => t.stop())
+      }
+      recorder.start()
+      mediaRecorderRef.current = recorder
+      setIsRecording(true)
+      setRecordingSeconds(0)
+      timerRef.current = setInterval(
+        () => setRecordingSeconds((s) => s + 1),
+        1000,
+      )
+    } catch {
+      toast("Microphone access denied")
+    }
+  }
+
+  const onStopRecording = () => {
+    mediaRecorderRef.current?.stop()
+    mediaRecorderRef.current = null
+    setIsRecording(false)
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+    clearImage()
+  }
+
+  const { mutate, isPending: isSending } = useMutation({
     mutationKey: ["send-new-message"],
-    mutationFn: (data: { messageid: string; message: string }) =>
-      onSendMessage(recieverId, data.messageid, data.message),
+    mutationFn: (data: OutgoingMessage) =>
+      onSendMessage(
+        recieverId,
+        data.messageid,
+        data.message,
+        data.mediaUrl,
+        data.mediaType,
+      ),
     onMutate: (variables) => {
       reset()
-      // Optimistic insert directly into React Query cache
+      clearImage()
+      clearAudio()
       const optimisticMsg = {
         id: variables.messageid,
-        message: variables.message,
-        // Use ISO string — consistent between server render and client
+        message: variables.message ?? null,
+        mediaUrl: variables.localBlobUrl ?? variables.mediaUrl ?? null,
+        mediaType: variables.mediaType ?? null,
         createdAt: new Date().toISOString(),
         senderid: userid,
         recieverId,
       }
-      queryClient.setQueryData(
-        ["user-messages", recieverId],
-        (old: any) => {
-          const existing = old?.messages ?? []
-          return {
-            ...old,
-            status: 200,
-            messages: [...existing, optimisticMsg],
-          }
-        },
-      )
+      queryClient.setQueryData(["user-messages", recieverId], (old: any) => {
+        const existing = old?.messages ?? []
+        return { ...old, status: 200, messages: [...existing, optimisticMsg] }
+      })
     },
     onError: (_err, variables) => {
-      // Roll back optimistic message if send failed
-      queryClient.setQueryData(
-        ["user-messages", recieverId],
-        (old: any) => ({
-          ...old,
-          messages: (old?.messages ?? []).filter(
-            (m: any) => m.id !== variables.messageid,
-          ),
-        }),
-      )
+      queryClient.setQueryData(["user-messages", recieverId], (old: any) => ({
+        ...old,
+        messages: (old?.messages ?? []).filter(
+          (m: any) => m.id !== variables.messageid,
+        ),
+      }))
     },
   })
 
-  const onSendNewMessage = handleSubmit(async (values) =>
-    mutate({ messageid: v4(), message: values.message }),
-  )
+  const onSendNewMessage = handleSubmit(async (values) => {
+    const text = values.message?.trim()
 
-  return { onSendNewMessage, register }
+    // ── Audio send ──
+    if (audioBlob) {
+      const blobUrl = audioBlobUrl
+      const file = new File([audioBlob], `audio-${Date.now()}.webm`, {
+        type: "audio/webm",
+      })
+      const uploaded = await upload.uploadFile(file)
+      mutate({
+        messageid: v4(),
+        mediaUrl: uploaded.uuid,
+        mediaType: "AUDIO",
+        localBlobUrl: blobUrl ?? undefined,
+      })
+      return
+    }
+
+    // ── Image send ──
+    if (pendingImage) {
+      const localUrl = imagePreviewUrl
+      const uploaded = await upload.uploadFile(pendingImage)
+      mutate({
+        messageid: v4(),
+        message: text || undefined,
+        mediaUrl: uploaded.uuid,
+        mediaType: "IMAGE",
+        localBlobUrl: localUrl ?? undefined,
+      })
+      return
+    }
+
+    // ── Text only ──
+    if (text) {
+      mutate({ messageid: v4(), message: text })
+    }
+  })
+
+  return {
+    onSendNewMessage,
+    register,
+    isSending,
+    // image
+    pendingImage,
+    imagePreviewUrl,
+    imageInputRef,
+    onPickImage,
+    clearImage,
+    // audio
+    isRecording,
+    audioBlob,
+    audioBlobUrl,
+    recordingSeconds,
+    onStartRecording,
+    onStopRecording,
+    clearAudio,
+  }
 }
 
 export const useCustomDomain = (groupid: string) => {

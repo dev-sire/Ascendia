@@ -604,7 +604,9 @@ export const onGetAllUserMessages = async (recieverId: string) => {
 export const onSendMessage = async (
   recieverid: string,
   messageid: string,
-  message: string,
+  message?: string,
+  mediaUrl?: string,
+  mediaType?: "IMAGE" | "AUDIO",
 ) => {
   try {
     const user = await onAuthenticatedUser()
@@ -617,7 +619,9 @@ export const onSendMessage = async (
           create: {
             id: messageid,
             recieverId: recieverid,
-            message,
+            ...(message ? { message } : {}),
+            ...(mediaUrl ? { mediaUrl } : {}),
+            ...(mediaType ? { mediaType } : {}),
           },
         },
       },

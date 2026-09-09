@@ -23,7 +23,15 @@ export const ChatWindow = ({ recieverid, userid }: ChatWindowProps) => {
         </div>
       )}
       {messages.map((c: any) => (
-        <ChatBubble key={c.id} {...c} userid={userid} />
+        <ChatBubble
+          key={c.id}
+          userid={userid}
+          senderid={c.senderid}
+          createdAt={c.createdAt}
+          message={c.message ?? null}
+          mediaUrl={c.mediaUrl ?? null}
+          mediaType={c.mediaType ?? null}
+        />
       ))}
     </div>
   )
