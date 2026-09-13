@@ -6,6 +6,7 @@ import {
   onGetDomainConfig,
   onGetExploreGroup,
   onGetGroupInfo,
+  onGetGroupLeaderboard,
   onSearchGroups,
   onSendMessage,
   onUpdateGroupGallery,
@@ -919,4 +920,12 @@ export const useCustomDomain = (groupid: string) => {
     errors,
     data,
   }
+}
+export const useGroupLeaderboard = (groupid: string) => {
+  const { data } = useQuery({
+    queryKey: ["group-leaderboard", groupid],
+    queryFn: () => onGetGroupLeaderboard(groupid),
+  })
+
+  return { leaderboard: data?.leaderboard ?? [] }
 }

@@ -832,3 +832,52 @@ export const onCheckGroupMembership = async (
     return { isMember: false }
   }
 }
+
+export const onGetGroupLeaderboard = async (groupid: string) => {
+  try {
+    // Fetch all members of the group with their user info
+    const members = await client.members.findMany({
+      where: { groupId: groupid },
+      include: { User: { select: { id: true, firstname: true, lastname: true, image: true } } },
+    })
+
+    // Fetch all sections that belong to courses in this group,
+    // only pulling completedBy so we don't over-fetch content
+    const sections = await client.section.findMany({
+      where: {
+        Module: {
+          Course: {
+            groupId: groupid,
+          },
+        },
+      },
+      select: { completedBy: true },
+    })
+
+    // Build a map of userId -> completion count across all sections
+    const countMap: Record<string, number> = {}
+    for (const section of sections) {
+      for (const userId of section.completedBy) {
+        countMap[userId] = (countMap[userId] ?? 0) + 1
+      }
+    }
+
+    // Rank members — those with zero completions still appear, ranked last
+    const ranked = members
+      .filter((m) => m.User !== null)
+      .map((m) => ({
+        userId: m.User!.id,
+        firstname: m.User!.firstname,
+        lastname: m.User!.lastname,
+        image: m.User!.image,
+        completions: countMap[m.User!.id] ?? 0,
+      }))
+      .sort((a, b) => b.completions - a.completions)
+      .map((entry, index) => ({ ...entry, rank: index + 1 }))
+
+    return { status: 200, leaderboard: ranked }
+  } catch (error) {
+    console.log(error)
+    return { status: 400, leaderboard: [] }
+  }
+}
