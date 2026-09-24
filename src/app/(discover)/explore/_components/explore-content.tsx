@@ -1,11 +1,10 @@
 "use client"
 import { useAppSelector } from "@/redux/store"
 import dynamic from "next/dynamic"
-import ExploreSlider from "./explore-slider"
 import GroupList from "./group-list"
 
 type Props = {
-  layout: "SLIDER" | "LIST"
+  layout: "LIST"
   category?: string
 }
 
@@ -31,28 +30,7 @@ const ExplorePageContent = ({ layout, category }: Props) => {
           query={debounce}
         />
       ) : (
-        status !== 200 &&
-        (layout === "SLIDER" ? (
-          <>
-            <ExploreSlider
-              label="Fitness"
-              text="Join top performing groups on Ascendia."
-              query="fitness"
-            />
-            <ExploreSlider
-              label="Lifestyle"
-              text="Join top performing groups on Ascendia."
-              query="lifestyle"
-            />
-            <ExploreSlider
-              label="Music"
-              text="Join top performing groups on Ascendia."
-              query="music"
-            />
-          </>
-        ) : (
-          <GroupList category={category as string} />
-        ))
+        <GroupList category={category as string} />
       )}
     </div>
   )

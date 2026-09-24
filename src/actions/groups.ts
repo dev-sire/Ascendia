@@ -380,16 +380,21 @@ export const onUpDateGroupSettings = async (
 
 export const onGetExploreGroup = async (category: string, paginate: number) => {
   try {
+    const isAll = !category || category === "all"
     const groups = await client.group.findMany({
       where: {
-        category,
+        // Skip category filter when "all" is requested
+        ...(isAll ? {} : { category }),
         NOT: {
           description: null,
           thumbnail: null,
         },
       },
-      take: 6,
+      take: isAll ? 12 : 6,
       skip: paginate,
+      orderBy: {
+        createdAt: "desc",
+      },
     })
 
     if (groups && groups.length > 0) {

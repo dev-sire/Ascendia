@@ -6,29 +6,17 @@ import {
 } from "@tanstack/react-query"
 import ExplorePageContent from "./_components/explore-content"
 
-type Props = {}
-
-const ExplorePage = async (props: Props) => {
+const ExplorePage = async () => {
   const query = new QueryClient()
 
   await query.prefetchQuery({
-    queryKey: ["fitness"],
-    queryFn: () => onGetExploreGroup("fitness", 0),
-  })
-
-  await query.prefetchQuery({
-    queryKey: ["music"],
-    queryFn: () => onGetExploreGroup("music", 0),
-  })
-
-  await query.prefetchQuery({
-    queryKey: ["lifestyle"],
-    queryFn: () => onGetExploreGroup("lifestyle", 0),
+    queryKey: ["groups"],
+    queryFn: () => onGetExploreGroup("all", 0),
   })
 
   return (
     <HydrationBoundary state={dehydrate(query)}>
-      <ExplorePageContent layout="SLIDER" />
+      <ExplorePageContent layout="LIST" category="all" />
     </HydrationBoundary>
   )
 }

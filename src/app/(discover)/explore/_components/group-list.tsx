@@ -10,6 +10,7 @@ type Props = {
 
 const GroupList = ({ category }: Props) => {
   const { groups, status } = useGroupList("groups")
+  console.log(groups, status)
 
   return (
     <div className="container grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-6 mt-16">

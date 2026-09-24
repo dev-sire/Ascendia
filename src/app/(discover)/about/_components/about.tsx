@@ -62,26 +62,29 @@ const AboutGroup = ({ groupid, userid }: Props) => {
       </div>
       {group.gallery.length > 0 && (
         <div className="relative rounded-xl">
-          <div className="img--overlay absolute h-2/6 bottom-0 w-full z-50" />
           {activeMedia?.type === "IMAGE" ? (
-            <img
-              src={ucare(activeMedia.url)}
-              alt="group-img"
-              className="w-full aspect-video z-20 rounded-t-xl"
-            />
+            <>
+              {/* Overlay only on images — gradient fade at bottom */}
+              <div className="img--overlay absolute h-2/6 bottom-0 w-full z-50 pointer-events-none" />
+              <img
+                src={ucare(activeMedia.url)}
+                alt="group-img"
+                className="w-full aspect-video z-20 rounded-t-xl"
+              />
+            </>
           ) : activeMedia?.type === "LOOM" ? (
-            <div className="w-full aspect-video">
+            <div className="w-full aspect-video relative">
               <iframe
                 src={activeMedia.url}
                 allowFullScreen
-                className="absolute outline-none border-0 top-0 left-0 w-full h-full rounded-t-xl"
+                className="absolute outline-none border-0 top-0 left-0 w-full h-full rounded-t-xl z-10"
               ></iframe>
             </div>
           ) : (
             activeMedia?.type === "YOUTUBE" && (
               <div className="w-full aspect-video relative">
                 <iframe
-                  className="w-full absolute top-0 left-0 h-full rounded-xl"
+                  className="w-full absolute top-0 left-0 h-full rounded-xl z-10"
                   src={activeMedia.url}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
