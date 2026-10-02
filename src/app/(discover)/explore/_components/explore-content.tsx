@@ -21,6 +21,8 @@ const ExplorePageContent = ({ layout, category }: Props) => {
     (state: any) => state.searchReducer,
   )
 
+  console.log("searching", isSearching, data, status, debounce)
+
   return (
     <div className="flex flex-col">
       {isSearching || debounce ? (

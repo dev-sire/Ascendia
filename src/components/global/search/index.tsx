@@ -24,6 +24,8 @@ const Search = ({
 }: Props) => {
   const { query, onSearchQuery } = useSearch(searchType)
 
+  console.log("search query", query)
+
   return (
     <div
       className={cn(

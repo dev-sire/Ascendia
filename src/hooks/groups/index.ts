@@ -96,11 +96,8 @@ export const useSearch = (search: "GROUPS" | "POSTS") => {
     queryFn: async ({ queryKey }) => {
       if (search === "GROUPS") {
         const groups = await onSearchGroups(search, queryKey[1])
-        // onSearchGroups can return undefined (POSTS branch fallthrough) — 
-        // React Query v5 forbids undefined returns, so always return an object
-        return groups ?? { status: 404, groups: [] }
+        return groups
       }
-      return { status: 404, groups: [] }
     },
     enabled: false,
   })
@@ -130,6 +127,8 @@ export const useSearch = (search: "GROUPS" | "POSTS") => {
       debounce
     }
   }, [debounce])
+
+  console.log("searching", query, debounce, data, isFetched, isFetching)
 
   return { query, onSearchQuery }
 }
