@@ -22,7 +22,8 @@ export const Navbar = async ({ groupid, userid }: NavbarProps) => {
       </GlassSheet>
       <Search
         searchType="POSTS"
-        className="rounded-full border-themeGray bg-black !opacity-100 px-3"
+        glass
+        className="flex-1 max-w-[560px]"
         placeholder="Search..."
       />
       <Link href={`/group/create`} className="hidden md:inline">

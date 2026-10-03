@@ -36,17 +36,19 @@ const GroupSettingsForm = ({ groupId }: Props) => {
       <div className="flex 2xl:flex-row flex-col gap-10">
         <div className="flex flex-col gap-3 items-start">
           <p>Group Preview</p>
-          <GroupCard
-            id={data?.group?.id!}
-            createdAt={data?.group?.createdAt!}
-            userId={data?.group?.userId!}
-            category={data?.group?.category!}
-            description={data?.group?.description!}
-            privacy={data?.group?.privacy!}
-            thumbnail={data?.group?.thumbnail!}
-            name={data?.group?.name!}
-            preview={previewThumbnail}
-          />
+          <div className="w-full max-w-[320px]">
+            <GroupCard
+              id={data?.group?.id!}
+              createdAt={data?.group?.createdAt!}
+              userId={data?.group?.userId!}
+              category={data?.group?.category!}
+              description={data?.group?.description!}
+              privacy={data?.group?.privacy!}
+              thumbnail={data?.group?.thumbnail!}
+              name={data?.group?.name!}
+              preview={previewThumbnail}
+            />
+          </div>
           <Label
             htmlFor="thumbnail-upload"
             className="border-2 border-themeGray bg-themeGray/50 px-5 py-3 rounded-lg hover:bg-themeBlack cursor-pointer"

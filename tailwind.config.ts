@@ -17,11 +17,11 @@ const config = {
                 "2xl": "1400px",
             },
         },
-        backgroundImage: {
-            "radial-gradient":
-                "radial-gradient(circle at 50% 40%, white, black)",
-        },
         extend: {
+            backgroundImage: {
+                "radial-gradient":
+                    "radial-gradient(circle at 50% 40%, white, black)",
+            },
             colors: {
                 themeBlack: "#09090B",
                 themeGray: "#27272A",

@@ -1,9 +1,7 @@
 import { onAuthenticatedUser } from "@/actions/auth"
 import BackdropGradient from "@/components/global/backdrop-gradient"
-import GradientText from "@/components/global/gradient-text"
 import { GroupListSlider } from "@/components/global/group-list-slider"
 import Search from "@/components/global/search"
-
 import Link from "next/link"
 import React from "react"
 
@@ -13,42 +11,59 @@ type Props = {
 
 const ExploreLayout = async ({ children }: Props) => {
   const user = await onAuthenticatedUser()
+  const isLoggedIn = user.status === 200
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="flex flex-col items-center mt-36 px-10">
-        <GradientText
-          className="text-[90px] font-semibold leading-none"
-          element="H2"
-        >
+      <div className="flex flex-col items-center mt-28 px-10 text-center">
+
+        {/* Eyebrow label */}
+        <span className="inline-block mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-themeTextGray/50 border border-themeGray/60 rounded-full px-4 py-1.5">
+          Community
+        </span>
+
+        {/* Headline */}
+        <h2 className="text-[72px] lg:text-[96px] font-bold leading-none tracking-tight bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent">
           Explore Groups
-        </GradientText>
-        <p className="text-themeTextGray leading-none pt-2">
-          or{" "}
+        </h2>
+
+        {/* Subtext + CTA */}
+        <p className="mt-4 text-themeTextGray/60 text-base">
+          Discover communities that match your interests, or{" "}
           <Link
-            href={user.status === 200 ? `/group/create` : "/sign-in"}
-            className="underline hover:brightness-200"
+            href={isLoggedIn ? "/group/create" : "/sign-in"}
+            className="text-themeTextWhite underline underline-offset-2 decoration-themeGray hover:decoration-white transition-colors"
           >
             create your own
           </Link>
         </p>
+
         <BackdropGradient
-          className="w-4/12 md:w-5/12 xl:w-3/12 xl:h-2/6 h-3/6"
+          className="w-5/12 md:w-6/12 xl:w-4/12 xl:h-2/6 h-3/6"
           container="items-center"
         >
-          <Search
-            placeholder="Search for anything"
-            searchType="GROUPS"
-            glass
-            inputStyle="lg:w-[500px] text-lg h-auto z-[9999]"
-            className="rounded-3xl border-themeGray py-2 px-5 mt-10 mb-3"
-          />
+          {/* Search bar */}
+          <div className="mt-10 mb-4 w-full max-w-[560px]">
+            <Search
+              placeholder="Search for anything..."
+              searchType="GROUPS"
+              glass
+              inputStyle="lg:w-full text-base"
+              className="w-full"
+            />
+          </div>
+
+          {/* Category filter slider */}
           <div className="w-full md:w-[800px]">
             <GroupListSlider overlay route />
           </div>
         </BackdropGradient>
       </div>
-      {children}
+
+      {/* Grid of groups */}
+      <div className="mt-6">
+        {children}
+      </div>
     </div>
   )
 }
