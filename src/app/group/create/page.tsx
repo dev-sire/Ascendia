@@ -2,6 +2,7 @@ import { onAuthenticatedUser } from "@/actions/auth"
 import { onGetAffiliateInfo } from "@/actions/groups"
 import CreateGroup from "@/components/forms/create-group"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { BILLING_NOTE, PLAN } from "@/constants/pricing"
 import { User } from "lucide-react"
 import { redirect } from "next/navigation"
 
@@ -22,8 +23,7 @@ const GroupCreatPage = async ({ searchParams }: Props) => {
           Payment Method
         </h5>
         <p className="text-themeTextGray leading-tight">
-          Free for 14 days, then PKR 999/month. Cancel anytime. All features.
-          Unlimited everything. No hidden fees.
+          {BILLING_NOTE} Prices in {PLAN.currency}.
         </p>
         {affiliate.status === 200 && (
           <div className="w-full mt-5 justify-center items-center gap-x-2 italic text-themeTextGray text-sm">

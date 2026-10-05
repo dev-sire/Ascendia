@@ -48,7 +48,7 @@ const MockStripe = () => (
     {/* revenue mini chart */}
     <rect x="12" y="116" width="296" height="52" rx="6" fill="rgba(255,255,255,0.03)" />
     <text x="22" y="130" fontSize="8" fill={LIGHT} opacity="0.5" fontFamily="sans-serif">Monthly Revenue</text>
-    <text x="22" y="148" fontSize="16" fill={GOLD} fontFamily="Georgia, serif" fontWeight="bold">PKR 12,400</text>
+    <text x="22" y="148" fontSize="16" fill={GOLD} fontFamily="Georgia, serif" fontWeight="bold">$2,480</text>
     <polyline points="170,158 200,140 230,148 260,132 290,120" stroke={GOLD} strokeWidth="1.5" fill="none" opacity="0.7" />
   </svg>
 )
@@ -140,7 +140,7 @@ const MockAffiliate = () => (
     <text x="16" y="28" fontSize="13" fill={LIGHT} fontFamily="Georgia, serif" fontWeight="bold">Affiliate Dashboard</text>
     <rect x="16" y="36" width="288" height="1" fill="rgba(201,168,76,0.2)" />
     {/* Stats cards */}
-    {[["Links Shared","147"],["Conversions","34"],["Earned","PKR 8,200"]].map(([label, val], i) => (
+    {[["Links Shared","147"],["Conversions","34"],["Earned","$1,346"]].map(([label, val], i) => (
       <g key={label as string}>
         <rect x={16 + i * 100} y="48" width="90" height="50" rx="6" fill="rgba(255,255,255,0.03)" stroke={GOLD} strokeOpacity="0.2" strokeWidth="1" />
         <text x={26 + i * 100} y="66" fontSize="8" fill={LIGHT} opacity="0.5" fontFamily="sans-serif">{label}</text>
@@ -149,11 +149,11 @@ const MockAffiliate = () => (
     ))}
     {/* Link row */}
     <rect x="16" y="112" width="288" height="28" rx="6" fill="rgba(255,255,255,0.03)" />
-    <text x="26" y="129" fontSize="9" fill={LIGHT} opacity="0.5" fontFamily="monospace">ascendia.app/ref/aman_k92</text>
+    <text x="26" y="129" fontSize="9" fill={LIGHT} opacity="0.5" fontFamily="monospace">ascendia.app/affiliates/a1b2c3</text>
     <rect x="262" y="118" width="34" height="16" rx="4" fill={GOLD_DIM} />
     <text x="269" y="129" fontSize="8" fill={GOLD} fontFamily="sans-serif">Copy</text>
     {/* payout */}
-    <text x="16" y="160" fontSize="8" fill={LIGHT} opacity="0.35" fontFamily="sans-serif">Next payout · 3 days</text>
+    <text x="16" y="160" fontSize="8" fill={LIGHT} opacity="0.35" fontFamily="sans-serif">Paid out via Stripe</text>
     <rect x="130" y="153" width="174" height="6" rx="3" fill="rgba(255,255,255,0.05)" />
     <rect x="130" y="153" width="98" height="6" rx="3" fill={GOLD} opacity="0.5" />
   </svg>
@@ -183,7 +183,7 @@ const FEATURES: Feature[] = [
     eyebrow: "Payments",
     title: "Stripe, wired in",
     description:
-      "Connect your Stripe account and start charging for memberships, courses, or one-off products in minutes.",
+      "Connect your Stripe account, set a membership price in USD, and start charging members to join in minutes.",
     mock: <MockStripe />,
   },
   {
@@ -191,7 +191,7 @@ const FEATURES: Feature[] = [
     eyebrow: "Community",
     title: "Groups & channels",
     description:
-      "Create unlimited channels inside your group. Organise discussions, resources, and announcements, all in one place.",
+      "Create unlimited channels inside your group. Organise discussions and resources, all in one place.",
     mock: <MockGroups />,
   },
   {
@@ -207,7 +207,7 @@ const FEATURES: Feature[] = [
     eyebrow: "Courses",
     title: "State-of-the-art editor",
     description:
-      "Slash commands, rich embeds, code blocks, video, and drag-and-drop modules. Build professional courses without touching a CMS.",
+      "Slash commands, image and Loom or YouTube embeds, code blocks, and structured modules. Build professional courses without touching a CMS.",
     mock: <MockCourse />,
   },
   {
@@ -215,7 +215,7 @@ const FEATURES: Feature[] = [
     eyebrow: "Affiliates",
     title: "Grow through referrals",
     description:
-      "Issue trackable affiliate links, set commission rates, and let your community become your sales team.",
+      "Share your affiliate link and earn $39.60 every time a creator you refer launches their own group.",
     mock: <MockAffiliate />,
   },
 ]
@@ -224,20 +224,21 @@ const FeatureCard = ({ feature }: { feature: Feature }) => (
   <div
     className="flex flex-col rounded-2xl overflow-hidden transition-all duration-300 group"
     style={{
-      background: "rgba(255,255,255,0.025)",
+      background: "rgba(9,9,11,0.55)",
       border: "1px solid rgba(201,168,76,0.12)",
+      backdropFilter: "blur(12px)",
     }}
     onMouseEnter={(e) => {
       ;(e.currentTarget as HTMLDivElement).style.border =
         "1px solid rgba(201,168,76,0.35)"
       ;(e.currentTarget as HTMLDivElement).style.background =
-        "rgba(201,168,76,0.04)"
+        "rgba(30,26,14,0.65)"
     }}
     onMouseLeave={(e) => {
       ;(e.currentTarget as HTMLDivElement).style.border =
         "1px solid rgba(201,168,76,0.12)"
       ;(e.currentTarget as HTMLDivElement).style.background =
-        "rgba(255,255,255,0.025)"
+        "rgba(9,9,11,0.55)"
     }}
   >
     {/* Mock window */}
@@ -281,7 +282,7 @@ const FeatureCard = ({ feature }: { feature: Feature }) => (
 
 const DashboardSnippet = () => {
   return (
-    <section id="features" className="w-full px-4 md:px-10 pb-20">
+    <section id="features" className="w-full scroll-mt-28 px-4 md:px-10 pb-20">
       {/* Section header */}
       <div className="flex flex-col items-center text-center mb-14">
         <p

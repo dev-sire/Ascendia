@@ -36,13 +36,20 @@ export const LANDING_PAGE_MENU: MenuProps[] = [
   },
   {
     id: 1,
+    label: "Features",
+    icon: <ZapDouToneBlack />,
+    path: "#features",
+    section: true,
+  },
+  {
+    id: 2,
     label: "Pricing",
     icon: <CreditCard />,
     path: "#pricing",
     section: true,
   },
   {
-    id: 1,
+    id: 3,
     label: "Explore",
     icon: <Explore />,
     path: "/explore",

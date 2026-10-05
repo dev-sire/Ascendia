@@ -3,6 +3,7 @@ import GlassCard from "@/components/global/glass-card"
 
 import GradientText from "@/components/global/gradient-text"
 import { GROUPLE_CONSTANTS } from "@/constants"
+import { BILLING_SHORT, PRICE } from "@/constants/pricing"
 
 type Props = {
   children: React.ReactNode
@@ -18,8 +19,8 @@ const CreateGroupLayout = ({ children }: Props) => {
             Create Your Group
           </GradientText>
           <p className="text-themeTextWhite">
-            Free for 14 days, then PKR 999/month. Cancel anytime. All features.
-            Unlimited everything. No hidden fees.
+            {PRICE} {BILLING_SHORT}. All features. Unlimited channels. No hidden
+            fees.
           </p>
           <div className="flex flex-col gap-3 mt-16 pl-5">
             {GROUPLE_CONSTANTS.createGroupPlaceholder.map((placeholder) => (

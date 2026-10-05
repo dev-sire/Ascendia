@@ -1,7 +1,10 @@
 "use client"
 
+import { BILLING_NOTE, PRICE } from "@/constants/pricing"
 import Image from "next/image"
 import Link from "next/link"
+import { CtaButton, LandingButton } from "./landing-auth"
+
 const GOLD = "#C9A84C"
 const GOLD_DIM = "rgba(201,168,76,0.15)"
 const DARK = "#09090B"
@@ -358,43 +361,23 @@ const GroupsSection = () => (
         </p>
 
         <ul className="flex flex-col gap-3">
-          <Bullet>Unlimited channels per group, text, resource, and announcement types</Bullet>
-          <Bullet>Role-based access so the right people see the right content</Bullet>
-          <Bullet>Pinned posts, rich embeds, and threaded replies built in</Bullet>
+          <Bullet>Unlimited channels per group, each with its own icon and feed</Bullet>
+          <Bullet>Public or private groups, so you decide who can find and join</Bullet>
+          <Bullet>Posts with likes, comments, and replies built in</Bullet>
           <Bullet>Members can DM each other directly, no third-party app required</Bullet>
         </ul>
 
         <div className="flex gap-8 mt-2">
           <StatPill value="∞" label="Channels per group" />
-          <StatPill value="1-click" label="Member invites" />
-          <StatPill value="Real-time" label="Activity feed" />
+          <StatPill value="Public" label="Or private groups" />
+          <StatPill value="Real-time" label="Direct messages" />
         </div>
 
-        <div className="flex gap-3 mt-2">
-          <Link href="/sign-in">
-            <button
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
-              style={{
-                background: "linear-gradient(135deg, #C9A84C, #9A7A2E)",
-                color: DARK,
-                boxShadow: "0 0 24px rgba(201,168,76,0.2)",
-              }}
-            >
-              Create your group →
-            </button>
-          </Link>
-          <Link href="/explore">
-            <button
-              className="px-6 py-2.5 rounded-xl text-sm font-medium border transition-all duration-200"
-              style={{
-                borderColor: "rgba(201,168,76,0.25)",
-                background: "rgba(201,168,76,0.05)",
-                color: GOLD,
-              }}
-            >
-              Explore groups
-            </button>
-          </Link>
+        <div className="flex flex-wrap gap-3 mt-2">
+          <CtaButton size="md">Create your group →</CtaButton>
+          <LandingButton href="/explore" variant="ghost" size="md">
+            Explore groups
+          </LandingButton>
         </div>
       </div>
 
@@ -463,37 +446,26 @@ const CourseSection = () => (
         </h2>
         <p className="text-base leading-relaxed max-w-md" style={{ color: LIGHT }}>
           Most course platforms give you a text box. Ascendia gives you a
-          block-based editor with slash commands, drag-and-drop modules, rich
-          media embeds, and code syntax highlighting, so your content looks
-          as good as what you're teaching.
+          block-based editor with slash commands, rich media embeds, and
+          structured modules, so your content looks as good as what you&apos;re
+          teaching.
         </p>
 
         <ul className="flex flex-col gap-3">
-          <Bullet>Slash-command palette: insert video, code, quote, table, or image instantly</Bullet>
-          <Bullet>Drag modules into any order without losing student progress</Bullet>
-          <Bullet>Syntax-highlighted code blocks with copy-to-clipboard built in</Bullet>
-          <Bullet>Gate any course behind a Stripe payment, one toggle, done</Bullet>
+          <Bullet>Slash-command palette for headings, lists, to-dos, quotes, code, images, and Loom or YouTube embeds</Bullet>
+          <Bullet>Lessons organised into modules and sections, with completion tracked per member</Bullet>
+          <Bullet>Course privacy settings and a publish toggle, so you control when it goes live</Bullet>
+          <Bullet>Charge for access with a paid group membership, priced in USD</Bullet>
         </ul>
 
         <div className="flex gap-8 mt-2">
           <StatPill value="Block" label="Based editing" />
-          <StatPill value="Stripe" label="Course gating" />
+          <StatPill value="USD" label="Paid memberships" />
           <StatPill value="Video" label="Native embeds" />
         </div>
 
         <div className="flex gap-3 mt-2">
-          <Link href="/sign-in">
-            <button
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
-              style={{
-                background: "linear-gradient(135deg, #C9A84C, #9A7A2E)",
-                color: DARK,
-                boxShadow: "0 0 24px rgba(201,168,76,0.2)",
-              }}
-            >
-              Build your first course →
-            </button>
-          </Link>
+          <CtaButton size="md">Build your first course →</CtaButton>
         </div>
       </div>
     </div>
@@ -507,7 +479,8 @@ const FinalCTA = () => (
       className="max-w-4xl mx-auto rounded-3xl relative overflow-hidden flex flex-col items-center text-center px-8 py-16"
       style={{
         background:
-          "linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 50%, rgba(201,168,76,0.08) 100%)",
+          "linear-gradient(135deg, rgba(201,168,76,0.10) 0%, rgba(9,9,11,0.55) 50%, rgba(201,168,76,0.10) 100%)",
+        backdropFilter: "blur(14px)",
         border: "1px solid rgba(201,168,76,0.2)",
         boxShadow: "0 0 80px rgba(201,168,76,0.06) inset",
       }}
@@ -550,22 +523,11 @@ const FinalCTA = () => (
         One platform. Your domain. Your Stripe account. Your community.
         Everything from the first post to the first payment.
       </p>
-      <Link href="/sign-in" className="mt-8">
-        <button
-          className="px-10 py-3.5 rounded-2xl text-base font-semibold transition-all duration-300"
-          style={{
-            background: "linear-gradient(135deg, #C9A84C 0%, #9A7A2E 100%)",
-            color: DARK,
-            boxShadow: "0 0 40px rgba(201,168,76,0.3)",
-          }}
-          onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 60px rgba(201,168,76,0.5)")}
-          onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 40px rgba(201,168,76,0.3)")}
-        >
-          Start for free! no credit card needed
-        </button>
-      </Link>
-      <p className="mt-4 text-xs" style={{ color: "#716768" }}>
-        14-day trial · Cancel anytime · Credit card required after trial
+      <CtaButton size="lg" className="mt-8">
+        Create your group · {PRICE}
+      </CtaButton>
+      <p className="mt-4 max-w-sm text-xs" style={{ color: "#8B8382" }}>
+        {BILLING_NOTE} Prices in USD.
       </p>
     </div>
   </section>
@@ -605,11 +567,11 @@ const Footer = () => (
           {[
             {
               heading: "Product",
-              links: [["Features", "#features"], ["Pricing", "#pricing"], ["Explore", "/explore"]],
+              links: [["Features", "#features"], ["Integrations", "#integrations"], ["Pricing", "#pricing"], ["Explore", "/explore"]],
             },
             {
               heading: "Account",
-              links: [["Sign in", "/sign-in"], ["Sign up", "/sign-in"], ["Dashboard", "/sign-in"]],
+              links: [["Sign in", "/sign-in"], ["Sign up", "/sign-up"], ["Dashboard", "/callback/sign-in"]],
             },
             {
               heading: "Legal",

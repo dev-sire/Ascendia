@@ -2,6 +2,7 @@
 import { FormGenerator } from "@/components/global/form-generator"
 import { Loader } from "@/components/global/loader"
 import { Button } from "@/components/ui/button"
+import { PLAN, PRICE } from "@/constants/pricing"
 import { usePayments } from "@/hooks/payment"
 import { ErrorMessage } from "@hookform/error-message"
 import { CardElement } from "@stripe/react-stripe-js"
@@ -82,8 +83,8 @@ const PaymentForm = ({ userId, affiliate, stripeId }: Props) => {
         </div>
         <div className="px-7 flex flex-col gap-5">
           <p className="text-sm text-themeTextGray">
-            Cancel anytime with 1-click. By clicking below, you accept
-            our terms.
+            By clicking below, you accept our terms and authorise a payment
+            of {PRICE} {PLAN.currency}.
           </p>
           <Link className="text-sm text-themeTextGray" href={"/explore"}>
             Skip for now
